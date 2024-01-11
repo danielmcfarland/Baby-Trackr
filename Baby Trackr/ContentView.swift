@@ -16,11 +16,10 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             List {
-                ForEach(children) { item in
-                    NavigationLink {
-                        Text(item.name)
-                    } label: {
-                        Text(item.name)
+                ForEach(children) { child in
+                    NavigationLink(value: child) {
+                        Text(child.name)
+                            .font(.system(.title2, design: .rounded, weight: .semibold))
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -38,6 +37,11 @@ struct ContentView: View {
             .sheet(isPresented: $showAddChildView) {
                 AddChildView()
             }
+            .navigationDestination(for: Child.self) { child in
+                ChildView(child: child)
+            }
+            .navigationTitle("Baby Trackr")
+            .navigationBarTitleDisplayMode(.large)
         } detail: {
             Text("Select an item")
         }

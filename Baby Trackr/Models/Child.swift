@@ -31,4 +31,18 @@ final class Child {
         self.dob = dob
         self.gender = gender
     }
+    
+    var initials: String {
+        get {
+            let words = self.name.split(separator: " ")
+            
+            var initials = words.first?.prefix(1) ?? ""
+            
+            if words.count > 1 {
+                initials += words.last?.prefix(1) ?? ""
+            }
+            
+            return String(initials)
+        }
+    }
 }
