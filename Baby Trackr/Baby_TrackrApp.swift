@@ -12,7 +12,12 @@ import SwiftData
 struct Baby_TrackrApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
+            Change.self,
+            Child.self,
+            Feed.self,
             Item.self,
+            Measurement.self,
+            Sleep.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

@@ -12,6 +12,11 @@
 		6881B2DD2B4F4E1200A59C22 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2DC2B4F4E1200A59C22 /* Item.swift */; };
 		6881B2DF2B4F4E1400A59C22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6881B2DE2B4F4E1400A59C22 /* Assets.xcassets */; };
 		6881B2E22B4F4E1400A59C22 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6881B2E12B4F4E1400A59C22 /* Preview Assets.xcassets */; };
+		6881B2EC2B4FD6B600A59C22 /* Child.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2EB2B4FD6B600A59C22 /* Child.swift */; };
+		6881B2EE2B4FD6BD00A59C22 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2ED2B4FD6BD00A59C22 /* Feed.swift */; };
+		6881B2F02B4FD6C200A59C22 /* Change.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2EF2B4FD6C200A59C22 /* Change.swift */; };
+		6881B2F22B4FD6C700A59C22 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2F12B4FD6C700A59C22 /* Measurement.swift */; };
+		6881B2F42B4FD6CB00A59C22 /* Sleep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2F32B4FD6CB00A59C22 /* Sleep.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +28,11 @@
 		6881B2E12B4F4E1400A59C22 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6881B2E32B4F4E1400A59C22 /* Baby_Trackr.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Baby_Trackr.entitlements; sourceTree = "<group>"; };
 		6881B2E42B4F4E1400A59C22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6881B2EB2B4FD6B600A59C22 /* Child.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Child.swift; sourceTree = "<group>"; };
+		6881B2ED2B4FD6BD00A59C22 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
+		6881B2EF2B4FD6C200A59C22 /* Change.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Change.swift; sourceTree = "<group>"; };
+		6881B2F12B4FD6C700A59C22 /* Measurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measurement.swift; sourceTree = "<group>"; };
+		6881B2F32B4FD6CB00A59C22 /* Sleep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sleep.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,9 +65,9 @@
 		6881B2D72B4F4E1200A59C22 /* Baby Trackr */ = {
 			isa = PBXGroup;
 			children = (
+				6881B2EA2B4FD6A000A59C22 /* Models */,
 				6881B2D82B4F4E1200A59C22 /* Baby_TrackrApp.swift */,
 				6881B2DA2B4F4E1200A59C22 /* ContentView.swift */,
-				6881B2DC2B4F4E1200A59C22 /* Item.swift */,
 				6881B2DE2B4F4E1400A59C22 /* Assets.xcassets */,
 				6881B2E32B4F4E1400A59C22 /* Baby_Trackr.entitlements */,
 				6881B2E42B4F4E1400A59C22 /* Info.plist */,
@@ -72,6 +82,19 @@
 				6881B2E12B4F4E1400A59C22 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		6881B2EA2B4FD6A000A59C22 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6881B2EF2B4FD6C200A59C22 /* Change.swift */,
+				6881B2EB2B4FD6B600A59C22 /* Child.swift */,
+				6881B2ED2B4FD6BD00A59C22 /* Feed.swift */,
+				6881B2DC2B4F4E1200A59C22 /* Item.swift */,
+				6881B2F12B4FD6C700A59C22 /* Measurement.swift */,
+				6881B2F32B4FD6CB00A59C22 /* Sleep.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,8 +168,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				6881B2DB2B4F4E1200A59C22 /* ContentView.swift in Sources */,
+				6881B2EE2B4FD6BD00A59C22 /* Feed.swift in Sources */,
 				6881B2DD2B4F4E1200A59C22 /* Item.swift in Sources */,
+				6881B2EC2B4FD6B600A59C22 /* Child.swift in Sources */,
 				6881B2D92B4F4E1200A59C22 /* Baby_TrackrApp.swift in Sources */,
+				6881B2F02B4FD6C200A59C22 /* Change.swift in Sources */,
+				6881B2F22B4FD6C700A59C22 /* Measurement.swift in Sources */,
+				6881B2F42B4FD6CB00A59C22 /* Sleep.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
