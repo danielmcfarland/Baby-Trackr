@@ -17,18 +17,14 @@ struct ChildView: View {
                     VStack {
                         LabeledContent {
                             Text("8 Jan")
-                                .font(.system(.footnote, design: .rounded, weight: .semibold))
-                            //                                .foregroundStyle(.accent)
-                            
+                                .font(.system(.footnote, design: .default, weight: .regular))
                         } label: {                        Label("Weight", systemImage: "scalemass.fill")
-                                .font(.system(.body, design: .rounded, weight: .semibold))
-                            //                                .textCase(.uppercase)
+                                .font(.system(.body, design: .default, weight: .regular))
                         }
                         
                         HStack {
                             Text("2134kg")
-                                .font(.system(.title, design: .rounded, weight: .semibold))
-                            
+                                .font(.system(.title, design: .default, weight: .regular))
                             Spacer()
                         }
                     }
@@ -40,17 +36,15 @@ struct ChildView: View {
                     VStack {
                         LabeledContent {
                             Text("8 Jan")
-                                .font(.system(.footnote, design: .rounded, weight: .semibold))
-                            
+                                .font(.system(.footnote, design: .default, weight: .regular))
                         } label: {                        Label("Feed", systemImage: "waterbottle.fill")
-                                .font(.system(.body, design: .rounded, weight: .semibold))
+                                .font(.system(.body, design: .default, weight: .regular))
                             
                         }
                         
                         HStack {
                             Text("150ml")
-                                .font(.system(.title, design: .rounded, weight: .semibold))
-                            
+                                .font(.system(.title, design: .default, weight: .regular))
                             Spacer()
                         }
                     }

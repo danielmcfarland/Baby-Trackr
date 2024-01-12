@@ -14,12 +14,12 @@ struct ContentView: View {
     @State private var showAddChildView = false
 
     var body: some View {
-        NavigationSplitView {
+        NavigationStack {
             List {
                 ForEach(children) { child in
                     NavigationLink(value: child) {
                         Text(child.name)
-                            .font(.system(.title2, design: .rounded, weight: .semibold))
+//                            .font(.system(.title2, design: .rounded, weight: .semibold))
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -42,8 +42,6 @@ struct ContentView: View {
             }
             .navigationTitle("Baby Trackr")
             .navigationBarTitleDisplayMode(.large)
-        } detail: {
-            Text("Select an item")
         }
     }
 
