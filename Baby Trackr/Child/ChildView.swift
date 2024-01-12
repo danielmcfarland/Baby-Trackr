@@ -12,13 +12,13 @@ struct ChildView: View {
     
     var body: some View {
         ScrollView {
-            ExtractedView(title: "Weight", icon: "lines.measurement.vertical")
+            TitleCardView(title: "Weight", icon: "lines.measurement.vertical")
             
-            ExtractedView(title: "Feed", icon: "waterbottle.fill")
+            TitleCardView(title: "Feed", icon: "waterbottle.fill")
             
-            ExtractedView(title: "Sleep", icon: "moon.stars.fill")
+            TitleCardView(title: "Sleep", icon: "moon.stars.fill")
             
-            ExtractedView(title: "Change", icon: "arrow.triangle.2.circlepath")
+            TitleCardView(title: "Change", icon: "arrow.triangle.2.circlepath")
         }
         .navigationTitle(child.name)
         .navigationBarTitleDisplayMode(.large)
@@ -28,68 +28,5 @@ struct ChildView: View {
 #Preview {
     NavigationView {
         ChildView(child: Child(name: "Child Name", dob: Date(), gender: "male"))
-    }
-}
-
-struct ExtractedView: View {
-    var title: String
-    var icon: String
-    
-    var body: some View {
-        HStack {
-            IconView(icon: icon)
-            
-            Text(title)
-                .foregroundStyle(Color("PurpleText"))
-                .fontWeight(.semibold)
-            
-            Spacer()
-        }
-        .padding()
-        .background(Gradient(colors: [
-            Color.indigo.opacity(0.5),
-            Color.indigo.opacity(0.7),
-        ]))
-        .cornerRadius(25)
-        .overlay(
-            RoundedRectangle(cornerRadius: 25)
-                .strokeBorder(.indigo, lineWidth: 1)
-                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-        )
-        .shadow(color: .indigo.opacity(0.4), radius: 20, x: 0, y: 0)
-        .padding(.horizontal)
-        .padding(.bottom)
-    }
-}
-
-struct IconView: View {
-    
-    enum IconSize: Int {
-        case small = 40
-        case large = 80
-    }
-    
-    var size: IconSize = .small
-    var icon: String = ""
-    
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 10.0)
-                .foregroundStyle(Gradient(colors: [
-                    Color.indigo.opacity(0.7),
-                    Color.indigo.opacity(0.9),
-                ]))
-                .frame(width: CGFloat(integerLiteral: size.rawValue), height: CGFloat(integerLiteral: size.rawValue))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(.white, lineWidth: 1)
-                        .strokeBorder(.accent.opacity(0.5), lineWidth: 1)
-                        .opacity(0.3)
-                )
-                .shadow(color: .indigo.opacity(0.4), radius: 20, x: 0, y: 0)
-            
-            Image(systemName: icon)
-                .foregroundStyle(.white)
-        }
     }
 }

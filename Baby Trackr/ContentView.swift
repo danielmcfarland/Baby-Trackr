@@ -18,7 +18,7 @@ struct ContentView: View {
             ScrollView {
                 ForEach(children) { child in
                     NavigationLink(value: child) {
-                        ExtractedView(title: child.name, icon: child.initialSymbol)
+                        TitleCardView(title: child.name, icon: child.initialSymbol)
                     }
                 }
             }
