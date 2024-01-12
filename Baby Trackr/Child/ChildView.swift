@@ -11,45 +11,12 @@ struct ChildView: View {
     var child: Child
     
     var body: some View {
-        List {
-            Section {
-                NavigationLink(value: 1) {
-                    VStack {
-                        LabeledContent {
-                            Text("8 Jan")
-                                .font(.system(.footnote, design: .default, weight: .regular))
-                        } label: {                        Label("Weight", systemImage: "scalemass.fill")
-                                .font(.system(.body, design: .default, weight: .regular))
-                        }
-                        
-                        HStack {
-                            Text("2134kg")
-                                .font(.system(.title, design: .default, weight: .regular))
-                            Spacer()
-                        }
-                    }
-                }
-            }
+        ScrollView {
+            ExtractedView()
             
-            Section {
-                NavigationLink(value: 1) {
-                    VStack {
-                        LabeledContent {
-                            Text("8 Jan")
-                                .font(.system(.footnote, design: .default, weight: .regular))
-                        } label: {                        Label("Feed", systemImage: "waterbottle.fill")
-                                .font(.system(.body, design: .default, weight: .regular))
-                            
-                        }
-                        
-                        HStack {
-                            Text("150ml")
-                                .font(.system(.title, design: .default, weight: .regular))
-                            Spacer()
-                        }
-                    }
-                }
-            }
+            ExtractedView()
+            
+            ExtractedView()
         }
         .navigationTitle(child.name)
         .navigationBarTitleDisplayMode(.large)
@@ -59,5 +26,40 @@ struct ChildView: View {
 #Preview {
     NavigationView {
         ChildView(child: Child(name: "Child Name", dob: Date(), gender: "male"))
+    }
+}
+
+struct ExtractedView: View {
+    var body: some View {
+        HStack {
+            RoundedRectangle(cornerRadius: 10.0)
+                .foregroundStyle(.accent)
+                .frame(width: 40, height: 40)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(.white, lineWidth: 1)
+                        .strokeBorder(.accent.opacity(0.5), lineWidth: 1)
+                        .opacity(0.3)
+                )
+            
+            Text("Weight")
+                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+            
+            Spacer()
+        }
+        .padding()
+        .background(Gradient(colors: [
+            Color.accent.opacity(0.5),
+            Color.accent.opacity(0.7),
+        ]))
+        .background(.white)
+        .cornerRadius(25)
+        .overlay(
+            RoundedRectangle(cornerRadius: 25)
+                .strokeBorder(.accent, lineWidth: 1)
+                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+        )
+        .padding(.horizontal)
+        .padding(.bottom)
     }
 }
