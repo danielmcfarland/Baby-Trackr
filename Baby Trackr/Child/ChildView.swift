@@ -8,17 +8,29 @@
 import SwiftUI
 
 struct ChildView: View {
-    var child: Child
+    @State var child: Child
     
     var body: some View {
         ScrollView {
-            TitleCardView(title: "Weight", icon: "lines.measurement.vertical")
+            NavigationLink(value: RecordType.measurement) {
+                TitleCardView(title: "Measurements", icon: "lines.measurement.vertical")
+            }
             
-            TitleCardView(title: "Feed", icon: "waterbottle.fill")
+            NavigationLink(value: RecordType.feed) {
+                TitleCardView(title: "Feeding", icon: "waterbottle.fill")
+            }
             
-            TitleCardView(title: "Sleep", icon: "moon.stars.fill")
+            NavigationLink(value: RecordType.sleep) {
+                TitleCardView(title: "Sleeping", icon: "moon.stars.fill")
+            }
             
-            TitleCardView(title: "Change", icon: "arrow.triangle.2.circlepath")
+            NavigationLink(value: RecordType.change) {
+                TitleCardView(title: "Changes", icon: "arrow.triangle.2.circlepath")
+            }
+            
+            NavigationLink(value: RecordType.note) {
+                TitleCardView(title: "Notes", icon: "list.clipboard.fill")
+            }
         }
         .navigationTitle(child.name)
         .navigationBarTitleDisplayMode(.large)

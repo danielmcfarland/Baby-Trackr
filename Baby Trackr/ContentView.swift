@@ -12,9 +12,10 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var children: [Child]
     @State private var showAddChildView = false
+    @State private var path = NavigationPath()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 ForEach(children) { child in
                     ChildLinkView(child: child)
@@ -33,8 +34,11 @@ struct ContentView: View {
             .navigationDestination(for: Child.self) { child in
                 ChildView(child: child)
             }
-            .navigationDestination(for: Int.self) { int in
-                Text("\(int)")
+            .navigationDestination(for: RecordType.self) { recordType in
+                RecordTypeView(type: recordType)
+            }
+            .navigationDestination(for: MeasurementType.self) { measurementType in
+                MeasurementTypeView(type: measurementType)
             }
             .navigationTitle("Baby Trackr")
             .navigationBarTitleDisplayMode(.large)
@@ -43,7 +47,6 @@ struct ContentView: View {
     
     private func addItem() {
         showAddChildView.toggle()
-        
     }
     
     private func deleteItems(offsets: IndexSet) {
