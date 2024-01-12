@@ -24,7 +24,7 @@ struct AddChildView: View {
                 Section {
                     HStack {
                         Spacer()
-                        ChildInitialsView(child: child)
+                        IconView(size: .large, icon: child.initialSymbol)
                         Spacer()
                     }
                     .listRowInsets(.init(top: 25, leading: 0, bottom: 25, trailing: 0))
@@ -40,15 +40,11 @@ struct AddChildView: View {
                         .listRowInsets(.init(top: 0, leading: 20, bottom: 10, trailing: 20))
                         .focused($focusedField, equals: .childName)
                     
-                    Picker("Gender", selection: $child.gender) {
-                        Text("Male").tag("male")
-                        Text("Female").tag("female")
-                    }
-                    .pickerStyle(.segmented)
-                    
-                    DatePicker(selection: $child.dob, label: {
+                    DatePicker(selection: $child.dob, in: ...Date(), label: {
                         Text("Date of Birth")
                     })
+                    
+                    
                     .padding(.bottom, 10)
                 }
                 .listRowSeparator(.hidden)
@@ -89,21 +85,4 @@ struct AddChildView: View {
 
 #Preview {
     AddChildView()
-}
-
-struct ChildInitialsView: View {
-    var child: Child
-    
-    var body: some View {
-        ZStack {
-            Circle()
-                .foregroundColor(.indigo)
-                .frame(width: 100, height: 100, alignment: .center)
-                .shadow(color: .indigo.opacity(0.4), radius: 20, x: 0, y: 0)
-            
-            Text(child.initials)
-                .foregroundStyle(Color.white)
-                .font(.system(.largeTitle, design: .rounded, weight: .semibold))
-        }
-    }
 }

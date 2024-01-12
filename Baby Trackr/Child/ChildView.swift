@@ -37,24 +37,7 @@ struct ExtractedView: View {
     
     var body: some View {
         HStack {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10.0)
-                    .foregroundStyle(Gradient(colors: [
-                        Color.indigo.opacity(0.7),
-                        Color.indigo.opacity(0.9),
-                    ]))
-                    .frame(width: 40, height: 40)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .strokeBorder(.white, lineWidth: 1)
-                            .strokeBorder(.accent.opacity(0.5), lineWidth: 1)
-                            .opacity(0.3)
-                    )
-                    .shadow(color: .indigo.opacity(0.4), radius: 20, x: 0, y: 0)
-                
-                Image(systemName: icon)
-                    .foregroundStyle(.white)
-            }
+            IconView(icon: icon)
             
             Text(title)
                 .foregroundStyle(Color("PurpleText"))
@@ -76,5 +59,37 @@ struct ExtractedView: View {
         .shadow(color: .indigo.opacity(0.4), radius: 20, x: 0, y: 0)
         .padding(.horizontal)
         .padding(.bottom)
+    }
+}
+
+struct IconView: View {
+    
+    enum IconSize: Int {
+        case small = 40
+        case large = 80
+    }
+    
+    var size: IconSize = .small
+    var icon: String = ""
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10.0)
+                .foregroundStyle(Gradient(colors: [
+                    Color.indigo.opacity(0.7),
+                    Color.indigo.opacity(0.9),
+                ]))
+                .frame(width: CGFloat(integerLiteral: size.rawValue), height: CGFloat(integerLiteral: size.rawValue))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(.white, lineWidth: 1)
+                        .strokeBorder(.accent.opacity(0.5), lineWidth: 1)
+                        .opacity(0.3)
+                )
+                .shadow(color: .indigo.opacity(0.4), radius: 20, x: 0, y: 0)
+            
+            Image(systemName: icon)
+                .foregroundStyle(.white)
+        }
     }
 }
