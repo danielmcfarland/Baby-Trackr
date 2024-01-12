@@ -12,17 +12,15 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var children: [Child]
     @State private var showAddChildView = false
-
+    
     var body: some View {
         NavigationStack {
-            List {
+            ScrollView {
                 ForEach(children) { child in
                     NavigationLink(value: child) {
-                        Text(child.name)
-//                            .font(.system(.title2, design: .rounded, weight: .semibold))
+                        ExtractedView(title: child.name, icon: child.initialSymbol)
                     }
                 }
-                .onDelete(perform: deleteItems)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -47,12 +45,12 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.large)
         }
     }
-
+    
     private func addItem() {
         showAddChildView.toggle()
-
+        
     }
-
+    
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {

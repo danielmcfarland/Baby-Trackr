@@ -42,7 +42,15 @@ final class Child {
                 initials += words.last?.prefix(1) ?? ""
             }
             
-            return String(initials)
+            return String(initials).uppercased()
+        }
+    }
+    
+    var initialSymbol: String {
+        get {
+            let initial = self.name.prefix(1)
+            
+            return String("\(initial).circle.fill").lowercased()
         }
     }
 }
