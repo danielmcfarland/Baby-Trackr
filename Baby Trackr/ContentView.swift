@@ -17,15 +17,10 @@ struct ContentView: View {
         NavigationStack {
             ScrollView {
                 ForEach(children) { child in
-                    NavigationLink(value: child) {
-                        TitleCardView(title: child.name, icon: child.initialSymbol)
-                    }
+                    ChildLinkView(child: child)
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
                 ToolbarItem {
                     Button(action: addItem) {
                         Label("Add Item", systemImage: "plus")

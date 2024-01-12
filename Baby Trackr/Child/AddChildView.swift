@@ -32,6 +32,8 @@ struct AddChildView: View {
                     TextField("", text: $child.name, prompt: Text("Child Name").foregroundColor(.gray))
                         .font(.system(.title2, design: .rounded, weight: .semibold))
                         .multilineTextAlignment(.center)
+                        .autocapitalization(.words)
+                        .textContentType(.name)
                         .lineLimit(1)
                         .padding(.vertical, 10)
                         .background(Color(uiColor: .systemGroupedBackground))
