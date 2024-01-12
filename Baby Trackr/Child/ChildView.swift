@@ -13,7 +13,7 @@ struct ChildView: View {
     var body: some View {
         List {
             Section {
-                NavigationLink(value: child) {
+                NavigationLink(value: 1) {
                     VStack {
                         LabeledContent {
                             Text("8 Jan")
@@ -32,7 +32,7 @@ struct ChildView: View {
             }
             
             Section {
-                NavigationLink(value: child) {
+                NavigationLink(value: 1) {
                     VStack {
                         LabeledContent {
                             Text("8 Jan")

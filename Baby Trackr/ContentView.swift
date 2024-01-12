@@ -40,6 +40,9 @@ struct ContentView: View {
             .navigationDestination(for: Child.self) { child in
                 ChildView(child: child)
             }
+            .navigationDestination(for: Int.self) { int in
+                Text("\(int)")
+            }
             .navigationTitle("Baby Trackr")
             .navigationBarTitleDisplayMode(.large)
         }
