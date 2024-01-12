@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct RecordTypeView: View {
-    var type: RecordType
+    var type: ChildRecordType
     
     var body: some View {
-        switch type {
+        switch type.recordType {
         case .measurement:
-            ChooseMeasurementTypeView()
+            ChooseMeasurementTypeView(child: type.child)
         case .change:
             Text("change")
         case .feed:
@@ -27,5 +27,5 @@ struct RecordTypeView: View {
 }
 
 #Preview {
-    RecordTypeView(type: .feed)
+    RecordTypeView(type: ChildRecordType(child: Child(name: "Name", dob: Date(), gender: ""), recordType: .feed))
 }

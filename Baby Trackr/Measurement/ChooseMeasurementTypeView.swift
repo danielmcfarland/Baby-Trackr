@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct ChooseMeasurementTypeView: View {
+    var child: Child
+
     var body: some View {
         ScrollView {
-            NavigationLink(value: MeasurementType.weight) {
+            NavigationLink(value: ChildMeasurementType(child: child, measurementType: .weight)) {
                 TitleCardView(title: "Weight", icon: "scalemass.fill")
             }
             
-            NavigationLink(value: MeasurementType.height) {
+            NavigationLink(value: ChildMeasurementType(child: child, measurementType: .height)) {
                 TitleCardView(title: "Height", icon: "lines.measurement.vertical")
             }
         }
@@ -24,5 +26,5 @@ struct ChooseMeasurementTypeView: View {
 }
 
 #Preview {
-    ChooseMeasurementTypeView()
+    ChooseMeasurementTypeView(child: Child(name: "Name", dob: Date(), gender: ""))
 }

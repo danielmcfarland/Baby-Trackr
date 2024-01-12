@@ -8,6 +8,16 @@
 import SwiftUI
 import SwiftData
 
+struct ChildRecordType: Hashable {
+    var child: Child
+    var recordType: RecordType
+}
+
+struct ChildMeasurementType: Hashable {
+    var child: Child
+    var measurementType: MeasurementType
+}
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var children: [Child]
@@ -34,10 +44,10 @@ struct ContentView: View {
             .navigationDestination(for: Child.self) { child in
                 ChildView(child: child)
             }
-            .navigationDestination(for: RecordType.self) { recordType in
+            .navigationDestination(for: ChildRecordType.self) { recordType in
                 RecordTypeView(type: recordType)
             }
-            .navigationDestination(for: MeasurementType.self) { measurementType in
+            .navigationDestination(for: ChildMeasurementType.self) { measurementType in
                 MeasurementTypeView(type: measurementType)
             }
             .navigationTitle("Baby Trackr")

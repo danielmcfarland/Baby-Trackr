@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MeasurementTypeView: View {
-    var type: MeasurementType
+    var type: ChildMeasurementType
     
     @State var measurementPeriod: Int = 0
     @State private var showAddMeasurementView = false
+    
+//    @Query(filter: #Predicate<Measurement> { measurement in
+//        measurement.child?.id == type.self.child.id
+//    }) private var measurements: [Measurement] = []
+    @Query private var measurements: [Measurement]
     
     var body: some View {
         VStack {
@@ -24,7 +30,9 @@ struct MeasurementTypeView: View {
             .padding(.horizontal)
             
             ScrollView {
-                
+                Text("\(measurements.count)")
+                Text("\(type.child.name)")
+                Text("\(type.child.measurements?.count ?? 0)")
             }
         }
         .toolbar {
@@ -37,15 +45,15 @@ struct MeasurementTypeView: View {
             }
         }
         .sheet(isPresented: $showAddMeasurementView) {
-            AddMeasurementView(measurement: Measurement(type: type, value: 0))
+            AddMeasurementView(measurement: Measurement(type: type.measurementType, value: 0), child: type.child)
         }
-        .navigationTitle(type.rawValue)
+        .navigationTitle(type.measurementType.rawValue)
         .navigationBarTitleDisplayMode(.large)
     }
 }
 
 #Preview {
     NavigationView {
-        MeasurementTypeView(type: .height)
+        MeasurementTypeView(type: ChildMeasurementType(child: Child(name: "Name", dob: Date(), gender: ""), measurementType: .height))
     }
 }

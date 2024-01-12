@@ -11,6 +11,7 @@ struct AddMeasurementView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @State var measurement: Measurement
+    var child: Child
     
     var body: some View {
         NavigationStack {
@@ -45,13 +46,13 @@ struct AddMeasurementView: View {
     
     func save() -> Void {
         withAnimation {
-//            modelContext.insert(measurement)
-//            child.sessions?.append(measurement)
+            modelContext.insert(measurement)
+            child.measurements?.append(measurement)
             dismiss()
         }
     }
 }
 
 #Preview {
-    AddMeasurementView(measurement: Measurement(type: .weight, value: 0))
+    AddMeasurementView(measurement: Measurement(type: .weight, value: 0), child: Child(name: "Name", dob: Date(), gender: ""))
 }

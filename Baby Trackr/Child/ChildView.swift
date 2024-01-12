@@ -12,23 +12,23 @@ struct ChildView: View {
     
     var body: some View {
         ScrollView {
-            NavigationLink(value: RecordType.measurement) {
+            NavigationLink(value: ChildRecordType(child: child, recordType:  .measurement)) {
                 TitleCardView(title: "Measurements", icon: "lines.measurement.vertical")
             }
             
-            NavigationLink(value: RecordType.feed) {
+            NavigationLink(value: ChildRecordType(child: child, recordType:  .feed)) {
                 TitleCardView(title: "Feeding", icon: "waterbottle.fill")
             }
             
-            NavigationLink(value: RecordType.sleep) {
+            NavigationLink(value: ChildRecordType(child: child, recordType:  .sleep)) {
                 TitleCardView(title: "Sleeping", icon: "moon.stars.fill")
             }
             
-            NavigationLink(value: RecordType.change) {
+            NavigationLink(value: ChildRecordType(child: child, recordType:  .change)) {
                 TitleCardView(title: "Changes", icon: "arrow.triangle.2.circlepath")
             }
             
-            NavigationLink(value: RecordType.note) {
+            NavigationLink(value: ChildRecordType(child: child, recordType:  .note)) {
                 TitleCardView(title: "Notes", icon: "list.clipboard.fill")
             }
         }
