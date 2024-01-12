@@ -36,7 +36,7 @@ struct AddChildView: View {
                         .padding(.vertical, 10)
                         .background(Color(uiColor: .systemGroupedBackground))
                         .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .foregroundColor(.accentColor)
+                        .foregroundColor(.indigo)
                         .listRowInsets(.init(top: 0, leading: 20, bottom: 10, trailing: 20))
                         .focused($focusedField, equals: .childName)
                     
@@ -97,9 +97,9 @@ struct ChildInitialsView: View {
     var body: some View {
         ZStack {
             Circle()
-                .foregroundColor(.accentColor)
+                .foregroundColor(.indigo)
                 .frame(width: 100, height: 100, alignment: .center)
-                .shadow(color: .accentColor.opacity(0.4), radius: 20, x: 0, y: 0)
+                .shadow(color: .indigo.opacity(0.4), radius: 20, x: 0, y: 0)
             
             Text(child.initials)
                 .foregroundStyle(Color.white)
