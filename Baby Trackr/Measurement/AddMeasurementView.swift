@@ -8,20 +8,44 @@
 import SwiftUI
 
 struct AddMeasurementView: View {
+    
+    enum FocusedField {
+        case measurement
+    }
+    
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @State var measurement: Measurement
+    @FocusState private var focusedField: FocusedField?
     var child: Child
     
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Placeholder", value: $measurement.value, format: .number)
-                        .keyboardType(.numberPad)
+                    
+                    DatePicker(selection: $measurement.createdAt, in: ...Date(), displayedComponents: .date, label: {
+                        Text("Date")
+                            .foregroundStyle(Color.gray)
+                    })
+                    
+                    DatePicker(selection: $measurement.createdAt, in: ...Date(), displayedComponents: .hourAndMinute, label: {
+                        Text("Time")
+                            .foregroundStyle(Color.gray)
+                    })
+                    
+                    LabeledContent {
+                        TextField("", value: $measurement.value, format: .number)
+                            .keyboardType(.numberPad)
+                            .focused($focusedField, equals: .measurement)
+                            .multilineTextAlignment(.trailing)
+                    } label: {
+                        Text(measurement.type == MeasurementType.height ? "cm" : "g")
+                            .foregroundStyle(Color.gray)
+                    }
                 }
             }
-            .navigationTitle("Add Measurement")
+            .navigationTitle(measurement.type == MeasurementType.height ? "Height" : "Weight")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -36,10 +60,13 @@ struct AddMeasurementView: View {
                     Button(action: {
                         save()
                     }) {
-                        Text("Done")
+                        Text("Add")
                     }
-                    .disabled(measurement.value == 0)
+                    .disabled(measurement.value <= 0)
                 }
+            }
+            .onAppear {
+                focusedField = .measurement
             }
         }
     }
@@ -54,5 +81,5 @@ struct AddMeasurementView: View {
 }
 
 #Preview {
-    AddMeasurementView(measurement: Measurement(type: .weight, value: 0), child: Child(name: "Name", dob: Date(), gender: ""))
+    AddMeasurementView(measurement: Measurement(type: .weight, value: 0, createdAt: Date()), child: Child(name: "Name", dob: Date(), gender: ""))
 }

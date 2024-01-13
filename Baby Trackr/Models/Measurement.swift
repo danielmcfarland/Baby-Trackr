@@ -19,9 +19,11 @@ final class Measurement {
     
     var type: MeasurementType = MeasurementType.weight
     var value: Int = 0
+    var createdAt: Date = Date()
     
-    init(type: MeasurementType, value: Int) {
+    init(type: MeasurementType, value: Int, createdAt: Date) {
         self.type = type
         self.value = value
+        self.createdAt = createdAt
     }
 }

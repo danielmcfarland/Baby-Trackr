@@ -45,7 +45,7 @@ struct MeasurementTypeView: View {
             }
         }
         .sheet(isPresented: $showAddMeasurementView) {
-            AddMeasurementView(measurement: Measurement(type: type.measurementType, value: 0), child: type.child)
+            AddMeasurementView(measurement: Measurement(type: type.measurementType, value: 0, createdAt: Date()), child: type.child)
         }
         .navigationTitle(type.measurementType.rawValue)
         .navigationBarTitleDisplayMode(.large)
