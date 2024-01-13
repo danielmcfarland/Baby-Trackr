@@ -42,8 +42,14 @@ struct AddChildView: View {
                         .listRowInsets(.init(top: 0, leading: 20, bottom: 10, trailing: 20))
                         .focused($focusedField, equals: .childName)
                     
-                    DatePicker(selection: $child.dob, in: ...Date(), label: {
+                    DatePicker(selection: $child.dob, in: ...Date(), displayedComponents: .date, label: {
                         Text("Date of Birth")
+                            .foregroundStyle(Color.gray)
+                    })
+                    
+                    DatePicker(selection: $child.dob, in: ...Date(), displayedComponents: .hourAndMinute, label: {
+                        Text("Time of Birth")
+                            .foregroundStyle(Color.gray)
                     })
                     
                     
@@ -51,7 +57,7 @@ struct AddChildView: View {
                 }
                 .listRowSeparator(.hidden)
             }
-            .navigationTitle("Add Child")
+            .navigationTitle("Child")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -66,7 +72,7 @@ struct AddChildView: View {
                     Button(action: {
                         save()
                     }) {
-                        Text("Done")
+                        Text("Add")
                     }
                     .disabled(child.name == "" || child.gender == "")
                 }
