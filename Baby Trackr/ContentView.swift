@@ -50,6 +50,9 @@ struct ContentView: View {
             .navigationDestination(for: ChildMeasurementType.self) { measurementType in
                 MeasurementTypeView(type: measurementType)
             }
+            .navigationDestination(for: Measurement.self) { measurement in
+                MeasurementView(measurement: measurement)
+            }
             .navigationTitle("Baby Trackr")
             .navigationBarTitleDisplayMode(.large)
         }

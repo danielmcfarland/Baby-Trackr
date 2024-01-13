@@ -27,6 +27,7 @@
 		68BBF1032B51E91500113F19 /* ChooseMeasurementTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBF1022B51E91500113F19 /* ChooseMeasurementTypeView.swift */; };
 		68BBF1052B51EAB400113F19 /* MeasurementTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBF1042B51EAB400113F19 /* MeasurementTypeView.swift */; };
 		68BBF1072B51ECCE00113F19 /* AddMeasurementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBF1062B51ECCE00113F19 /* AddMeasurementView.swift */; };
+		68BBF1092B534A7C00113F19 /* MeasurementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBF1082B534A7C00113F19 /* MeasurementView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		68BBF1022B51E91500113F19 /* ChooseMeasurementTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseMeasurementTypeView.swift; sourceTree = "<group>"; };
 		68BBF1042B51EAB400113F19 /* MeasurementTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementTypeView.swift; sourceTree = "<group>"; };
 		68BBF1062B51ECCE00113F19 /* AddMeasurementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMeasurementView.swift; sourceTree = "<group>"; };
+		68BBF1082B534A7C00113F19 /* MeasurementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +157,7 @@
 				68BBF1022B51E91500113F19 /* ChooseMeasurementTypeView.swift */,
 				68BBF1042B51EAB400113F19 /* MeasurementTypeView.swift */,
 				68BBF1062B51ECCE00113F19 /* AddMeasurementView.swift */,
+				68BBF1082B534A7C00113F19 /* MeasurementView.swift */,
 			);
 			path = Measurement;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				68BBF1002B51E10200113F19 /* RecordTypeView.swift in Sources */,
 				68BBF1052B51EAB400113F19 /* MeasurementTypeView.swift in Sources */,
 				68BBF0F82B51DD8F00113F19 /* TitleCardView.swift in Sources */,
+				68BBF1092B534A7C00113F19 /* MeasurementView.swift in Sources */,
 				6881B2EE2B4FD6BD00A59C22 /* Feed.swift in Sources */,
 				6881B2DD2B4F4E1200A59C22 /* Item.swift in Sources */,
 				6881B2EC2B4FD6B600A59C22 /* Child.swift in Sources */,

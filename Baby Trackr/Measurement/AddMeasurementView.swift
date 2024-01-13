@@ -16,7 +16,7 @@ struct AddMeasurementView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @State var measurement: Measurement
-    @State var value: Int? = nil
+    @State var value: Float? = nil
     @State var canSave: Bool = false
     @FocusState private var focusedField: FocusedField?
     var child: Child
@@ -38,7 +38,7 @@ struct AddMeasurementView: View {
                     
                     LabeledContent {
                         TextField("", value: $value, format: .number)
-                            .keyboardType(.numberPad)
+                            .keyboardType(.decimalPad)
                             .focused($focusedField, equals: .measurement)
                             .multilineTextAlignment(.trailing)
                             .onChange(of: value) {

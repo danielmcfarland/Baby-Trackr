@@ -33,10 +33,10 @@ final class Measurement {
         return MeasurementType(rawValue: self.typeValue)!
     }
     var typeValue: String = MeasurementType.weight.rawValue
-    var value: Int = 0
+    var value: Float = 0
     var createdAt: Date = Date()
     
-    init(type: MeasurementType, value: Int, createdAt: Date) {
+    init(type: MeasurementType, value: Float, createdAt: Date) {
         self.value = value
         self.typeValue = type.rawValue
         self.createdAt = createdAt
