@@ -54,12 +54,12 @@ struct AddMeasurementView: View {
                                 canSave = true
                             }
                     } label: {
-                        Text(measurement.type == MeasurementType.height ? "cm" : "g")
+                        Text(measurement.type.getSymbol())
                             .foregroundStyle(Color.gray)
                     }
                 }
             }
-            .navigationTitle(measurement.type == MeasurementType.height ? "Height" : "Weight")
+            .navigationTitle(measurement.type.rawValue)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

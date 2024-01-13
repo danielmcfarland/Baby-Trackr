@@ -18,13 +18,12 @@ struct MeasurementTypeView: View {
     
     init(type: ChildMeasurementType) {
         let id = type.child.persistentModelID
-        let measurementType = type.measurementType
-        print("\(measurementType.rawValue)")
+        let measurementType = type.measurementType.rawValue
         
-        self._measurements = Query(filter: #Predicate { measurement in
+        self._measurements = Query(filter: #Predicate<Measurement> { measurement in
             measurement.child?.persistentModelID == id
-//            &&
-//            measurement.type.rawValue == measurementType.rawValue
+            &&
+            measurement.typeValue == measurementType
         }, sort: \.createdAt)
         
         self.type = type
@@ -43,9 +42,9 @@ struct MeasurementTypeView: View {
             .padding(.horizontal)
             
             ScrollView {
-                Text("\(measurements.count)")
+                Text("\(type.measurementType.rawValue) Measurements: \(measurements.count)")
                 Text("\(type.child.name)")
-                Text("\(type.child.measurements?.count ?? 0)")
+                Text("All Child Measurements \(type.child.measurements?.count ?? 0)")
             }
         }
         .toolbar {
@@ -60,7 +59,7 @@ struct MeasurementTypeView: View {
         .sheet(isPresented: $showAddMeasurementView) {
             AddMeasurementView(measurement: Measurement(type: type.measurementType, value: 0, createdAt: Date()), child: type.child)
         }
-        .navigationTitle(type.measurementType.rawValue)
+        .navigationTitle("\(type.measurementType.rawValue)")
         .navigationBarTitleDisplayMode(.large)
     }
 }

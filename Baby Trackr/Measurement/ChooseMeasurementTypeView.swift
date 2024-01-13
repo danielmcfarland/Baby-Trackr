@@ -13,11 +13,15 @@ struct ChooseMeasurementTypeView: View {
     var body: some View {
         ScrollView {
             NavigationLink(value: ChildMeasurementType(child: child, measurementType: .weight)) {
-                TitleCardView(title: "Weight", icon: "scalemass.fill")
+                TitleCardView(title: MeasurementType.weight.rawValue, icon: "scalemass.fill")
             }
             
             NavigationLink(value: ChildMeasurementType(child: child, measurementType: .height)) {
-                TitleCardView(title: "Height", icon: "lines.measurement.vertical")
+                TitleCardView(title: MeasurementType.height.rawValue, icon: "lines.measurement.vertical")
+            }
+            
+            NavigationLink(value: ChildMeasurementType(child: child, measurementType: .temperature)) {
+                TitleCardView(title: MeasurementType.temperature.rawValue, icon: "medical.thermometer.fill")
             }
         }
         .navigationTitle("Measurements")
