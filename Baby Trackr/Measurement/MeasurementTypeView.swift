@@ -13,17 +13,30 @@ struct MeasurementTypeView: View {
     
     @State var measurementPeriod: Int = 0
     @State private var showAddMeasurementView = false
-    
-//    @Query(filter: #Predicate<Measurement> { measurement in
-//        measurement.child?.id == type.self.child.id
-//    }) private var measurements: [Measurement] = []
     @Query private var measurements: [Measurement]
+
+    
+    init(type: ChildMeasurementType) {
+        let id = type.child.persistentModelID
+        let measurementType = type.measurementType
+        print("\(measurementType.rawValue)")
+        
+        self._measurements = Query(filter: #Predicate { measurement in
+            measurement.child?.persistentModelID == id
+//            &&
+//            measurement.type.rawValue == measurementType.rawValue
+        }, sort: \.createdAt)
+        
+        self.type = type
+    }
     
     var body: some View {
         VStack {
             Picker("Measurement Period", selection: $measurementPeriod) {
-                Text("30 Days").tag(0)
-                Text("All").tag(1)
+                Text("D").tag(0)
+                Text("W").tag(1)
+                Text("M").tag(2)
+                Text("Y").tag(3)
             }
             .pickerStyle(.segmented)
             .padding(.bottom, 10)

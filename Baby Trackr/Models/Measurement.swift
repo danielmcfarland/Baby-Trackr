@@ -8,9 +8,11 @@
 import Foundation
 import SwiftData
 
-enum MeasurementType: String, Codable {
+enum MeasurementType: String, Identifiable, Codable {
     case weight = "Weight"
     case height = "Height"
+    
+    var id: Self { return self }
 }
 
 @Model

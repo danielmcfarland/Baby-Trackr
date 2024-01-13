@@ -16,6 +16,8 @@ struct AddMeasurementView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @State var measurement: Measurement
+    @State var value: Int? = nil
+    @State var canSave: Bool = false
     @FocusState private var focusedField: FocusedField?
     var child: Child
     
@@ -35,10 +37,22 @@ struct AddMeasurementView: View {
                     })
                     
                     LabeledContent {
-                        TextField("", value: $measurement.value, format: .number)
+                        TextField("", value: $value, format: .number)
                             .keyboardType(.numberPad)
                             .focused($focusedField, equals: .measurement)
                             .multilineTextAlignment(.trailing)
+                            .onChange(of: value) {
+                                canSave = false
+                                guard let value = value else {
+                                    return
+                                }
+                                
+                                if value == 0 {
+                                    return
+                                }
+                                
+                                canSave = true
+                            }
                     } label: {
                         Text(measurement.type == MeasurementType.height ? "cm" : "g")
                             .foregroundStyle(Color.gray)
@@ -62,7 +76,7 @@ struct AddMeasurementView: View {
                     }) {
                         Text("Add")
                     }
-                    .disabled(measurement.value <= 0)
+                    .disabled(!canSave)
                 }
             }
             .onAppear {
@@ -73,6 +87,10 @@ struct AddMeasurementView: View {
     
     func save() -> Void {
         withAnimation {
+            guard let value = value else {
+                return
+            }
+            measurement.value = value
             modelContext.insert(measurement)
             child.measurements?.append(measurement)
             dismiss()
