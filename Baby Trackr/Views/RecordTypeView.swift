@@ -19,7 +19,7 @@ struct RecordTypeView: View {
         case .feed:
             Text("feed")
         case .sleep:
-            Text("sleep")
+            SleepListView(child: type.child)
         case .note:
             Text("note")
         }
@@ -27,5 +27,5 @@ struct RecordTypeView: View {
 }
 
 #Preview {
-    RecordTypeView(type: ChildRecordType(child: Child(name: "Name", dob: Date(), gender: ""), recordType: .feed))
+    RecordTypeView(type: ChildRecordType(child: Child(name: "Name", dob: Date(), gender: ""), recordType: .sleep))
 }

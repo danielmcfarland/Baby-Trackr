@@ -11,6 +11,10 @@ import SwiftData
 @Model
 final class Sleep {
     var child: Child? = nil
+    var startTime: Date?
+    var duration: Int = 0
+    var endTime: Date? = nil
+    var isActive: Bool = false
     
     init() {
         
