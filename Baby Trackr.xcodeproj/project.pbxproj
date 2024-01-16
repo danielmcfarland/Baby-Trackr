@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		686E50D22B572EE4008DEA30 /* Trackr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D12B572EE4008DEA30 /* Trackr.swift */; };
 		6881B2D92B4F4E1200A59C22 /* Baby_TrackrApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2D82B4F4E1200A59C22 /* Baby_TrackrApp.swift */; };
 		6881B2DB2B4F4E1200A59C22 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2DA2B4F4E1200A59C22 /* ContentView.swift */; };
 		6881B2DD2B4F4E1200A59C22 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2DC2B4F4E1200A59C22 /* Item.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		686E50D12B572EE4008DEA30 /* Trackr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trackr.swift; sourceTree = "<group>"; };
 		6881B2D52B4F4E1200A59C22 /* Baby Trackr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Baby Trackr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6881B2D82B4F4E1200A59C22 /* Baby_TrackrApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Baby_TrackrApp.swift; sourceTree = "<group>"; };
 		6881B2DA2B4F4E1200A59C22 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				6881B2DC2B4F4E1200A59C22 /* Item.swift */,
 				6881B2F12B4FD6C700A59C22 /* Measurement.swift */,
 				6881B2F32B4FD6CB00A59C22 /* Sleep.swift */,
+				686E50D12B572EE4008DEA30 /* Trackr.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 				6881B2DB2B4F4E1200A59C22 /* ContentView.swift in Sources */,
 				68BBF10C2B5444C800113F19 /* SleepListView.swift in Sources */,
 				68BBF1002B51E10200113F19 /* RecordTypeView.swift in Sources */,
+				686E50D22B572EE4008DEA30 /* Trackr.swift in Sources */,
 				68BBF1052B51EAB400113F19 /* MeasurementTypeView.swift in Sources */,
 				68BBF0F82B51DD8F00113F19 /* TitleCardView.swift in Sources */,
 				68BBF1092B534A7C00113F19 /* MeasurementView.swift in Sources */,

@@ -29,7 +29,9 @@ struct SleepListView: View {
     var body: some View {
         List {
             ForEach(sleeps) { sleep in
-                Text("Sleep Duration: \(sleep.duration)")
+                NavigationLink(value: sleep) {
+                    Text("Sleep Duration: \(sleep.duration)")
+                }
             }
         }
         .toolbar{

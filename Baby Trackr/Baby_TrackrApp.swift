@@ -33,5 +33,6 @@ struct Baby_TrackrApp: App {
             ContentView()
         }
         .modelContainer(sharedModelContainer)
+        .environmentObject(Trackr())
     }
 }

@@ -12,10 +12,10 @@ struct CurrentSleepView: View {
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var trackr: Trackr
     
     var child: Child
     @State var sleep: Sleep
-    @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     func secondsToHoursMinutesSeconds(_ seconds: Int) -> String {
         let hours = seconds / 3600
@@ -33,9 +33,11 @@ struct CurrentSleepView: View {
             
             HStack {
                 Button(action: {
-                    sleep.startTime = Date()
-                    sleep.isActive = true
-                    saveSleep()
+                    if sleep.startTime == nil {
+                        sleep.startTime = Date()
+                        sleep.isActive = true
+                        saveSleep()
+                    }
                 }) {
                     IconView(size: .large, icon: "play.fill")
                         .opacity(sleep.isActive ? 0.8 : 1)
@@ -45,7 +47,7 @@ struct CurrentSleepView: View {
                 Button(action: {
                     sleep.isActive = false
                     sleep.endTime = Date()
-                    saveSleep()
+                    updateSleep()
                 }) {
                     IconView(size: .large, icon: "stop.fill")
                         .opacity(sleep.isActive ? 1 : 0.8)
@@ -53,7 +55,7 @@ struct CurrentSleepView: View {
                 .disabled(!sleep.isActive)
             }
         }
-        .onReceive(timer) { firedDate in
+        .onReceive(trackr.timer) { firedDate in
             if !sleep.isActive {
                 return
             }
@@ -62,8 +64,7 @@ struct CurrentSleepView: View {
             }
             
             sleep.duration = Int(firedDate.timeIntervalSince(startTime))
-            
-            saveSleep()
+            updateSleep()
             
         }
     }
@@ -71,6 +72,16 @@ struct CurrentSleepView: View {
     func saveSleep() -> Void {
         modelContext.insert(sleep)
         child.sleeps?.append(sleep)
+    }
+    
+    func updateSleep() -> Void {
+        if modelContext.hasChanges {
+            do {
+                try modelContext.save()
+            } catch {
+                print(error)
+            }
+        }
     }
 }
 

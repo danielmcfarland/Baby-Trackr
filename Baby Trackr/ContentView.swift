@@ -53,6 +53,13 @@ struct ContentView: View {
             .navigationDestination(for: Measurement.self) { measurement in
                 MeasurementView(measurement: measurement)
             }
+            .navigationDestination(for: Sleep.self) { sleep in
+                if let child = sleep.child {
+                    CurrentSleepView(child: child, sleep: sleep)
+                } else {
+                    Text("Not Found")
+                }
+            }
             .navigationTitle("Baby Trackr")
             .navigationBarTitleDisplayMode(.large)
         }
