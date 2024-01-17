@@ -12,6 +12,7 @@ struct IconView: View {
     enum IconSize: Int {
         case small = 40
         case large = 80
+        case icon = 1024
     }
     
     var size: IconSize = .small
@@ -19,19 +20,19 @@ struct IconView: View {
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 10.0)
+            RoundedRectangle(cornerRadius: size == .icon ? 0 : 10)
                 .foregroundStyle(Gradient(colors: [
                     Color.indigo.opacity(0.7),
                     Color.indigo.opacity(0.9),
                 ]))
                 .frame(width: CGFloat(integerLiteral: size.rawValue), height: CGFloat(integerLiteral: size.rawValue))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(.white, lineWidth: 1)
+                    RoundedRectangle(cornerRadius: size == .icon ? 0 : 10)
+                        .strokeBorder(.white, lineWidth: size == .icon ? 0 : 1)
                         .strokeBorder(.accent.opacity(0.5), lineWidth: 1)
                         .opacity(0.3)
                 )
-                .shadow(color: .indigo.opacity(0.4), radius: 20, x: 0, y: 0)
+                .shadow(color: .indigo.opacity(0.4), radius: size == .icon ? 0 : 20, x: 0, y: 0)
             
             Image(systemName: icon)
                 .foregroundStyle(.white)

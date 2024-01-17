@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		686E50D22B572EE4008DEA30 /* Trackr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D12B572EE4008DEA30 /* Trackr.swift */; };
+		686E50D42B585502008DEA30 /* SaveIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D32B585501008DEA30 /* SaveIconView.swift */; };
 		6881B2D92B4F4E1200A59C22 /* Baby_TrackrApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2D82B4F4E1200A59C22 /* Baby_TrackrApp.swift */; };
 		6881B2DB2B4F4E1200A59C22 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2DA2B4F4E1200A59C22 /* ContentView.swift */; };
 		6881B2DD2B4F4E1200A59C22 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2DC2B4F4E1200A59C22 /* Item.swift */; };
@@ -35,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		686E50D12B572EE4008DEA30 /* Trackr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trackr.swift; sourceTree = "<group>"; };
+		686E50D32B585501008DEA30 /* SaveIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveIconView.swift; sourceTree = "<group>"; };
 		6881B2D52B4F4E1200A59C22 /* Baby Trackr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Baby Trackr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6881B2D82B4F4E1200A59C22 /* Baby_TrackrApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Baby_TrackrApp.swift; sourceTree = "<group>"; };
 		6881B2DA2B4F4E1200A59C22 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				68BBF0F92B51DF1800113F19 /* ChildLinkView.swift */,
 				68BBF0F72B51DD8F00113F19 /* TitleCardView.swift */,
 				68BBF0F52B51DD3200113F19 /* IconView.swift */,
+				686E50D32B585501008DEA30 /* SaveIconView.swift */,
 				68BBF0FF2B51E10200113F19 /* RecordTypeView.swift */,
 			);
 			path = Views;
@@ -250,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68BBF0FA2B51DF1800113F19 /* ChildLinkView.swift in Sources */,
+				686E50D42B585502008DEA30 /* SaveIconView.swift in Sources */,
 				6881B2DB2B4F4E1200A59C22 /* ContentView.swift in Sources */,
 				68BBF10C2B5444C800113F19 /* SleepListView.swift in Sources */,
 				68BBF1002B51E10200113F19 /* RecordTypeView.swift in Sources */,
