@@ -28,9 +28,20 @@ struct SleepListView: View {
     
     var body: some View {
         List {
-            ForEach(sleeps) { sleep in
-                NavigationLink(value: sleep) {
-                    Text("Sleep Duration: \(sleep.duration)")
+            Section(header: Text("Duration")
+            ) {
+                ForEach(sleeps) { sleep in
+                    NavigationLink(value: sleep) {
+                        HStack {
+                            Text(sleep.humanReadableDuration)
+                            Spacer()
+                            if let startTime = sleep.startTime {
+                                Text(startTime, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
+                                    .foregroundStyle(Color.gray)
+                            }
+                        }
+                    }
+                    
                 }
             }
         }

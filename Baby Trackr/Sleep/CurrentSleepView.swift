@@ -17,17 +17,9 @@ struct CurrentSleepView: View {
     var child: Child
     @State var sleep: Sleep
     
-    func secondsToHoursMinutesSeconds(_ seconds: Int) -> String {
-        let hours = seconds / 3600
-        let minutes = (seconds % 3600) / 60
-        let seconds = (seconds % 3600) % 60
-        
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
-    
     var body: some View {
         VStack {
-            Text("\(secondsToHoursMinutesSeconds(sleep.duration))")
+            Text("\(sleep.humanReadableDuration)")
                 .font(.system(size: 75))
                 .fontWeight(.light)
             
@@ -55,6 +47,8 @@ struct CurrentSleepView: View {
                 .disabled(!sleep.isActive)
             }
         }
+        .navigationTitle("Sleep")
+        .navigationBarTitleDisplayMode(.large)
         .onReceive(trackr.timer) { firedDate in
             if !sleep.isActive {
                 return

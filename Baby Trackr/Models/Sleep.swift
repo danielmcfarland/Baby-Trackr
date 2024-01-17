@@ -19,4 +19,12 @@ final class Sleep {
     init() {
         
     }
+    
+    var humanReadableDuration: String {
+        let hours = self.duration / 3600
+        let minutes = (self.duration % 3600) / 60
+        let seconds = (self.duration % 3600) % 60
+        
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
 }
