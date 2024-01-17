@@ -17,7 +17,7 @@ struct RecordTypeView: View {
         case .change:
             ChangeListView(child: type.child)
         case .feed:
-            Text("feed")
+            FeedListView(child: type.child)
         case .sleep:
             SleepListView(child: type.child)
         case .note:
