@@ -15,7 +15,7 @@ struct RecordTypeView: View {
         case .measurement:
             ChooseMeasurementTypeView(child: type.child)
         case .change:
-            Text("change")
+            ChangeListView(child: type.child)
         case .feed:
             Text("feed")
         case .sleep:
@@ -27,5 +27,5 @@ struct RecordTypeView: View {
 }
 
 #Preview {
-    RecordTypeView(type: ChildRecordType(child: Child(name: "Name", dob: Date(), gender: ""), recordType: .sleep))
+    RecordTypeView(type: ChildRecordType(child: Child(name: "Name", dob: Date(), gender: ""), recordType: .change))
 }

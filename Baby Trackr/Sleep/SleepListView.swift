@@ -15,7 +15,6 @@ struct SleepListView: View {
     
     @Query private var sleeps: [Sleep]
     
-    
     init(child: Child) {
         let id = child.persistentModelID
         
