@@ -9,10 +9,26 @@ import SwiftUI
 
 struct IconView: View {
     
-    enum IconSize: Int {
-        case small = 40
-        case large = 80
-        case icon = 1024
+    enum IconSize: Double {
+        case small = 41.75
+        case large = 83.5
+        case icon = 1024.0
+        
+        func getCornerRadius() -> CGFloat {
+            self.rawValue / IconSize.large.rawValue * 18.5
+        }
+        
+        func getFontSize() -> CGFloat {
+            self.rawValue / 2
+        }
+        
+        func getLineWidth() -> CGFloat {
+            self.rawValue / IconSize.small.rawValue * 1
+        }
+        
+        func getShadowRdius() -> CGFloat {
+            self.rawValue / IconSize.large.rawValue * 20
+        }
     }
     
     var size: IconSize = .small
@@ -20,27 +36,27 @@ struct IconView: View {
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: size == .icon ? 0 : 10)
+            RoundedRectangle(cornerRadius: size.getCornerRadius())
                 .foregroundStyle(Gradient(colors: [
                     Color.indigo.opacity(0.7),
                     Color.indigo.opacity(0.9),
                 ]))
-                .frame(width: CGFloat(integerLiteral: size.rawValue), height: CGFloat(integerLiteral: size.rawValue))
+                .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
                 .overlay(
-                    RoundedRectangle(cornerRadius: size == .icon ? 0 : 10)
-                        .strokeBorder(.white, lineWidth: size == .icon ? 0 : 1)
-                        .strokeBorder(.accent.opacity(0.5), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: size.getCornerRadius())
+                        .strokeBorder(.white, lineWidth: size.getLineWidth())
+                        .strokeBorder(.accent.opacity(0.5), lineWidth: size.getLineWidth())
                         .opacity(0.3)
                 )
-                .shadow(color: .indigo.opacity(0.4), radius: size == .icon ? 0 : 20, x: 0, y: 0)
+                .shadow(color: .indigo.opacity(0.4), radius: size.getShadowRdius(), x: 0, y: 0)
             
             Image(systemName: icon)
                 .foregroundStyle(.white)
-                .font(.system(size: CGFloat(integerLiteral: size.rawValue / 2)))
+                .font(.system(size: size.getFontSize()))
         }
     }
 }
 
 #Preview {
-    IconView(size: .large, icon: "a.circle.fill")
+    IconView(size: .large, icon: "b.circle.fill")
 }

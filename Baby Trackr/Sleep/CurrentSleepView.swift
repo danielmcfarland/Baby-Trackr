@@ -81,4 +81,5 @@ struct CurrentSleepView: View {
 
 #Preview {
     CurrentSleepView(child: Child(name: "Name", dob: Date(), gender: ""), sleep: Sleep())
+        .environmentObject(Trackr())
 }

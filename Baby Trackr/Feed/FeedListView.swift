@@ -43,7 +43,7 @@ struct FeedListView: View {
         .sheet(isPresented: $showAddFeedSheet) {
             AddFeedView(feed: Feed(type: FeedType.bottle), child: child)
         }
-        .navigationTitle("Feeds")
+        .navigationTitle("Feed")
         .navigationBarTitleDisplayMode(.large)
     }
 }

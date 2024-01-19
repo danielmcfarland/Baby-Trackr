@@ -56,7 +56,7 @@ struct SleepListView: View {
         .sheet(isPresented: $showAddSleepSheet) {
             CurrentSleepView(child: child, sleep: Sleep())
         }
-        .navigationTitle("Sleeping")
+        .navigationTitle("Sleep")
         .navigationBarTitleDisplayMode(.large)
     }
 }

@@ -9,5 +9,5 @@ import Foundation
 import Combine
 
 class Trackr: ObservableObject {
-    @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @Published var timer = Timer.publish(every: 0.001, on: .main, in: .common).autoconnect()
 }

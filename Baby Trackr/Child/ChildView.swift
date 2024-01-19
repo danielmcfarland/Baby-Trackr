@@ -12,25 +12,25 @@ struct ChildView: View {
     
     var body: some View {
         ScrollView {
-            NavigationLink(value: ChildRecordType(child: child, recordType:  .measurement)) {
-                TitleCardView(title: "Measurements", icon: "lines.measurement.vertical")
-            }
+//            NavigationLink(value: ChildRecordType(child: child, recordType:  .measurement)) {
+//                TitleCardView(title: "Measurements", icon: "lines.measurement.vertical")
+//            }
             
             NavigationLink(value: ChildRecordType(child: child, recordType:  .feed)) {
-                TitleCardView(title: "Feeding", icon: "waterbottle.fill")
+                TitleCardView(title: "Feed", icon: "waterbottle.fill")
             }
             
             NavigationLink(value: ChildRecordType(child: child, recordType:  .sleep)) {
-                TitleCardView(title: "Sleeping", icon: "moon.stars.fill")
+                TitleCardView(title: "Sleep", icon: "moon.stars.fill")
             }
             
             NavigationLink(value: ChildRecordType(child: child, recordType:  .change)) {
-                TitleCardView(title: "Changes", icon: "arrow.triangle.2.circlepath")
+                TitleCardView(title: "Change", icon: "arrow.triangle.2.circlepath")
             }
             
-            NavigationLink(value: ChildRecordType(child: child, recordType:  .note)) {
-                TitleCardView(title: "Notes", icon: "list.clipboard.fill")
-            }
+//            NavigationLink(value: ChildRecordType(child: child, recordType:  .note)) {
+//                TitleCardView(title: "Notes", icon: "list.clipboard.fill")
+//            }
         }
         .navigationTitle(child.name)
         .navigationBarTitleDisplayMode(.large)
