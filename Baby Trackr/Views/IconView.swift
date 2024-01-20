@@ -12,6 +12,7 @@ struct IconView: View {
     enum IconSize: Double {
         case small = 41.75
         case large = 83.5
+        case larger = 125.25
         case icon = 1024.0
         
         func getCornerRadius() -> CGFloat {
@@ -33,6 +34,7 @@ struct IconView: View {
     
     var size: IconSize = .small
     var icon: String = ""
+    var shadow: Bool = true
     
     var body: some View {
         ZStack {
@@ -48,7 +50,7 @@ struct IconView: View {
                         .strokeBorder(.accent.opacity(0.5), lineWidth: size.getLineWidth())
                         .opacity(0.3)
                 )
-                .shadow(color: .indigo.opacity(0.4), radius: size.getShadowRdius(), x: 0, y: 0)
+                .shadow(color: .indigo.opacity(0.4), radius: shadow ? size.getShadowRdius() : 0, x: 0, y: 0)
             
             Image(systemName: icon)
                 .foregroundStyle(.white)

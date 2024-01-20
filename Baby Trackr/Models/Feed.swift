@@ -52,21 +52,33 @@ final class Feed {
     var typeValue: String = FeedType.breast.rawValue
     
     var bottleType: BottleType {
-        return BottleType(rawValue: self.typeValue)!
+        return BottleType(rawValue: self.bottleTypeValue)!
     }
     var bottleTypeValue: String = BottleType.unknown.rawValue
     
     var breastSide: BreastSide {
-        return BreastSide(rawValue: self.typeValue)!
+        return BreastSide(rawValue: self.breastSideValue)!
     }
     var breastSideValue: String = BreastSide.unknown.rawValue
     
     var bottleSize: BottleSize {
-        return BottleSize(rawValue: self.typeValue)!
+        return BottleSize(rawValue: self.bottleSizeValue)!
     }
     var bottleSizeValue: String = BottleSize.unknown.rawValue
     
     init(type: FeedType) {
         self.typeValue = type.rawValue
+    }
+    
+    var humanReadableDuration: String {
+        let hours = self.duration / 3600
+        let minutes = (self.duration % 3600) / 60
+        let seconds = (self.duration % 3600) % 60
+        
+        if hours > 0 {
+            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        }
+        
+        return String(format: "%02d:%02d", minutes, seconds)
     }
 }

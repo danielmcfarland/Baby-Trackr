@@ -16,7 +16,6 @@ struct AddFeedView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @State var feed: Feed
-//    @State var canSave: Bool = true
     @State var trackrRunning: Bool = false
     @State var timerStartedAt: Date? = nil
     @State var currentDuration: Int = 0
@@ -81,6 +80,7 @@ struct AddFeedView: View {
                             .fontWeight(.light)
                         Spacer()
                     }
+                    .listRowSeparator(.hidden)
                     HStack {
                         Spacer()
                         Button(action: {
@@ -106,7 +106,7 @@ struct AddFeedView: View {
                         .disabled(!trackrRunning)
                         Spacer()
                     }
-                    
+                    .listRowSeparator(.hidden)
                 }
                 
             }

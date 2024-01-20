@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		68653E662B5C6E93003704E1 /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68653E652B5C6E93003704E1 /* PreviewData.swift */; };
+		68653E682B5C6FA2003704E1 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68653E672B5C6FA2003704E1 /* MenuView.swift */; };
+		68653E6A2B5C78C9003704E1 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68653E692B5C78C9003704E1 /* AboutView.swift */; };
+		68653E6C2B5C8396003704E1 /* FeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68653E6B2B5C8396003704E1 /* FeedDetailView.swift */; };
 		686E50D22B572EE4008DEA30 /* Trackr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D12B572EE4008DEA30 /* Trackr.swift */; };
 		686E50D42B585502008DEA30 /* SaveIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D32B585501008DEA30 /* SaveIconView.swift */; };
 		686E50D72B586CAB008DEA30 /* ChangeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D62B586CAB008DEA30 /* ChangeListView.swift */; };
@@ -39,6 +43,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		68653E652B5C6E93003704E1 /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
+		68653E672B5C6FA2003704E1 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		68653E692B5C78C9003704E1 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		68653E6B2B5C8396003704E1 /* FeedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailView.swift; sourceTree = "<group>"; };
 		686E50D12B572EE4008DEA30 /* Trackr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trackr.swift; sourceTree = "<group>"; };
 		686E50D32B585501008DEA30 /* SaveIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveIconView.swift; sourceTree = "<group>"; };
 		686E50D62B586CAB008DEA30 /* ChangeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeListView.swift; sourceTree = "<group>"; };
@@ -97,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				686E50DB2B5875A9008DEA30 /* AddFeedView.swift */,
+				68653E6B2B5C8396003704E1 /* FeedDetailView.swift */,
 				686E50DD2B58762F008DEA30 /* FeedListView.swift */,
 			);
 			path = Feed;
@@ -131,6 +140,7 @@
 				6881B2EA2B4FD6A000A59C22 /* Models */,
 				6881B2D82B4F4E1200A59C22 /* Baby_TrackrApp.swift */,
 				6881B2DA2B4F4E1200A59C22 /* ContentView.swift */,
+				68653E652B5C6E93003704E1 /* PreviewData.swift */,
 				6881B2DE2B4F4E1400A59C22 /* Assets.xcassets */,
 				6881B2E32B4F4E1400A59C22 /* Baby_Trackr.entitlements */,
 				6881B2E42B4F4E1400A59C22 /* Info.plist */,
@@ -186,6 +196,8 @@
 				68BBF0F52B51DD3200113F19 /* IconView.swift */,
 				686E50D32B585501008DEA30 /* SaveIconView.swift */,
 				68BBF0FF2B51E10200113F19 /* RecordTypeView.swift */,
+				68653E672B5C6FA2003704E1 /* MenuView.swift */,
+				68653E692B5C78C9003704E1 /* AboutView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -283,7 +295,10 @@
 				68BBF0FA2B51DF1800113F19 /* ChildLinkView.swift in Sources */,
 				686E50D42B585502008DEA30 /* SaveIconView.swift in Sources */,
 				6881B2DB2B4F4E1200A59C22 /* ContentView.swift in Sources */,
+				68653E682B5C6FA2003704E1 /* MenuView.swift in Sources */,
+				68653E6A2B5C78C9003704E1 /* AboutView.swift in Sources */,
 				68BBF10C2B5444C800113F19 /* SleepListView.swift in Sources */,
+				68653E662B5C6E93003704E1 /* PreviewData.swift in Sources */,
 				686E50D72B586CAB008DEA30 /* ChangeListView.swift in Sources */,
 				68BBF1002B51E10200113F19 /* RecordTypeView.swift in Sources */,
 				686E50D22B572EE4008DEA30 /* Trackr.swift in Sources */,
@@ -305,6 +320,7 @@
 				6881B2F42B4FD6CB00A59C22 /* Sleep.swift in Sources */,
 				68BBF0FD2B51E0A800113F19 /* RecordType.swift in Sources */,
 				68BBF1032B51E91500113F19 /* ChooseMeasurementTypeView.swift in Sources */,
+				68653E6C2B5C8396003704E1 /* FeedDetailView.swift in Sources */,
 				68BBF0F42B5098FD00113F19 /* ChildView.swift in Sources */,
 				68BBF1072B51ECCE00113F19 /* AddMeasurementView.swift in Sources */,
 			);

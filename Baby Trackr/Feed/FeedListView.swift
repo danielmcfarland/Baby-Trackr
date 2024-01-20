@@ -10,7 +10,7 @@ import SwiftData
 
 struct FeedListView: View {
     var child: Child
-
+    
     @State private var showAddFeedSheet = false
     
     @Query private var feeds: [Feed]
@@ -28,7 +28,19 @@ struct FeedListView: View {
     var body: some View {
         List {
             ForEach(feeds) { feed in
-                Text("\(feed.createdAt)")
+                NavigationLink(value: feed) {
+                    HStack {
+                        if feed.type == .bottle {
+                            Text("\(feed.bottleSize.rawValue)")
+                        }
+                        if feed.type == .breast {
+                            Text("\(feed.humanReadableDuration)")
+                        }
+                        Spacer()
+                        Text(feed.createdAt, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
+                            .foregroundStyle(Color.gray)
+                    }
+                }
             }
         }
         .toolbar{

@@ -22,6 +22,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var children: [Child]
     @State private var showAddChildView = false
+    @State private var showMenuView = false
     @State private var path = NavigationPath()
     
     var body: some View {
@@ -32,6 +33,11 @@ struct ContentView: View {
                 }
             }
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: showAbout) {
+                        Label("About", systemImage: "gearshape.fill")
+                    }
+                }
                 ToolbarItem {
                     Button(action: addItem) {
                         Label("Add Item", systemImage: "plus")
@@ -40,6 +46,9 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showAddChildView) {
                 AddChildView()
+            }
+            .sheet(isPresented: $showMenuView) {
+                MenuView()
             }
             .navigationDestination(for: Child.self) { child in
                 ChildView(child: child)
@@ -52,6 +61,12 @@ struct ContentView: View {
             }
             .navigationDestination(for: Measurement.self) { measurement in
                 MeasurementView(measurement: measurement)
+            }
+            .navigationDestination(for: Feed.self) { feed in
+//                Text("\(feed.duration)")
+                if let child = feed.child {
+                    FeedDetailView(feed: feed)
+                }
             }
             .navigationDestination(for: Sleep.self) { sleep in
                 if let child = sleep.child {
@@ -68,6 +83,10 @@ struct ContentView: View {
     private func addItem() {
         showAddChildView.toggle()
     }
+
+    private func showAbout() {
+        showMenuView.toggle()
+    }
     
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
@@ -80,5 +99,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Child.self, inMemory: true)
+        .modelContainer(PreviewData.container)
 }
