@@ -63,10 +63,7 @@ struct ContentView: View {
                 MeasurementView(measurement: measurement)
             }
             .navigationDestination(for: Feed.self) { feed in
-//                Text("\(feed.duration)")
-                if let child = feed.child {
-                    FeedDetailView(feed: feed)
-                }
+                FeedDetailView(feed: feed)
             }
             .navigationDestination(for: Sleep.self) { sleep in
                 if let child = sleep.child {
