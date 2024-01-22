@@ -26,11 +26,6 @@ struct FeedChartView: View {
             feed.createdAt > periodDate
         })
         
-//        self._chartFeeds = Query(filter: #Predicate<Feed> { feed in
-//            feed.child?.persistentModelID == id &&
-//            feed.createdAt > periodDate
-//        })
-        
         self.child = child
         self.feedType = feedType
         self.period = period
@@ -49,6 +44,16 @@ struct FeedChartView: View {
         .chartXAxis(.hidden)
         .padding()
         .frame(height: 250)
+        .animation(.default)
+//        .withAnimation()
+//        .animation(.interactiveSpring, value: 200)
+//        .animation(.default)        .onAppear {
+//            for (index, _) in feeds.enumerated() {
+//                withAnimation(Animation.interactiveSpring(response: 0.8, dampingFraction: 0.8, blendDuration: 0.8).delay(Double(index) * 0.05)) {
+////                    feeds[index].animate = true
+//                }
+//            }
+//        }
     }
 }
 
