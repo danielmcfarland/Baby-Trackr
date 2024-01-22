@@ -7,13 +7,36 @@
 
 import SwiftUI
 import SwiftData
-import Charts
+
+enum ChartPeriod: String, CaseIterable, Codable, Identifiable {
+    case oneDay = "1 Day"
+    case sevenDays = "7 Days"
+    case twentyEightDays = "28 Days"
+    case allTime = "All"
+    
+    var id: Self { self }
+    
+    var periodDate: Date {
+        switch self {
+        case .oneDay:
+            return Calendar.current.startOfDay(for: Date())
+        case .sevenDays:
+            return Calendar.current.date(byAdding: .day, value: -7, to: ChartPeriod.oneDay.periodDate)!
+        case .twentyEightDays:
+            return Calendar.current.date(byAdding: .day, value: -28, to: ChartPeriod.oneDay.periodDate)!
+        case .allTime:
+            return Date.distantPast
+        }
+    }
+}
 
 struct FeedListView: View {
     var child: Child
     var feedType: FeedType
     
     @Query private var feeds: [Feed]
+    
+    @State var period: ChartPeriod = ChartPeriod.sevenDays
     
     init(child: Child, feedType: FeedType) {
         let id = child.persistentModelID
@@ -30,16 +53,16 @@ struct FeedListView: View {
     var body: some View {
         VStack {
             if feedType == .breast {
-                Chart(feeds, id: \.breastSide) { feed in
-                    BarMark(
-                        x: .value("Time", feed.duration),
-                            stacking: .normalized
-                        )
-                    .foregroundStyle(by: .value("Side", feed.breastSide.rawValue))
+                Picker("Chart Period", selection: $period) {
+                    ForEach(ChartPeriod.allCases) { period in
+                        Text(period.rawValue).tag(period)
+                    }
                 }
-                .chartXAxis(.hidden)
-                .padding()
-                .frame(height: 100)
+                .pickerStyle(.segmented)
+                .padding(.bottom, 10)
+                .padding(.horizontal)
+
+                FeedChartView(child: child, feedType: feedType, period: period)
             }
             List {
                 Section(header: Text("\(feedType.rawValue) Feeds")) {
