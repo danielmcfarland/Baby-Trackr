@@ -7,59 +7,70 @@
 
 import SwiftUI
 import SwiftData
+import Charts
 
 struct FeedListView: View {
     var child: Child
-    
-    @State private var showAddFeedSheet = false
+    var feedType: FeedType
     
     @Query private var feeds: [Feed]
     
-    init(child: Child) {
+    init(child: Child, feedType: FeedType) {
         let id = child.persistentModelID
         
         self._feeds = Query(filter: #Predicate<Feed> { feed in
-            feed.child?.persistentModelID == id
-        }, sort: \.createdAt)
+            feed.child?.persistentModelID == id &&
+            feed.typeValue == feedType.rawValue
+        }, sort: \.createdAt, order: .reverse)
         
         self.child = child
+        self.feedType = feedType
     }
     
     var body: some View {
-        List {
-            ForEach(feeds) { feed in
-                NavigationLink(value: feed) {
-                    HStack {
-                        if feed.type == .bottle {
-                            Text("\(feed.bottleSize.rawValue)")
+        VStack {
+            if feedType == .breast {
+                Chart(feeds, id: \.breastSide) { feed in
+                    BarMark(
+                        x: .value("Time", feed.duration),
+                            stacking: .normalized
+                        )
+                    .foregroundStyle(by: .value("Side", feed.breastSide.rawValue))
+                }
+                .chartXAxis(.hidden)
+                .padding()
+                .frame(height: 100)
+            }
+            List {
+                Section(header: Text("\(feedType.rawValue) Feeds")) {
+                    ForEach(feeds) { feed in
+                        NavigationLink(value: feed) {
+                            HStack {
+                                if feed.type == .bottle {
+                                    Text("\(feed.bottleSize.rawValue)")
+                                } else if feed.type == .breast && !feed.trackrRunning {
+                                    Text("\(feed.humanReadableDuration)")
+                                } else if feed.type == .breast && feed.trackrRunning {
+                                    HStack {
+                                        Image(systemName: "record.circle")
+                                            .foregroundStyle(Color.red)
+                                        Text("In Progress")
+                                    }
+                                }
+                                Spacer()
+                                Text(feed.createdAt, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
+                                    .foregroundStyle(Color.gray)
+                            }
                         }
-                        if feed.type == .breast {
-                            Text("\(feed.humanReadableDuration)")
-                        }
-                        Spacer()
-                        Text(feed.createdAt, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
-                            .foregroundStyle(Color.gray)
                     }
                 }
             }
         }
-        .toolbar{
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    showAddFeedSheet.toggle()
-                }, label: {
-                    Image(systemName: "plus")
-                })
-            }
-        }
-        .sheet(isPresented: $showAddFeedSheet) {
-            AddFeedView(feed: Feed(type: FeedType.bottle), child: child)
-        }
-        .navigationTitle("Feed")
-        .navigationBarTitleDisplayMode(.large)
     }
 }
 
 #Preview {
-    FeedListView(child: Child(name: "Name", dob: Date(), gender: ""))
+    NavigationStack {
+        FeedListView(child: Child(name: "Name", dob: Date(), gender: ""), feedType: .breast)
+    }
 }

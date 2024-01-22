@@ -63,7 +63,9 @@ struct ContentView: View {
                 MeasurementView(measurement: measurement)
             }
             .navigationDestination(for: Feed.self) { feed in
-                FeedDetailView(feed: feed)
+                if let child = feed.child {
+                    AddFeedView(feed: feed, child: child, toolbarVisible: .hidden)
+                }
             }
             .navigationDestination(for: Sleep.self) { sleep in
                 if let child = sleep.child {

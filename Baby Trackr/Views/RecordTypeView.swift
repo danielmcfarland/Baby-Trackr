@@ -17,7 +17,7 @@ struct RecordTypeView: View {
         case .change:
             ChangeListView(child: type.child)
         case .feed:
-            FeedListView(child: type.child)
+            FeedTabView(child: type.child)
         case .sleep:
             SleepListView(child: type.child)
         case .note:
@@ -27,5 +27,7 @@ struct RecordTypeView: View {
 }
 
 #Preview {
-    RecordTypeView(type: ChildRecordType(child: Child(name: "Name", dob: Date(), gender: ""), recordType: .change))
+    NavigationStack {
+        RecordTypeView(type: ChildRecordType(child: Child(name: "Name", dob: Date(), gender: ""), recordType: .feed))
+    }
 }

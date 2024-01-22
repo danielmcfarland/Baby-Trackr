@@ -44,6 +44,8 @@ enum BottleSize: String, CaseIterable, Codable, Identifiable {
 final class Feed {
     var child: Child? = nil
     var createdAt: Date = Date()
+    var timerStartedAt: Date? = nil
+    var trackrRunning: Bool = false
     var duration: Int = 0
 
     var type: FeedType {

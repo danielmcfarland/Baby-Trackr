@@ -16,15 +16,16 @@ struct AddFeedView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @State var feed: Feed
-    @State var trackrRunning: Bool = false
-    @State var timerStartedAt: Date? = nil
+//    @State var trackrRunning: Bool = false
+//    @State var timerStartedAt: Date? = nil
     @State var currentDuration: Int = 0
     @State private var showCancelPrompt = false
     @FocusState private var focusedField: FocusedField?
     var child: Child
+    var toolbarVisible: Visibility = .visible
     
     var body: some View {
-        NavigationStack {
+        VStack {
             Form {
                 Section {
                     DatePicker(selection: $feed.createdAt, in: ...Date(), displayedComponents: .date, label: {
@@ -84,26 +85,26 @@ struct AddFeedView: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            trackrRunning = true
-                            if timerStartedAt == nil {
-                                timerStartedAt = Date()
+                            feed.trackrRunning = true
+                            if feed.timerStartedAt == nil {
+                                feed.timerStartedAt = Date()
                             }
                         }) {
-                            IconView(size: .small, icon: "play.fill")
-                                .opacity(trackrRunning ? 0.8 : 1)
+                            IconView(size: .small, icon: "play.fill", shadow: false)
+                                .opacity(feed.trackrRunning ? 0.8 : 1)
                         }
-                        .disabled(trackrRunning)
+                        .disabled(feed.trackrRunning)
                         
                         Button(action: {
-                            trackrRunning = false
+                            feed.trackrRunning = false
                             feed.duration = feed.duration + currentDuration
-                            timerStartedAt = nil
+                            feed.timerStartedAt = nil
                             currentDuration = 0
                         }) {
-                            IconView(size: .small, icon: "pause.fill")
-                                .opacity(trackrRunning ? 1 : 0.8)
+                            IconView(size: .small, icon: "pause.fill", shadow: false)
+                                .opacity(feed.trackrRunning ? 1 : 0.8)
                         }
-                        .disabled(!trackrRunning)
+                        .disabled(!feed.trackrRunning)
                         Spacer()
                     }
                     .listRowSeparator(.hidden)
@@ -112,32 +113,34 @@ struct AddFeedView: View {
             }
             .navigationTitle("Feed")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        cancelFeed()
-                    }) {
-                        Text("Cancel")
+            .toolbar() {
+                if toolbarVisible == .visible {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: {
+                            cancelFeed()
+                        }) {
+                            Text("Cancel")
+                        }
                     }
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        save()
-                    }) {
-                        Text("Add")
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            save()
+                        }) {
+                            Text("Add")
+                        }
+                        .disabled(!canSave)
                     }
-                    .disabled(!canSave)
                 }
             }
             .onAppear {
                 focusedField = .measurement
             }
             .onReceive(trackr.timer) { firedDate in
-                if !trackrRunning {
+                if !feed.trackrRunning {
                     return
                 }
-                guard let startTime = timerStartedAt else {
+                guard let startTime = feed.timerStartedAt else {
                     return
                 }
                 
@@ -153,7 +156,7 @@ struct AddFeedView: View {
     }
     
     var canSave: Bool {
-        if feed.type == .breast && !trackrRunning {
+        if feed.type == .breast {
             return true
         } else if feed.type == .bottle {
             return true
@@ -191,6 +194,8 @@ struct AddFeedView: View {
 }
 
 #Preview {
-    AddFeedView(feed: Feed(type: FeedType.breast), child: Child(name: "", dob: Date(), gender: ""))
-        .environmentObject(Trackr())
+    NavigationStack {
+        AddFeedView(feed: Feed(type: FeedType.breast), child: Child(name: "", dob: Date(), gender: ""))
+            .environmentObject(Trackr())
+    }
 }
