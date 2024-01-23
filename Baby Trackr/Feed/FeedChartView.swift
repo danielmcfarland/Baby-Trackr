@@ -24,7 +24,7 @@ struct FeedChartView: View {
             feed.child?.persistentModelID == id &&
             feed.typeValue == feedType.rawValue &&
             feed.createdAt > periodDate
-        })
+        }, sort: \.breastSideValue)
         
         self.child = child
         self.feedType = feedType
@@ -34,17 +34,16 @@ struct FeedChartView: View {
     var body: some View {
         Chart(feeds, id: \.breastSide) { feed in
             SectorMark(
-                angle: .value("Time", feed.duration),
+                angle: .value("Duration", feed.duration),
                 innerRadius: .ratio(0.618),
                 angularInset: 1.5
-                )
+            )
             .cornerRadius(5)
             .foregroundStyle(by: .value("Side", feed.breastSide.rawValue))
         }
         .chartXAxis(.hidden)
         .padding()
         .frame(height: 250)
-        .animation(.default, value: feeds)
     }
 }
 
