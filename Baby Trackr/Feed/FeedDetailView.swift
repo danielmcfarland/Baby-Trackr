@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FeedDetailView: View {
-    var feed: Feed
+    @Query var feedQuery: [Feed]
+    @State var feed: Feed
+    @State var currentDuration: Int = 0
     @State private var showEditFeedSheet = false
     @EnvironmentObject var trackr: Trackr
-    @State var currentDuration: Int = 0
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
         List {
@@ -89,7 +92,8 @@ struct FeedDetailView: View {
         .sheet(isPresented: $showEditFeedSheet) {
             NavigationStack {
                 if let child = feed.child {
-                    AddFeedView(feed: feed, child: child)
+                    AddFeedView(feed: feed, child: child, in: modelContext.container)
+                        .interactiveDismissDisabled()
                 }
             }
         }
@@ -102,6 +106,11 @@ struct FeedDetailView: View {
             }
             
             currentDuration = Int(firedDate.timeIntervalSince(startTime))
+        }
+        .onChange(of: feedQuery) {
+            if feedQuery.count > 0 {
+                self.feed = feedQuery.first!
+            }
         }
     }
     

@@ -6,39 +6,26 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddFeedView: View {
-    enum FocusedField {
-        case measurement
-    }
-    
     @EnvironmentObject var trackr: Trackr
-    @Environment(\.modelContext) private var modelContext
+    private var modelContext: ModelContext
     @Environment(\.dismiss) var dismiss
-    @State var feed: Feed
-    var feedFormData: FeedFormData
+    @Bindable var feed: Feed
     @State var currentDuration: Int = 0
     @State private var showCancelPrompt = false
-    @FocusState private var focusedField: FocusedField?
-    var child: Child
-    var toolbarVisible: Visibility = .visible
+    @Bindable var child: Child
     
-    init(feed: Feed, child: Child) {
-        self._feed = State(initialValue: feed)
-        self.child = child
-        
-        let feedFormData = FeedFormData()
-
-        feedFormData.type = feed.type
-        feedFormData.trackrRunning = feed.trackrRunning
-        feedFormData.timerStartedAt = feed.timerStartedAt
-        feedFormData.duration = feed.duration
-        feedFormData.createdAt = feed.createdAt
-        feedFormData.breastSide = feed.breastSide
-        feedFormData.bottleType = feed.bottleType
-        feedFormData.bottleSize = feed.bottleSize
-        
-        self.feedFormData = feedFormData
+    init(feed: Feed?, child: Child, in container: ModelContainer) {
+        modelContext = ModelContext(container)
+        if let feed = feed {
+            modelContext.autosaveEnabled = false
+            self.feed = (modelContext.model(for: feed.persistentModelID) as? Feed)!
+        } else {
+            self.feed = Feed(type: .bottle)
+        }
+        self.child = (modelContext.model(for: child.persistentModelID) as? Child)!
     }
     
     var body: some View {
@@ -105,23 +92,21 @@ struct AddFeedView: View {
         .navigationTitle("Feed")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar() {
-            if toolbarVisible == .visible {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        cancelFeed()
-                    }) {
-                        Text("Cancel")
-                    }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    cancelFeed()
+                }) {
+                    Text("Cancel")
                 }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        save()
-                    }) {
-                        Text("Save")
-                    }
-                    .disabled(!canSave)
+            }
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    save()
+                }) {
+                    Text("Save")
                 }
+                .disabled(!canSave)
             }
             
             ToolbarItem(placement: .bottomBar) {
@@ -154,9 +139,6 @@ struct AddFeedView: View {
                 }
             }
         }
-        .onAppear {
-            focusedField = .measurement
-        }
         .onReceive(trackr.timer) { firedDate in
             if !feed.trackrRunning {
                 return
@@ -168,7 +150,9 @@ struct AddFeedView: View {
             currentDuration = Int(firedDate.timeIntervalSince(startTime))
         }
         .confirmationDialog("Cancel Feed", isPresented: $showCancelPrompt) {
-            Button("Yes", action: dismiss.callAsFunction)
+            Button("Yes", action: {
+                dismiss()
+            })
             Button("No", role: .cancel) { }
         } message: {
             Text("Are you sure you want to cancel this feed without saving?")
@@ -191,26 +175,17 @@ struct AddFeedView: View {
     }
     
     func cancelFeed() -> Void {
-        showCancelPrompt.toggle()
+        if modelContext.hasChanges {
+            showCancelPrompt.toggle()
+        } else {
+            dismiss()
+        }
     }
     
     func save() -> Void {
         withAnimation {
-//            feed.typeValue = feedFormData.type.rawValue
-//            feed.trackrRunning = feedFormData.trackrRunning
-//            feed.timerStartedAt = feedFormData.timerStartedAt
-//            feed.duration = feedFormData.duration
-//            feed.createdAt = feedFormData.createdAt
-//            feed.breastSideValue = feedFormData.breastSide.rawValue
-//            feed.bottleTypeValue = feedFormData.bottleType.rawValue
-//            feed.bottleSizeValue = feedFormData.bottleSize.rawValue
-            
             if let _ = feed.child {
-                do {
-                    try modelContext.save()
-                } catch {
-                    print("Error updating feed \(error)")
-                }
+                try? modelContext.save()
             } else {
                 modelContext.insert(feed)
                 child.feeds?.append(feed)
@@ -222,7 +197,7 @@ struct AddFeedView: View {
 
 #Preview {
     NavigationStack {
-        AddFeedView(feed: Feed(type: FeedType.breast), child: Child(name: "", dob: Date(), gender: ""))
+        AddFeedView(feed: Feed(type: FeedType.breast), child: Child(name: "", dob: Date(), gender: ""), in: PreviewData.container)
             .environmentObject(Trackr())
     }
 }

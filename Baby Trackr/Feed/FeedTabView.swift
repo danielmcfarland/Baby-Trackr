@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FeedTabView: View {
     var child: Child
+    @Environment(\.modelContext) private var modelContext
     @State private var showAddFeedSheet = false
     
     var body: some View {
@@ -35,7 +36,7 @@ struct FeedTabView: View {
         }
         .sheet(isPresented: $showAddFeedSheet) {
             NavigationStack {
-                AddFeedView(feed: Feed(type: .bottle), child: child)
+                AddFeedView(feed: nil, child: child, in: modelContext.container)
             }
         }
     }
