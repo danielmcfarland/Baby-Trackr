@@ -24,15 +24,28 @@ struct FeedChartView: View {
             feed.child?.persistentModelID == id &&
             feed.typeValue == feedType.rawValue &&
             feed.createdAt > periodDate
-        }, sort: \.breastSideValue)
+        })
         
         self.child = child
         self.feedType = feedType
         self.period = period
     }
     
+    var chartFeeds: [ChartFeed] {
+        return Dictionary(grouping: feeds, by: { feed in
+            feed.breastSide
+        }).map { breastSide, feeds in
+            let duration = feeds.map { feed in
+                return feed.duration
+            }.reduce(0, +)
+            return ChartFeed(duration: duration, breastSide: breastSide)
+        }.sorted {
+            $0.breastSide.rawValue < $1.breastSide.rawValue
+        }
+    }
+    
     var body: some View {
-        Chart(feeds, id: \.breastSide) { feed in
+        Chart(chartFeeds, id: \.breastSide) { feed in
             SectorMark(
                 angle: .value("Duration", feed.duration),
                 innerRadius: .ratio(0.618),
@@ -44,6 +57,7 @@ struct FeedChartView: View {
         .chartXAxis(.hidden)
         .padding()
         .frame(height: 250)
+        .animation(.default, value: chartFeeds)
     }
 }
 
