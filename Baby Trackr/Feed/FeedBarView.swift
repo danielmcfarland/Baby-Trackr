@@ -1,15 +1,15 @@
 //
-//  FeedChartView.swift
+//  FeedBarView.swift
 //  Baby Trackr
 //
-//  Created by Daniel McFarland on 22/01/2024.
+//  Created by Daniel McFarland on 23/01/2024.
 //
 
 import SwiftUI
 import SwiftData
 import Charts
 
-struct FeedChartView: View {
+struct FeedBarView: View {
     var child: Child
     var feedType: FeedType
     var period: ChartPeriod
@@ -40,40 +40,40 @@ struct FeedChartView: View {
         }
     }
     
-    var chartFeeds: [ChartFeed] {
-        var data = placeholderFeeds
-        data.append(contentsOf: feeds)
-        
-        return Dictionary(grouping: data, by: { feed in
-            feed.breastSide
-        }).map { breastSide, feeds in
-            let duration = feeds.map { feed in
-                return feed.duration
-            }.reduce(0, +)
-            return ChartFeed(duration: duration, breastSide: breastSide)
-        }.sorted {
-            $0.breastSide.rawValue < $1.breastSide.rawValue
-        }
-    }
+//    var chartFeeds: [ChartFeed] {
+//        var data = placeholderFeeds
+//        data.append(contentsOf: feeds)
+//        
+//        return Dictionary(grouping: data, by: { feed in
+//            feed.breastSide
+//        }).map { breastSide, feeds in
+//            let duration = feeds.map { feed in
+//                return feed.duration
+//            }.reduce(0, +)
+//            return ChartFeed(duration: duration, breastSide: breastSide)
+//        }.sorted {
+//            $0.breastSide.rawValue < $1.breastSide.rawValue
+//        }
+//    }
     
     var body: some View {
-        Chart(chartFeeds, id: \.breastSide) { feed in
-            SectorMark(
-                angle: .value("Duration", feed.duration),
-                innerRadius: .ratio(0.618),
-                angularInset: 1.5
-            )
+        Chart(feeds, id: \.self) { feed in
+            BarMark(
+                x: .value("Time", 5),
+//                y: .value("Month", feed.bottleSize),
+                stacking: .normalized
+             )
             .cornerRadius(5)
-            .foregroundStyle(by: .value("Side", feed.breastSide.rawValue))
+            .foregroundStyle(by: .value("Side", feed.bottleType.rawValue))
         }
         .chartXAxis(.hidden)
         .padding()
         .padding(.bottom, 0)
         .frame(height: 250)
-        .animation(.default, value: chartFeeds)
+//        .animation(.default, value: chartFeeds)
     }
 }
 
 #Preview {
-    FeedChartView(child: Child(name: "", dob: Date.distantPast, gender: ""), feedType: .breast, period: .sevenDays)
+    FeedBarView(child: Child(name: "", dob: Date.distantPast, gender: ""), feedType: .breast, period: .sevenDays)
 }

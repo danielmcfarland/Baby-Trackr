@@ -51,44 +51,60 @@ struct FeedListView: View {
     }
     
     var body: some View {
-        VStack {
-            if feedType == .breast {
-                Picker("Chart Period", selection: $period) {
-                    ForEach(ChartPeriod.allCases) { period in
-                        Text(period.rawValue).tag(period)
-                    }
+        List {
+            Picker("Chart Period", selection: $period) {
+                ForEach(ChartPeriod.allCases) { period in
+                    Text(period.rawValue).tag(period)
                 }
-                .pickerStyle(.segmented)
-                .padding(.bottom, 10)
-                .padding(.horizontal)
-
-                FeedChartView(child: child, feedType: feedType, period: period)
             }
-            List {
-                Section(header: Text("\(feedType.rawValue) Feeds")) {
-                    ForEach(feeds) { feed in
-                        NavigationLink(value: feed) {
-                            HStack {
-                                if feed.type == .bottle {
-                                    Text("\(feed.bottleSize.rawValue)")
-                                } else if feed.type == .breast && !feed.trackrRunning {
-                                    Text("\(feed.humanReadableDuration)")
-                                } else if feed.type == .breast && feed.trackrRunning {
-                                    HStack {
-                                        Image(systemName: "record.circle")
-                                            .foregroundStyle(Color.red)
-                                        Text("In Progress")
-                                    }
+            .pickerStyle(.segmented)
+            .padding(0)
+            .listRowInsets(.none)
+            .listRowBackground(Color.clear)
+            .listRowSpacing(0)
+            .listRowSeparator(.hidden)
+            
+            if feedType == .breast {
+                FeedChartView(child: child, feedType: feedType, period: period)
+                    .listRowInsets(.none)
+                    .listRowBackground(Color.clear)
+                    .listRowSpacing(0)
+                    .listRowSeparator(.hidden)
+            }
+            
+            if feedType == .bottle {
+                FeedChartView(child: child, feedType: feedType, period: period)
+                    .listRowInsets(.none)
+                    .listRowBackground(Color.clear)
+                    .listRowSpacing(0)
+                    .listRowSeparator(.hidden)
+            }
+            //            List {
+            Section() {
+                ForEach(feeds) { feed in
+                    NavigationLink(value: feed) {
+                        HStack {
+                            if feed.type == .bottle {
+                                Text("\(feed.bottleSize.rawValue)")
+                            } else if feed.type == .breast && !feed.trackrRunning {
+                                Text("\(feed.humanReadableDuration)")
+                            } else if feed.type == .breast && feed.trackrRunning {
+                                HStack {
+                                    Image(systemName: "record.circle")
+                                        .foregroundStyle(Color.red)
+                                    Text("In Progress")
                                 }
-                                Spacer()
-                                Text(feed.createdAt, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
-                                    .foregroundStyle(Color.gray)
                             }
+                            Spacer()
+                            Text(feed.createdAt, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
+                                .foregroundStyle(Color.gray)
                         }
+                        //                        }
                     }
                 }
             }
         }
+        .listStyle(DefaultListStyle())
     }
 }
 
