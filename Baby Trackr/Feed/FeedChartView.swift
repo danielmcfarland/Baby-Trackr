@@ -13,6 +13,7 @@ struct FeedChartView: View {
     var child: Child
     var feedType: FeedType
     var period: ChartPeriod
+    var placeholderFeeds: [Feed] = []
     
     @Query private var feeds: [Feed]
     
@@ -23,16 +24,27 @@ struct FeedChartView: View {
         self._feeds = Query(filter: #Predicate<Feed> { feed in
             feed.child?.persistentModelID == id &&
             feed.typeValue == feedType.rawValue &&
-            feed.createdAt > periodDate
+            feed.createdAt > periodDate &&
+            !feed.trackrRunning
         })
         
         self.child = child
         self.feedType = feedType
         self.period = period
+        
+        BreastSide.allCases.forEach { side in
+            let feed = Feed(type: .bottle)
+            feed.duration = 0
+            feed.breastSideValue = side.rawValue
+            self.placeholderFeeds.append(feed)
+        }
     }
     
     var chartFeeds: [ChartFeed] {
-        return Dictionary(grouping: feeds, by: { feed in
+        var data = placeholderFeeds
+        data.append(contentsOf: feeds)
+        
+        return Dictionary(grouping: data, by: { feed in
             feed.breastSide
         }).map { breastSide, feeds in
             let duration = feeds.map { feed in
