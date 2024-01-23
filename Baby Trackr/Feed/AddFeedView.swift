@@ -16,11 +16,30 @@ struct AddFeedView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @State var feed: Feed
+    var feedFormData: FeedFormData
     @State var currentDuration: Int = 0
     @State private var showCancelPrompt = false
     @FocusState private var focusedField: FocusedField?
     var child: Child
     var toolbarVisible: Visibility = .visible
+    
+    init(feed: Feed, child: Child) {
+        self._feed = State(initialValue: feed)
+        self.child = child
+        
+        let feedFormData = FeedFormData()
+
+        feedFormData.type = feed.type
+        feedFormData.trackrRunning = feed.trackrRunning
+        feedFormData.timerStartedAt = feed.timerStartedAt
+        feedFormData.duration = feed.duration
+        feedFormData.createdAt = feed.createdAt
+        feedFormData.breastSide = feed.breastSide
+        feedFormData.bottleType = feed.bottleType
+        feedFormData.bottleSize = feed.bottleSize
+        
+        self.feedFormData = feedFormData
+    }
     
     var body: some View {
         VStack {
@@ -99,7 +118,7 @@ struct AddFeedView: View {
                     Button(action: {
                         save()
                     }) {
-                        Text("Add")
+                        Text("Save")
                     }
                     .disabled(!canSave)
                 }
@@ -157,13 +176,7 @@ struct AddFeedView: View {
     }
     
     var canSave: Bool {
-        if feed.type == .breast {
-            return true
-        } else if feed.type == .bottle {
-            return true
-        }
-        
-        return false
+        return true
     }
     
     func humanReadableDuration() -> String {
@@ -183,8 +196,25 @@ struct AddFeedView: View {
     
     func save() -> Void {
         withAnimation {
-            modelContext.insert(feed)
-            child.feeds?.append(feed)
+//            feed.typeValue = feedFormData.type.rawValue
+//            feed.trackrRunning = feedFormData.trackrRunning
+//            feed.timerStartedAt = feedFormData.timerStartedAt
+//            feed.duration = feedFormData.duration
+//            feed.createdAt = feedFormData.createdAt
+//            feed.breastSideValue = feedFormData.breastSide.rawValue
+//            feed.bottleTypeValue = feedFormData.bottleType.rawValue
+//            feed.bottleSizeValue = feedFormData.bottleSize.rawValue
+            
+            if let _ = feed.child {
+                do {
+                    try modelContext.save()
+                } catch {
+                    print("Error updating feed \(error)")
+                }
+            } else {
+                modelContext.insert(feed)
+                child.feeds?.append(feed)
+            }
             dismiss()
         }
     }

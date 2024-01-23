@@ -2,161 +2,110 @@
 //  FeedDetailView.swift
 //  Baby Trackr
 //
-//  Created by Daniel McFarland on 20/01/2024.
+//  Created by Daniel McFarland on 23/01/2024.
 //
 
 import SwiftUI
 
 struct FeedDetailView: View {
+    var feed: Feed
+    @State private var showEditFeedSheet = false
     @EnvironmentObject var trackr: Trackr
-    @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) var dismiss
-    @State var feed: Feed
-    @State var trackrRunning: Bool = false
-    @State var timerStartedAt: Date? = nil
     @State var currentDuration: Int = 0
-    @State private var showCancelPrompt = false
     
     var body: some View {
-        VStack {
-            Form {
-                Section {
-                    DatePicker(selection: $feed.createdAt, in: ...Date(), displayedComponents: .date, label: {
-                        Text("Date")
-                            .foregroundStyle(Color.gray)
-                    })
-                    
-                    DatePicker(selection: $feed.createdAt, in: ...Date(), displayedComponents: .hourAndMinute, label: {
-                        Text("Time")
-                            .foregroundStyle(Color.gray)
-                    })
-                    
-                    Picker("Type", selection: $feed.typeValue) {
-                        ForEach(FeedType.allCases) { feed in
-                            Text(feed.rawValue).tag(feed.rawValue)
-                        }
-                    }
-                    .foregroundStyle(Color.gray)
+        List {
+            Section(header: Text("Feed Details")
+            ) {
+                VStack(alignment: .leading) {
+                    Text("Feed Type")
+                        .foregroundStyle(Color.gray)
+                        .font(.footnote)
+                    Text(feed.type.rawValue)
                 }
                 
                 if feed.typeValue == FeedType.bottle.rawValue {
-                    Section {
-                        Picker("Bottle Type", selection: $feed.bottleTypeValue) {
-                            ForEach(BottleType.allCases) { bottleType in
-                                Text(bottleType.rawValue).tag(bottleType.rawValue)
-                            }
-                        }
-                        .foregroundStyle(Color.gray)
+                    VStack(alignment: .leading) {
+                        Text("Bottle Type")
+                            .foregroundStyle(Color.gray)
+                            .font(.footnote)
                         
-                        Picker("Bottle Size", selection: $feed.bottleSizeValue) {
-                            ForEach(BottleSize.allCases) { bottleSize in
-                                Text(bottleSize.rawValue).tag(bottleSize.rawValue)
-                            }
-                        }
-                        .foregroundStyle(Color.gray)
-                    }
-                }
-                
-                if feed.typeValue == FeedType.breast.rawValue {
-                    Section {
-                        Picker("Side", selection: $feed.breastSideValue) {
-                            ForEach(BreastSide.allCases) { breastSide in
-                                Text(breastSide.rawValue).tag(breastSide.rawValue)
-                            }
-                        }
-                        .foregroundStyle(Color.gray)
+                        Text(feed.bottleType.rawValue)
                     }
                     
-                    HStack {
-                        Spacer()
-                        Text("\(humanReadableDuration())")
-                            .font(.system(size: 75))
-                            .fontWeight(.light)
-                        Spacer()
-                    }
-                    .listRowSeparator(.hidden)
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            trackrRunning = true
-                            if timerStartedAt == nil {
-                                timerStartedAt = Date()
-                            }
-                        }) {
-                            IconView(size: .small, icon: "play.fill")
-                                .opacity(trackrRunning ? 0.8 : 1)
-                        }
-                        .disabled(trackrRunning)
+                    VStack(alignment: .leading) {
+                        Text("Bottle Size")
+                            .foregroundStyle(Color.gray)
+                            .font(.footnote)
                         
-                        Button(action: {
-                            trackrRunning = false
-                            feed.duration = feed.duration + currentDuration
-                            timerStartedAt = nil
-                            currentDuration = 0
-                        }) {
-                            IconView(size: .small, icon: "pause.fill")
-                                .opacity(trackrRunning ? 1 : 0.8)
+                        Text(feed.bottleSize.rawValue)
+                    }
+                }
+                if feed.typeValue == FeedType.breast.rawValue {
+                    VStack(alignment: .leading) {
+                        Text("Side")
+                            .foregroundStyle(Color.gray)
+                            .font(.footnote)
+                        
+                        Text(feed.breastSide.rawValue)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Duration")
+                            .foregroundStyle(Color.gray)
+                            .font(.footnote)
+                        
+                        HStack {
+                            if feed.trackrRunning {
+                                Image(systemName: "record.circle")
+                                    .foregroundStyle(Color.red)
+                                Text(humanReadableDuration)
+                            } else {
+                                Text(feed.humanReadableDuration)
+                            }
                         }
-                        .disabled(!trackrRunning)
-                        Spacer()
                     }
-                    .listRowSeparator(.hidden)
                 }
                 
-            }
-            .navigationTitle("Feed")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-//                ToolbarItem(placement: .navigationBarLeading) {
-//                    Button(action: {
-//                        cancelFeed()
-//                    }) {
-//                        Text("Cancel")
-//                    }
-//                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        save()
-                    }) {
-                        Text("Add")
-                    }
-                    .disabled(!canSave)
+                VStack(alignment: .leading) {
+                    Text("Date")
+                        .foregroundStyle(Color.gray)
+                        .font(.footnote)
+                    Text(feed.createdAt, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
                 }
             }
-//            .onAppear {
-//                focusedField = .measurement
-//            }
-            .onReceive(trackr.timer) { firedDate in
-                if !trackrRunning {
-                    return
-                }
-                guard let startTime = timerStartedAt else {
-                    return
-                }
-                
-                currentDuration = Int(firedDate.timeIntervalSince(startTime))
+        }
+        .navigationTitle("Details")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    showEditFeedSheet.toggle()
+                }, label: {
+                    Text("Edit")
+                })
             }
-            .confirmationDialog("Cancel Feed", isPresented: $showCancelPrompt) {
-                Button("Yes", action: dismiss.callAsFunction)
-                Button("No", role: .cancel) { }
-            } message: {
-                Text("Are you sure you want to cancel this feed without saving?")
+        }
+        .sheet(isPresented: $showEditFeedSheet) {
+            NavigationStack {
+                if let child = feed.child {
+                    AddFeedView(feed: feed, child: child)
+                }
             }
+        }
+        .onReceive(trackr.timer) { firedDate in
+            if !feed.trackrRunning {
+                return
+            }
+            guard let startTime = feed.timerStartedAt else {
+                return
+            }
+            
+            currentDuration = Int(firedDate.timeIntervalSince(startTime))
         }
     }
     
-    var canSave: Bool {
-        if feed.type == .breast && !trackrRunning {
-            return true
-        } else if feed.type == .bottle {
-            return true
-        }
-        
-        return false
-    }
-    
-    func humanReadableDuration() -> String {
+    var humanReadableDuration: String {
         let totalDuration = self.currentDuration + self.feed.duration
         let hours = totalDuration / 3600
         let minutes = (totalDuration % 3600) / 60
@@ -166,31 +115,10 @@ struct FeedDetailView: View {
         }
         return String(format: "%02d:%02d", minutes, seconds)
     }
-    
-    func cancelFeed() -> Void {
-        showCancelPrompt.toggle()
-    }
-    
-    func save() -> Void {
-        withAnimation {
-//            guard let value = value else {
-//                return
-//            }
-//            measurement.value = value
-//            modelContext.insert(feed)
-//            child.feeds?.append(feed)
-//            dismiss()
-            if modelContext.hasChanges {
-                do {
-                    try modelContext.save()
-                } catch {
-                    print(error)
-                }
-            }
-        }
-    }
 }
 
 #Preview {
-    FeedDetailView(feed: Feed(type: FeedType.bottle))
+    NavigationStack {
+        FeedDetailView(feed: Feed(type: .bottle))
+    }
 }
