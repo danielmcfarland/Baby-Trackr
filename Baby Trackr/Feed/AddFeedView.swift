@@ -16,8 +16,6 @@ struct AddFeedView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @State var feed: Feed
-//    @State var trackrRunning: Bool = false
-//    @State var timerStartedAt: Date? = nil
     @State var currentDuration: Int = 0
     @State private var showCancelPrompt = false
     @FocusState private var focusedField: FocusedField?
@@ -82,7 +80,34 @@ struct AddFeedView: View {
                         Spacer()
                     }
                     .listRowSeparator(.hidden)
-                    HStack {
+                }
+            }
+        }
+        .navigationTitle("Feed")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar() {
+            if toolbarVisible == .visible {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        cancelFeed()
+                    }) {
+                        Text("Cancel")
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        save()
+                    }) {
+                        Text("Add")
+                    }
+                    .disabled(!canSave)
+                }
+            }
+            
+            ToolbarItem(placement: .bottomBar) {
+                if feed.typeValue == FeedType.breast.rawValue {
+                    HStack(spacing: 0) {
                         Spacer()
                         Button(action: {
                             feed.trackrRunning = true
@@ -107,51 +132,27 @@ struct AddFeedView: View {
                         .disabled(!feed.trackrRunning)
                         Spacer()
                     }
-                    .listRowSeparator(.hidden)
-                }
-                
-            }
-            .navigationTitle("Feed")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar() {
-                if toolbarVisible == .visible {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            cancelFeed()
-                        }) {
-                            Text("Cancel")
-                        }
-                    }
-                    
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            save()
-                        }) {
-                            Text("Add")
-                        }
-                        .disabled(!canSave)
-                    }
                 }
             }
-            .onAppear {
-                focusedField = .measurement
+        }
+        .onAppear {
+            focusedField = .measurement
+        }
+        .onReceive(trackr.timer) { firedDate in
+            if !feed.trackrRunning {
+                return
             }
-            .onReceive(trackr.timer) { firedDate in
-                if !feed.trackrRunning {
-                    return
-                }
-                guard let startTime = feed.timerStartedAt else {
-                    return
-                }
-                
-                currentDuration = Int(firedDate.timeIntervalSince(startTime))
+            guard let startTime = feed.timerStartedAt else {
+                return
             }
-            .confirmationDialog("Cancel Feed", isPresented: $showCancelPrompt) {
-                Button("Yes", action: dismiss.callAsFunction)
-                Button("No", role: .cancel) { }
-            } message: {
-                Text("Are you sure you want to cancel this feed without saving?")
-            }
+            
+            currentDuration = Int(firedDate.timeIntervalSince(startTime))
+        }
+        .confirmationDialog("Cancel Feed", isPresented: $showCancelPrompt) {
+            Button("Yes", action: dismiss.callAsFunction)
+            Button("No", role: .cancel) { }
+        } message: {
+            Text("Are you sure you want to cancel this feed without saving?")
         }
     }
     
@@ -182,10 +183,6 @@ struct AddFeedView: View {
     
     func save() -> Void {
         withAnimation {
-//            guard let value = value else {
-//                return
-//            }
-//            measurement.value = value
             modelContext.insert(feed)
             child.feeds?.append(feed)
             dismiss()
