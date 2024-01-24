@@ -24,7 +24,7 @@ struct FeedTabView: View {
                 }
         }
         .navigationTitle("Feed")
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar{
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
