@@ -48,7 +48,7 @@ struct ChangeListView: View {
                 .listRowBackground(Color.clear)
                 .listRowSpacing(0)
                 .listRowSeparator(.hidden)
-                .padding(.bottom, -30)
+                .padding(.bottom, -20)
             
             Section {
                 ForEach(changes) { change in
@@ -73,7 +73,7 @@ struct ChangeListView: View {
             }
         }
         .sheet(isPresented: $showAddChangeSheet) {
-            ChangeEntryView(change: Change(type: ChangeType.dry), child: child, in: modelContext.container)
+            ChangeEntryView(change: nil, child: child, in: modelContext.container)
                 .interactiveDismissDisabled()
         }
         .navigationTitle("Changes")

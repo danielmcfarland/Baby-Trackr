@@ -55,7 +55,7 @@ struct FeedListView: View {
             .listRowBackground(Color.clear)
             .listRowSpacing(0)
             .listRowSeparator(.hidden)
-            .padding(.bottom, -30)
+            .padding(.bottom, -20)
             
             Section {
                 ForEach(feeds) { feed in
