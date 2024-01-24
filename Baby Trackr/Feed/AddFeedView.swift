@@ -17,6 +17,10 @@ struct AddFeedView: View {
     @State private var showCancelPrompt = false
     @Bindable var child: Child
     
+    var timerRunning: Bool {
+        return feed.trackrRunning && trackr.running;
+    }
+    
     init(feed: Feed?, child: Child, in container: ModelContainer) {
         modelContext = ModelContext(container)
         if let feed = feed {
@@ -118,36 +122,50 @@ struct AddFeedView: View {
                             if feed.timerStartedAt == nil {
                                 feed.timerStartedAt = Date()
                             }
+                            if trackr.initialised {
+                                trackr.startTimer(duration: nil)
+                            } else {
+                                trackr.initTimer(startedAt: Date.now, duration: feed.duration)
+                                trackr.startTimer(duration: feed.duration)
+                            }
                         }) {
                             IconView(size: .small, icon: "play.fill", shadow: false)
-                                .opacity(feed.trackrRunning ? 0.8 : 1)
+                                .opacity(timerRunning ? 0.8 : 1)
                         }
-                        .disabled(feed.trackrRunning)
+                        .disabled(timerRunning)
                         
                         Button(action: {
+                            trackr.pauseTimer()
                             feed.trackrRunning = false
-                            feed.duration = feed.duration + currentDuration
                             feed.timerStartedAt = nil
-                            currentDuration = 0
                         }) {
                             IconView(size: .small, icon: "pause.fill", shadow: false)
-                                .opacity(feed.trackrRunning ? 1 : 0.8)
+                                .opacity(timerRunning ? 1 : 0.8)
                         }
-                        .disabled(!feed.trackrRunning)
+                        .disabled(!timerRunning)
                         Spacer()
                     }
                 }
             }
         }
         .onReceive(trackr.timer) { firedDate in
-            if !feed.trackrRunning {
+            if !trackr.running || !trackr.initialised {
                 return
             }
-            guard let startTime = feed.timerStartedAt else {
+            currentDuration = trackr.duration + trackr.durationTotal
+            guard let startTime = trackr.startedAt else {
                 return
             }
             
-            currentDuration = Int(firedDate.timeIntervalSince(startTime))
+            trackr.duration = Int(firedDate.timeIntervalSince(startTime))
+        }
+        .onAppear {
+            if self.feed.trackrRunning && self.feed.timerStartedAt != nil {
+                trackr.initTimer(startedAt: self.feed.timerStartedAt!, duration: self.feed.duration)
+                trackr.startTimer(duration: self.feed.duration)
+            } else {
+                currentDuration = feed.duration
+            }
         }
         .confirmationDialog("Cancel Feed", isPresented: $showCancelPrompt) {
             Button("Yes", action: {
@@ -164,7 +182,7 @@ struct AddFeedView: View {
     }
     
     func humanReadableDuration() -> String {
-        let totalDuration = self.currentDuration + self.feed.duration
+        let totalDuration = self.currentDuration
         let hours = totalDuration / 3600
         let minutes = (totalDuration % 3600) / 60
         let seconds = (totalDuration % 3600) % 60
@@ -178,18 +196,30 @@ struct AddFeedView: View {
         if modelContext.hasChanges {
             showCancelPrompt.toggle()
         } else {
+            trackr.deinitTimer()
             dismiss()
         }
     }
     
     func save() -> Void {
         withAnimation {
+            if !timerRunning {
+                feed.duration = currentDuration
+                feed.timerStartedAt = nil
+                feed.trackrRunning = false
+            } else {
+                feed.duration = trackr.durationTotal
+                feed.timerStartedAt = trackr.startedAt
+                feed.trackrRunning = true
+            }
+            
             if let _ = feed.child {
                 try? modelContext.save()
             } else {
                 modelContext.insert(feed)
                 child.feeds?.append(feed)
             }
+            trackr.deinitTimer()
             dismiss()
         }
     }
