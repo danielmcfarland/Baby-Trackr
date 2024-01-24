@@ -64,21 +64,24 @@ struct FeedListView: View {
             .listRowSpacing(0)
             .listRowSeparator(.hidden)
             
-            if feedType == .breast {
-                FeedChartView(child: child, feedType: feedType, period: period)
-                    .listRowInsets(.none)
-                    .listRowBackground(Color.clear)
-                    .listRowSpacing(0)
-                    .listRowSeparator(.hidden)
+            Group {
+                if feedType == .breast {
+                    FeedChartView(child: child, feedType: feedType, period: period)
+//                        .listRowInsets(.none)
+//                        .listRowBackground(Color.clear)
+//                        .listRowSpacing(0)
+//                        .listRowSeparator(.hidden)
+                }
+                
+                if feedType == .bottle {
+                    FeedBarView(child: child, feedType: feedType, period: period)
+                        
+                }
             }
-            
-            if feedType == .bottle {
-                FeedChartView(child: child, feedType: feedType, period: period)
-                    .listRowInsets(.none)
-                    .listRowBackground(Color.clear)
-                    .listRowSpacing(0)
-                    .listRowSeparator(.hidden)
-            }
+            .listRowInsets(.none)
+            .listRowBackground(Color.clear)
+            .listRowSpacing(0)
+            .listRowSeparator(.hidden)
             //            List {
             Section() {
                 ForEach(feeds) { feed in

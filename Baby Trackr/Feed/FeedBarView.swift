@@ -9,11 +9,53 @@ import SwiftUI
 import SwiftData
 import Charts
 
+struct BarItemData: Equatable {
+    let type: String
+    let data: [BarItem]
+    
+    static func == (lhs: BarItemData, rhs: BarItemData) -> Bool {
+        rhs.type == lhs.type &&
+        rhs.data == lhs.data
+    }
+}
+
+struct BarItem: Identifiable, Equatable {
+    let id = UUID()
+    let day: String
+    let volume: Int
+    
+    static func == (lhs: BarItem, rhs: BarItem) -> Bool {
+        rhs.day == lhs.day &&
+        rhs.volume == lhs.volume
+    }
+}
+
+extension BarItem {
+    static let express: [BarItem] = [
+        .init(day: "Mon", volume: 250),
+        .init(day: "Tue", volume: 150),
+        .init(day: "Wed", volume: 150),
+        .init(day: "Thu", volume: 0),
+    ]
+    
+    static let formula: [BarItem] = [
+        .init(day: "Mon", volume: 150),
+        .init(day: "Tue", volume: 250),
+        .init(day: "Wed", volume: 250),
+        .init(day: "Thu", volume: 400),
+    ]
+}
+
 struct FeedBarView: View {
     var child: Child
     var feedType: FeedType
     var period: ChartPeriod
     var placeholderFeeds: [Feed] = []
+    
+    let barItemData: [BarItemData] = [
+        BarItemData(type: "Formula", data: BarItem.formula),
+        BarItemData(type: "Express", data: BarItem.express),
+    ]
     
     @Query private var feeds: [Feed]
     
@@ -40,37 +82,22 @@ struct FeedBarView: View {
         }
     }
     
-//    var chartFeeds: [ChartFeed] {
-//        var data = placeholderFeeds
-//        data.append(contentsOf: feeds)
-//        
-//        return Dictionary(grouping: data, by: { feed in
-//            feed.breastSide
-//        }).map { breastSide, feeds in
-//            let duration = feeds.map { feed in
-//                return feed.duration
-//            }.reduce(0, +)
-//            return ChartFeed(duration: duration, breastSide: breastSide)
-//        }.sorted {
-//            $0.breastSide.rawValue < $1.breastSide.rawValue
-//        }
-//    }
-    
     var body: some View {
-        Chart(feeds, id: \.self) { feed in
-            BarMark(
-                x: .value("Time", 5),
-//                y: .value("Month", feed.bottleSize),
-                stacking: .normalized
-             )
+        Chart(barItemData, id: \.type) { element in
+            ForEach(element.data) {
+                BarMark(
+                    x: .value("Day", $0.day),
+                    y: .value("Volume (in ml)", $0.volume)
+                )
+            }
             .cornerRadius(5)
-            .foregroundStyle(by: .value("Side", feed.bottleType.rawValue))
+            .foregroundStyle(by: .value("Side", element.type))
         }
         .chartXAxis(.hidden)
         .padding()
         .padding(.bottom, 0)
         .frame(height: 250)
-//        .animation(.default, value: chartFeeds)
+        .animation(.default, value: barItemData)
     }
 }
 
