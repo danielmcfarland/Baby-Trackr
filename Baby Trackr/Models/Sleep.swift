@@ -11,10 +11,11 @@ import SwiftData
 @Model
 final class Sleep {
     var child: Child? = nil
-    var startTime: Date?
+    var createdAt: Date = Date()
     var duration: Int = 0
     var endTime: Date? = nil
-    var isActive: Bool = false
+    var timerStartedAt: Date? = nil
+    var trackrRunning: Bool = false
     
     init() {
         

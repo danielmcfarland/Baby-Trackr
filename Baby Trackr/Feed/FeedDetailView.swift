@@ -128,6 +128,7 @@ struct FeedDetailView: View {
 
 #Preview {
     NavigationStack {
-        FeedDetailView(feed: Feed(type: .bottle))
+        FeedDetailView(feed: Feed(type: .breast))
+            .environmentObject(Trackr())
     }
 }

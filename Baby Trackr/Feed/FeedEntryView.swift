@@ -97,17 +97,13 @@ struct FeedEntryView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar() {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-                    cancelFeed()
-                }) {
+                Button(action: cancelFeed) {
                     Text("Cancel")
                 }
             }
             
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    save()
-                }) {
+                Button(action: save) {
                     Text("Save")
                 }
                 .disabled(!canSave)

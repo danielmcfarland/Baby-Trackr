@@ -66,11 +66,7 @@ struct ContentView: View {
                 FeedDetailView(feed: feed)
             }
             .navigationDestination(for: Sleep.self) { sleep in
-                if let child = sleep.child {
-                    CurrentSleepView(child: child, sleep: sleep)
-                } else {
-                    Text("Not Found")
-                }
+                SleepDetailView(sleep: sleep)
             }
             .navigationTitle("Baby Trackr")
             .navigationBarTitleDisplayMode(.large)
@@ -97,4 +93,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .modelContainer(PreviewData.container)
+        .environmentObject(Trackr())
 }

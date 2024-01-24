@@ -10,6 +10,7 @@ import SwiftData
 
 struct SleepListView: View {
     var child: Child
+    @Environment(\.modelContext) private var modelContext
     
     @State private var showAddSleepSheet = false
     
@@ -20,24 +21,21 @@ struct SleepListView: View {
         
         self._sleeps = Query(filter: #Predicate<Sleep> { sleep in
             sleep.child?.persistentModelID == id
-        }, sort: \.startTime)
+        }, sort: \.createdAt, order: .reverse)
         
         self.child = child
     }
     
     var body: some View {
         List {
-            Section(header: Text("Duration")
-            ) {
+            Section {
                 ForEach(sleeps) { sleep in
                     NavigationLink(value: sleep) {
                         HStack {
                             Text(sleep.humanReadableDuration)
                             Spacer()
-                            if let startTime = sleep.startTime {
-                                Text(startTime, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
-                                    .foregroundStyle(Color.gray)
-                            }
+                            Text(sleep.createdAt, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
+                                .foregroundStyle(Color.gray)
                         }
                     }
                     
@@ -54,7 +52,9 @@ struct SleepListView: View {
             }
         }
         .sheet(isPresented: $showAddSleepSheet) {
-            CurrentSleepView(child: child, sleep: Sleep())
+            NavigationStack {
+                SleepEntryView(sleep: nil, child: child, in: modelContext.container)
+            }
         }
         .navigationTitle("Sleep")
         .navigationBarTitleDisplayMode(.large)

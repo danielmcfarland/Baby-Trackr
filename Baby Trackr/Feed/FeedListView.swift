@@ -79,7 +79,7 @@ struct FeedListView: View {
             .listRowSpacing(0)
             .listRowSeparator(.hidden)
             
-            Section() {
+            Section {
                 ForEach(feeds) { feed in
                     NavigationLink(value: feed) {
                         HStack {
