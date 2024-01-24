@@ -43,5 +43,7 @@ struct FeedTabView: View {
 }
 
 #Preview {
-    FeedTabView(child: Child(name: "Name", dob: Date(), gender: ""))
+    NavigationStack {
+        FeedTabView(child: Child(name: "Name", dob: Date(), gender: ""))
+    }
 }

@@ -67,22 +67,18 @@ struct FeedListView: View {
             Group {
                 if feedType == .breast {
                     FeedChartView(child: child, feedType: feedType, period: period)
-//                        .listRowInsets(.none)
-//                        .listRowBackground(Color.clear)
-//                        .listRowSpacing(0)
-//                        .listRowSeparator(.hidden)
                 }
                 
                 if feedType == .bottle {
                     FeedBarView(child: child, feedType: feedType, period: period)
-                        
+                    
                 }
             }
             .listRowInsets(.none)
             .listRowBackground(Color.clear)
             .listRowSpacing(0)
             .listRowSeparator(.hidden)
-            //            List {
+            
             Section() {
                 ForEach(feeds) { feed in
                     NavigationLink(value: feed) {
@@ -102,11 +98,11 @@ struct FeedListView: View {
                             Text(feed.createdAt, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
                                 .foregroundStyle(Color.gray)
                         }
-                        //                        }
                     }
                 }
             }
         }
+        .padding(.top, -30)
         .listStyle(DefaultListStyle())
     }
 }
