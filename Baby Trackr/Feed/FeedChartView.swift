@@ -50,7 +50,7 @@ struct FeedChartView: View {
             let duration = feeds.map { feed in
                 return feed.duration
             }.reduce(0, +)
-            return ChartFeed(duration: duration, breastSide: breastSide)
+            return ChartFeed(duration: duration, breastSide: breastSide, bottleType: .unknown)
         }.sorted {
             $0.breastSide.rawValue < $1.breastSide.rawValue
         }

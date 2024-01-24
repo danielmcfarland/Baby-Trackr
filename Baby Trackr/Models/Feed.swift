@@ -84,14 +84,3 @@ final class Feed {
         return String(format: "%02d:%02d", minutes, seconds)
     }
 }
-
-final class FeedFormData {
-    var createdAt: Date = Date()
-    var timerStartedAt: Date? = nil
-    var trackrRunning: Bool = false
-    var duration: Int = 0
-    var type: FeedType = .breast
-    var bottleType: BottleType = .unknown
-    var breastSide: BreastSide = .unknown
-    var bottleSize: BottleSize = .unknown
-}

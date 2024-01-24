@@ -74,30 +74,52 @@ struct FeedBarView: View {
         self.feedType = feedType
         self.period = period
         
-        BreastSide.allCases.forEach { side in
+        BottleType.allCases.forEach { bottleType in
             let feed = Feed(type: .bottle)
             feed.duration = 0
-            feed.breastSideValue = side.rawValue
+            feed.bottleTypeValue = bottleType.rawValue
             self.placeholderFeeds.append(feed)
         }
     }
     
+    var chartFeeds: [ChartFeed] {
+        var data = placeholderFeeds
+        data.append(contentsOf: feeds)
+        
+        return Dictionary(grouping: data, by: { feed in
+            feed.bottleType
+        }).map { bottleType, feeds in
+            let duration = feeds.map { feed in
+                switch feed.bottleSize {
+                case .one:
+                    return 150
+                case .two:
+                    return 250
+                case .unknown:
+                    return 0
+                }
+            }.reduce(0, +)
+            return ChartFeed(duration: duration, breastSide: .unknown, bottleType: bottleType)
+        }.sorted {
+            $0.bottleType.rawValue < $1.bottleType.rawValue
+        }
+    }
+    
     var body: some View {
-        Chart(barItemData, id: \.type) { element in
-            ForEach(element.data) {
-                BarMark(
-                    x: .value("Day", $0.day),
-                    y: .value("Volume (in ml)", $0.volume)
-                )
-            }
+        Chart(chartFeeds, id: \.bottleType) { feed in
+            SectorMark(
+                angle: .value("Volume", feed.duration),
+                innerRadius: .ratio(0.618),
+                angularInset: 1.5
+            )
             .cornerRadius(5)
-            .foregroundStyle(by: .value("Side", element.type))
+            .foregroundStyle(by: .value("Side", feed.bottleType.rawValue))
         }
         .chartXAxis(.hidden)
         .padding()
         .padding(.bottom, 0)
         .frame(height: 250)
-        .animation(.default, value: barItemData)
+        .animation(.default, value: chartFeeds)
     }
 }
 
