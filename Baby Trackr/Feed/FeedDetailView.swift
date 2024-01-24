@@ -92,7 +92,7 @@ struct FeedDetailView: View {
         .sheet(isPresented: $showEditFeedSheet) {
             NavigationStack {
                 if let child = feed.child {
-                    AddFeedView(feed: feed, child: child, in: modelContext.container)
+                    FeedEntryView(feed: feed, child: child, in: modelContext.container)
                         .interactiveDismissDisabled()
                 }
             }

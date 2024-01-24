@@ -8,16 +8,16 @@
 import SwiftUI
 import SwiftData
 
-struct AddFeedView: View {
-    @EnvironmentObject var trackr: Trackr
-    private var modelContext: ModelContext
-    @Environment(\.dismiss) var dismiss
-    @Bindable var feed: Feed
-    @State var currentDuration: Int = 0
+struct FeedEntryView: View {
+    @Bindable private var child: Child
+    @Bindable private var feed: Feed
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var trackr: Trackr
+    @State private var currentDuration: Int = 0
     @State private var showCancelPrompt = false
-    @Bindable var child: Child
+    private var modelContext: ModelContext
     
-    var timerRunning: Bool {
+    private var timerRunning: Bool {
         return feed.trackrRunning && trackr.running;
     }
     
@@ -63,7 +63,7 @@ struct AddFeedView: View {
                         }
                         .foregroundStyle(Color.gray)
                         
-                        Picker("Bottle Size", selection: $feed.bottleSizeValue) {
+                        Picker("Volume", selection: $feed.bottleSizeValue) {
                             ForEach(BottleSize.allCases) { bottleSize in
                                 Text(bottleSize.rawValue).tag(bottleSize.rawValue)
                             }
@@ -177,7 +177,7 @@ struct AddFeedView: View {
         }
     }
     
-    var canSave: Bool {
+    private var canSave: Bool {
         return true
     }
     
@@ -227,7 +227,7 @@ struct AddFeedView: View {
 
 #Preview {
     NavigationStack {
-        AddFeedView(feed: Feed(type: FeedType.breast), child: Child(name: "", dob: Date(), gender: ""), in: PreviewData.container)
+        FeedEntryView(feed: Feed(type: FeedType.breast), child: Child(name: "", dob: Date(), gender: ""), in: PreviewData.container)
             .environmentObject(Trackr())
     }
 }

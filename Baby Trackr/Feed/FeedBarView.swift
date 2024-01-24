@@ -108,7 +108,7 @@ struct FeedBarView: View {
     var body: some View {
         Chart(chartFeeds, id: \.bottleType) { feed in
             SectorMark(
-                angle: .value("Volume", feed.duration),
+                angle: .value("Volume", feed.value),
                 innerRadius: .ratio(0.618),
                 angularInset: 1.5
             )

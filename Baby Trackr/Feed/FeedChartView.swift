@@ -59,7 +59,7 @@ struct FeedChartView: View {
     var body: some View {
         Chart(chartFeeds, id: \.breastSide) { feed in
             SectorMark(
-                angle: .value("Duration", feed.duration),
+                angle: .value("Duration", feed.value),
                 innerRadius: .ratio(0.618),
                 angularInset: 1.5
             )

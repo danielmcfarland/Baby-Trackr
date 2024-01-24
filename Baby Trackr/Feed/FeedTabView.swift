@@ -36,7 +36,7 @@ struct FeedTabView: View {
         }
         .sheet(isPresented: $showAddFeedSheet) {
             NavigationStack {
-                AddFeedView(feed: nil, child: child, in: modelContext.container)
+                FeedEntryView(feed: nil, child: child, in: modelContext.container)
             }
         }
     }

@@ -19,7 +19,7 @@
 		686E50D42B585502008DEA30 /* SaveIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D32B585501008DEA30 /* SaveIconView.swift */; };
 		686E50D72B586CAB008DEA30 /* ChangeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D62B586CAB008DEA30 /* ChangeListView.swift */; };
 		686E50D92B586E7F008DEA30 /* AddChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D82B586E7F008DEA30 /* AddChangeView.swift */; };
-		686E50DC2B5875A9008DEA30 /* AddFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50DB2B5875A9008DEA30 /* AddFeedView.swift */; };
+		686E50DC2B5875A9008DEA30 /* FeedEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50DB2B5875A9008DEA30 /* FeedEntryView.swift */; };
 		686E50DE2B58762F008DEA30 /* FeedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50DD2B58762F008DEA30 /* FeedListView.swift */; };
 		6881B2D92B4F4E1200A59C22 /* Baby_TrackrApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2D82B4F4E1200A59C22 /* Baby_TrackrApp.swift */; };
 		6881B2DB2B4F4E1200A59C22 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2DA2B4F4E1200A59C22 /* ContentView.swift */; };
@@ -59,7 +59,7 @@
 		686E50D32B585501008DEA30 /* SaveIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveIconView.swift; sourceTree = "<group>"; };
 		686E50D62B586CAB008DEA30 /* ChangeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeListView.swift; sourceTree = "<group>"; };
 		686E50D82B586E7F008DEA30 /* AddChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChangeView.swift; sourceTree = "<group>"; };
-		686E50DB2B5875A9008DEA30 /* AddFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeedView.swift; sourceTree = "<group>"; };
+		686E50DB2B5875A9008DEA30 /* FeedEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEntryView.swift; sourceTree = "<group>"; };
 		686E50DD2B58762F008DEA30 /* FeedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListView.swift; sourceTree = "<group>"; };
 		6881B2D52B4F4E1200A59C22 /* Baby Trackr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Baby Trackr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6881B2D82B4F4E1200A59C22 /* Baby_TrackrApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Baby_TrackrApp.swift; sourceTree = "<group>"; };
@@ -112,7 +112,7 @@
 		686E50DA2B58759E008DEA30 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
-				686E50DB2B5875A9008DEA30 /* AddFeedView.swift */,
+				686E50DB2B5875A9008DEA30 /* FeedEntryView.swift */,
 				6837C62F2B603B6B005CE1A3 /* FeedDetailView.swift */,
 				686E50DD2B58762F008DEA30 /* FeedListView.swift */,
 				68653E6F2B5F118F003704E1 /* FeedChartView.swift */,
@@ -326,7 +326,7 @@
 				68BBF10E2B54456200113F19 /* CurrentSleepView.swift in Sources */,
 				6837C6322B606E46005CE1A3 /* FeedBarView.swift in Sources */,
 				6881B2DD2B4F4E1200A59C22 /* Item.swift in Sources */,
-				686E50DC2B5875A9008DEA30 /* AddFeedView.swift in Sources */,
+				686E50DC2B5875A9008DEA30 /* FeedEntryView.swift in Sources */,
 				6881B2EC2B4FD6B600A59C22 /* Child.swift in Sources */,
 				6881B2D92B4F4E1200A59C22 /* Baby_TrackrApp.swift in Sources */,
 				68BBF0F62B51DD3200113F19 /* IconView.swift in Sources */,
