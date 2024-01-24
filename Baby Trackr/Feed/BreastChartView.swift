@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 import Charts
 
-struct FeedChartView: View {
+struct BreastChartView: View {
     var child: Child
     var feedType: FeedType
     var period: ChartPeriod
@@ -75,5 +75,5 @@ struct FeedChartView: View {
 }
 
 #Preview {
-    FeedChartView(child: Child(name: "", dob: Date.distantPast, gender: ""), feedType: .breast, period: .sevenDays)
+    BreastChartView(child: Child(name: "", dob: Date.distantPast, gender: ""), feedType: .breast, period: .sevenDays)
 }

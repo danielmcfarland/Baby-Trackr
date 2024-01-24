@@ -44,11 +44,11 @@ struct FeedListView: View {
             
             Group {
                 if feedType == .breast {
-                    FeedChartView(child: child, feedType: feedType, period: period)
+                    BreastChartView(child: child, feedType: feedType, period: period)
                 }
                 
                 if feedType == .bottle {
-                    FeedBarView(child: child, feedType: feedType, period: period)
+                    BottleChartView(child: child, feedType: feedType, period: period)
                 }
             }
             .listRowInsets(.none)
