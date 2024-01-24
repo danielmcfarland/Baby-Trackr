@@ -32,7 +32,15 @@ struct SleepListView: View {
                 ForEach(sleeps) { sleep in
                     NavigationLink(value: sleep) {
                         HStack {
-                            Text(sleep.humanReadableDuration)
+                            if sleep.trackrRunning {
+                                HStack {
+                                    Image(systemName: "record.circle")
+                                        .foregroundStyle(Color.red)
+                                    Text("In Progress")
+                                }
+                            } else {
+                                Text(sleep.humanReadableDuration)
+                            }
                             Spacer()
                             Text(sleep.createdAt, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
                                 .foregroundStyle(Color.gray)
@@ -54,10 +62,11 @@ struct SleepListView: View {
         .sheet(isPresented: $showAddSleepSheet) {
             NavigationStack {
                 SleepEntryView(sleep: nil, child: child, in: modelContext.container)
+                    .interactiveDismissDisabled()
             }
         }
         .navigationTitle("Sleep")
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

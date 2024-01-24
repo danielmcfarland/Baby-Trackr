@@ -95,7 +95,7 @@ struct FeedEntryView: View {
         }
         .navigationTitle("Feed")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar() {
+        .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: cancelFeed) {
                     Text("Cancel")

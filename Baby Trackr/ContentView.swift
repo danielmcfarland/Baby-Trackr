@@ -68,6 +68,9 @@ struct ContentView: View {
             .navigationDestination(for: Sleep.self) { sleep in
                 SleepDetailView(sleep: sleep)
             }
+            .navigationDestination(for: Change.self) { change in
+                ChangeDetailView(change: change)
+            }
             .navigationTitle("Baby Trackr")
             .navigationBarTitleDisplayMode(.large)
         }

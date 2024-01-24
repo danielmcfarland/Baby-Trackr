@@ -11,9 +11,13 @@ import SwiftData
 struct ChangeListView: View {
     var child: Child
 
+    @Environment(\.modelContext) private var modelContext
+    
     @State private var showAddChangeSheet = false
     
     @Query private var changes: [Change]
+    
+    @State var period: ChartPeriod = ChartPeriod.sevenDays
     
     init(child: Child) {
         let id = child.persistentModelID
@@ -27,8 +31,36 @@ struct ChangeListView: View {
     
     var body: some View {
         List {
-            ForEach(changes) { change in
-                Text("\(change.createdAt)")
+            Picker("Chart Period", selection: $period) {
+                ForEach(ChartPeriod.allCases) { period in
+                    Text(period.rawValue).tag(period)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding(0)
+            .listRowInsets(.none)
+            .listRowBackground(Color.clear)
+            .listRowSpacing(0)
+            .listRowSeparator(.hidden)
+            
+            ChangeChartView(child: child, period: period)
+                .listRowInsets(.none)
+                .listRowBackground(Color.clear)
+                .listRowSpacing(0)
+                .listRowSeparator(.hidden)
+                .padding(.bottom, -30)
+            
+            Section {
+                ForEach(changes) { change in
+                    NavigationLink(value: change) {
+                        HStack {
+                            Text("\(change.type.rawValue)")
+                            Spacer()
+                            Text(change.createdAt, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
+                                .foregroundStyle(Color.gray)
+                        }
+                    }
+                }
             }
         }
         .toolbar{
@@ -41,13 +73,18 @@ struct ChangeListView: View {
             }
         }
         .sheet(isPresented: $showAddChangeSheet) {
-            AddChangeView(change: Change(type: ChangeType.dry), child: child)
+            ChangeEntryView(change: Change(type: ChangeType.dry), child: child, in: modelContext.container)
+                .interactiveDismissDisabled()
         }
         .navigationTitle("Changes")
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
+        .padding(.top, -35)
+        .listStyle(DefaultListStyle())
     }
 }
 
 #Preview {
-    ChangeListView(child: Child(name: "Name", dob: Date(), gender: ""))
+    NavigationStack {
+        ChangeListView(child: Child(name: "Name", dob: Date(), gender: ""))
+    }
 }

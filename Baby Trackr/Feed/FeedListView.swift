@@ -8,28 +8,6 @@
 import SwiftUI
 import SwiftData
 
-enum ChartPeriod: String, CaseIterable, Codable, Identifiable {
-    case oneDay = "1 Day"
-    case sevenDays = "7 Days"
-    case twentyEightDays = "28 Days"
-    case allTime = "All"
-    
-    var id: Self { self }
-    
-    var periodDate: Date {
-        switch self {
-        case .oneDay:
-            return Calendar.current.startOfDay(for: Date())
-        case .sevenDays:
-            return Calendar.current.date(byAdding: .day, value: -7, to: ChartPeriod.oneDay.periodDate)!
-        case .twentyEightDays:
-            return Calendar.current.date(byAdding: .day, value: -28, to: ChartPeriod.oneDay.periodDate)!
-        case .allTime:
-            return Date.distantPast
-        }
-    }
-}
-
 struct FeedListView: View {
     var child: Child
     var feedType: FeedType
@@ -71,13 +49,13 @@ struct FeedListView: View {
                 
                 if feedType == .bottle {
                     FeedBarView(child: child, feedType: feedType, period: period)
-                    
                 }
             }
             .listRowInsets(.none)
             .listRowBackground(Color.clear)
             .listRowSpacing(0)
             .listRowSeparator(.hidden)
+            .padding(.bottom, -30)
             
             Section {
                 ForEach(feeds) { feed in
@@ -102,7 +80,7 @@ struct FeedListView: View {
                 }
             }
         }
-        .padding(.top, -30)
+        .padding(.top, -35)
         .listStyle(DefaultListStyle())
     }
 }

@@ -37,6 +37,7 @@ struct FeedTabView: View {
         .sheet(isPresented: $showAddFeedSheet) {
             NavigationStack {
                 FeedEntryView(feed: nil, child: child, in: modelContext.container)
+                    .interactiveDismissDisabled()
             }
         }
     }

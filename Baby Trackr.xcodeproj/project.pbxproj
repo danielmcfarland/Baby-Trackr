@@ -11,6 +11,10 @@
 		6837C6322B606E46005CE1A3 /* FeedBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837C6312B606E46005CE1A3 /* FeedBarView.swift */; };
 		6837C6342B619A08005CE1A3 /* SleepEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837C6332B619A08005CE1A3 /* SleepEntryView.swift */; };
 		6837C6362B619EB7005CE1A3 /* SleepDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837C6352B619EB7005CE1A3 /* SleepDetailView.swift */; };
+		6837C6382B61AA13005CE1A3 /* ChartPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837C6372B61AA12005CE1A3 /* ChartPeriod.swift */; };
+		6837C63A2B61AA40005CE1A3 /* ChangeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837C6392B61AA40005CE1A3 /* ChangeChartView.swift */; };
+		6837C63C2B61B1BE005CE1A3 /* ChangeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837C63B2B61B1BE005CE1A3 /* ChangeDetailView.swift */; };
+		6837C63E2B61BBD3005CE1A3 /* ChartChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837C63D2B61BBD3005CE1A3 /* ChartChange.swift */; };
 		68653E662B5C6E93003704E1 /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68653E652B5C6E93003704E1 /* PreviewData.swift */; };
 		68653E682B5C6FA2003704E1 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68653E672B5C6FA2003704E1 /* MenuView.swift */; };
 		68653E6A2B5C78C9003704E1 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68653E692B5C78C9003704E1 /* AboutView.swift */; };
@@ -20,7 +24,7 @@
 		686E50D22B572EE4008DEA30 /* Trackr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D12B572EE4008DEA30 /* Trackr.swift */; };
 		686E50D42B585502008DEA30 /* SaveIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D32B585501008DEA30 /* SaveIconView.swift */; };
 		686E50D72B586CAB008DEA30 /* ChangeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D62B586CAB008DEA30 /* ChangeListView.swift */; };
-		686E50D92B586E7F008DEA30 /* AddChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D82B586E7F008DEA30 /* AddChangeView.swift */; };
+		686E50D92B586E7F008DEA30 /* ChangeEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50D82B586E7F008DEA30 /* ChangeEntryView.swift */; };
 		686E50DC2B5875A9008DEA30 /* FeedEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50DB2B5875A9008DEA30 /* FeedEntryView.swift */; };
 		686E50DE2B58762F008DEA30 /* FeedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686E50DD2B58762F008DEA30 /* FeedListView.swift */; };
 		6881B2D92B4F4E1200A59C22 /* Baby_TrackrApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881B2D82B4F4E1200A59C22 /* Baby_TrackrApp.swift */; };
@@ -52,6 +56,10 @@
 		6837C6312B606E46005CE1A3 /* FeedBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedBarView.swift; sourceTree = "<group>"; };
 		6837C6332B619A08005CE1A3 /* SleepEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepEntryView.swift; sourceTree = "<group>"; };
 		6837C6352B619EB7005CE1A3 /* SleepDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepDetailView.swift; sourceTree = "<group>"; };
+		6837C6372B61AA12005CE1A3 /* ChartPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriod.swift; sourceTree = "<group>"; };
+		6837C6392B61AA40005CE1A3 /* ChangeChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeChartView.swift; sourceTree = "<group>"; };
+		6837C63B2B61B1BE005CE1A3 /* ChangeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeDetailView.swift; sourceTree = "<group>"; };
+		6837C63D2B61BBD3005CE1A3 /* ChartChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartChange.swift; sourceTree = "<group>"; };
 		68653E652B5C6E93003704E1 /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
 		68653E672B5C6FA2003704E1 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		68653E692B5C78C9003704E1 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -61,7 +69,7 @@
 		686E50D12B572EE4008DEA30 /* Trackr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trackr.swift; sourceTree = "<group>"; };
 		686E50D32B585501008DEA30 /* SaveIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveIconView.swift; sourceTree = "<group>"; };
 		686E50D62B586CAB008DEA30 /* ChangeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeListView.swift; sourceTree = "<group>"; };
-		686E50D82B586E7F008DEA30 /* AddChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChangeView.swift; sourceTree = "<group>"; };
+		686E50D82B586E7F008DEA30 /* ChangeEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEntryView.swift; sourceTree = "<group>"; };
 		686E50DB2B5875A9008DEA30 /* FeedEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEntryView.swift; sourceTree = "<group>"; };
 		686E50DD2B58762F008DEA30 /* FeedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListView.swift; sourceTree = "<group>"; };
 		6881B2D52B4F4E1200A59C22 /* Baby Trackr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Baby Trackr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,7 +114,9 @@
 			isa = PBXGroup;
 			children = (
 				686E50D62B586CAB008DEA30 /* ChangeListView.swift */,
-				686E50D82B586E7F008DEA30 /* AddChangeView.swift */,
+				686E50D82B586E7F008DEA30 /* ChangeEntryView.swift */,
+				6837C6392B61AA40005CE1A3 /* ChangeChartView.swift */,
+				6837C63B2B61B1BE005CE1A3 /* ChangeDetailView.swift */,
 			);
 			path = Change;
 			sourceTree = "<group>";
@@ -181,6 +191,8 @@
 				6881B2F32B4FD6CB00A59C22 /* Sleep.swift */,
 				686E50D12B572EE4008DEA30 /* Trackr.swift */,
 				68653E712B5FFBCB003704E1 /* ChartFeed.swift */,
+				6837C6372B61AA12005CE1A3 /* ChartPeriod.swift */,
+				6837C63D2B61BBD3005CE1A3 /* ChartChange.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -309,6 +321,7 @@
 			files = (
 				68BBF0FA2B51DF1800113F19 /* ChildLinkView.swift in Sources */,
 				686E50D42B585502008DEA30 /* SaveIconView.swift in Sources */,
+				6837C6382B61AA13005CE1A3 /* ChartPeriod.swift in Sources */,
 				6881B2DB2B4F4E1200A59C22 /* ContentView.swift in Sources */,
 				68653E682B5C6FA2003704E1 /* MenuView.swift in Sources */,
 				68653E6E2B5F0549003704E1 /* FeedTabView.swift in Sources */,
@@ -318,9 +331,11 @@
 				68653E662B5C6E93003704E1 /* PreviewData.swift in Sources */,
 				686E50D72B586CAB008DEA30 /* ChangeListView.swift in Sources */,
 				68BBF1002B51E10200113F19 /* RecordTypeView.swift in Sources */,
+				6837C63C2B61B1BE005CE1A3 /* ChangeDetailView.swift in Sources */,
 				6837C6302B603B6B005CE1A3 /* FeedDetailView.swift in Sources */,
 				686E50D22B572EE4008DEA30 /* Trackr.swift in Sources */,
-				686E50D92B586E7F008DEA30 /* AddChangeView.swift in Sources */,
+				686E50D92B586E7F008DEA30 /* ChangeEntryView.swift in Sources */,
+				6837C63A2B61AA40005CE1A3 /* ChangeChartView.swift in Sources */,
 				68BBF1052B51EAB400113F19 /* MeasurementTypeView.swift in Sources */,
 				68BBF0F82B51DD8F00113F19 /* TitleCardView.swift in Sources */,
 				68BBF1092B534A7C00113F19 /* MeasurementView.swift in Sources */,
@@ -332,6 +347,7 @@
 				6881B2EC2B4FD6B600A59C22 /* Child.swift in Sources */,
 				6881B2D92B4F4E1200A59C22 /* Baby_TrackrApp.swift in Sources */,
 				68BBF0F62B51DD3200113F19 /* IconView.swift in Sources */,
+				6837C63E2B61BBD3005CE1A3 /* ChartChange.swift in Sources */,
 				686E50DE2B58762F008DEA30 /* FeedListView.swift in Sources */,
 				6881B2F02B4FD6C200A59C22 /* Change.swift in Sources */,
 				6881B2F22B4FD6C700A59C22 /* Measurement.swift in Sources */,
