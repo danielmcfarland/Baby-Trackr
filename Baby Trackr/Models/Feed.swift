@@ -33,9 +33,39 @@ enum BreastSide: String, CaseIterable, Codable, Identifiable {
 }
 
 enum BottleSize: String, CaseIterable, Codable, Identifiable {
-    case unknown = "Unknown"
-    case one = "150 ml / 5 fl oz"
-    case two = "250 ml / 9 fl oz"
+    case ml150 = "150 ml"
+    case ml250 = "250 ml"
+    case floz5 = "5 fl oz"
+    case floz9 = "9 fl oz"
+    
+    var id: Self { self }
+    
+    var value: Int {
+        switch self {
+        case .floz5:
+            return 5
+        case .floz9:
+            return 9
+        case .ml150:
+            return 150
+        case .ml250:
+            return 250
+        }
+    }
+    
+    var units: BottleUnit {
+        switch self {
+        case .floz5, .floz9:
+            return BottleUnit.oz
+        case .ml150, .ml250:
+            return BottleUnit.ml
+        }
+    }
+}
+
+enum BottleUnit: String, CaseIterable, Codable, Identifiable {
+    case ml = "ml"
+    case oz = "fl oz"
     
     var id: Self { self }
 }
@@ -47,11 +77,12 @@ final class Feed {
     var timerStartedAt: Date? = nil
     var trackrRunning: Bool = false
     var duration: Int = 0
+    var value: Int = 0
 
     var type: FeedType {
         return FeedType(rawValue: self.typeValue)!
     }
-    var typeValue: String = FeedType.breast.rawValue
+    var typeValue: String = FeedType.bottle.rawValue
     
     var bottleType: BottleType {
         return BottleType(rawValue: self.bottleTypeValue)!
@@ -63,10 +94,10 @@ final class Feed {
     }
     var breastSideValue: String = BreastSide.unknown.rawValue
     
-    var bottleSize: BottleSize {
-        return BottleSize(rawValue: self.bottleSizeValue)!
+    var bottleUnit: BottleUnit {
+        return BottleUnit(rawValue: self.bottleUnitValue)!
     }
-    var bottleSizeValue: String = BottleSize.unknown.rawValue
+    var bottleUnitValue: String = BottleUnit.ml.rawValue
     
     init(type: FeedType) {
         self.typeValue = type.rawValue

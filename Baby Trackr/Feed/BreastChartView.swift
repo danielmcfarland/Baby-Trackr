@@ -48,7 +48,7 @@ struct BreastChartView: View {
             feed.breastSide
         }).map { breastSide, feeds in
             let duration = feeds.map { feed in
-                return feed.duration
+                return Double(feed.duration)
             }.reduce(0, +)
             return ChartFeed(duration: duration, breastSide: breastSide, bottleType: .unknown)
         }.sorted {

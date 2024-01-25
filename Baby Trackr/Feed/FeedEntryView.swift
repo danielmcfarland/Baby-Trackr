@@ -9,10 +9,17 @@ import SwiftUI
 import SwiftData
 
 struct FeedEntryView: View {
+    
+    enum FocusedField {
+        case value
+    }
+    
     @Bindable private var child: Child
     @Bindable private var feed: Feed
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var trackr: Trackr
+    @FocusState private var focusedField: FocusedField?
+    @State private var bottleVolume: Int?
     @State private var currentDuration: Int = 0
     @State private var showCancelPrompt = false
     private var modelContext: ModelContext
@@ -63,9 +70,51 @@ struct FeedEntryView: View {
                         }
                         .foregroundStyle(Color.gray)
                         
-                        Picker("Volume", selection: $feed.bottleSizeValue) {
+                        HStack {
                             ForEach(BottleSize.allCases) { bottleSize in
-                                Text(bottleSize.rawValue).tag(bottleSize.rawValue)
+                                Group {
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .foregroundStyle(Gradient(colors: [
+                                                Color.indigo.opacity(0.7),
+                                                Color.indigo.opacity(0.9),
+                                            ]))
+//                                            .foregroundStyle(Color.gray)
+                                        
+                                        Text("\(bottleSize.rawValue)")
+                                            .font(.callout)
+                                            .foregroundStyle(Color.white)
+                                    }
+                                }
+                                .onTapGesture {
+                                    bottleVolume = bottleSize.value
+                                    feed.bottleUnitValue = bottleSize.units.rawValue
+                                }
+                            }
+                        }
+
+                        LabeledContent {
+                            TextField("", value: $bottleVolume, format: .number)
+                                .keyboardType(.decimalPad)
+                                .focused($focusedField, equals: .value)
+                                .multilineTextAlignment(.trailing)
+                                .foregroundStyle(Color.gray)
+                                .onChange(of: bottleVolume) {
+                                    guard let bottleVolume = bottleVolume else {
+                                        feed.value = 0
+                                        return
+                                    }
+                                    
+                                    feed.value = bottleVolume
+                                }
+                        } label: {
+                            Text("Volume")
+                                .foregroundStyle(Color.gray)
+                        }
+                        
+                        Picker("Unit", selection: $feed.bottleUnitValue) {
+                            ForEach(BottleUnit.allCases) { bottleUnit in
+                                Text(bottleUnit.rawValue).tag(bottleUnit.rawValue)
                             }
                         }
                         .foregroundStyle(Color.gray)
@@ -162,6 +211,9 @@ struct FeedEntryView: View {
             } else {
                 currentDuration = feed.duration
             }
+            if self.feed.type == .bottle {
+                focusedField = .value
+            }
         }
         .confirmationDialog("Cancel Feed", isPresented: $showCancelPrompt) {
             Button("Yes", action: {
@@ -223,7 +275,7 @@ struct FeedEntryView: View {
 
 #Preview {
     NavigationStack {
-        FeedEntryView(feed: Feed(type: FeedType.breast), child: Child(name: "", dob: Date(), gender: ""), in: PreviewData.container)
+        FeedEntryView(feed: Feed(type: FeedType.bottle), child: Child(name: "", dob: Date(), gender: ""), in: PreviewData.container)
             .environmentObject(Trackr())
     }
 }

@@ -47,17 +47,15 @@ struct BottleChartView: View {
         return Dictionary(grouping: data, by: { feed in
             feed.bottleType
         }).map { bottleType, feeds in
-            let duration = feeds.map { feed in
-                switch feed.bottleSize {
-                case .one:
-                    return 150
-                case .two:
-                    return 250
-                case .unknown:
-                    return 0
+            let value = feeds.map { feed in
+                switch feed.bottleUnit {
+                case .ml:
+                    return Double(feed.value)
+                case .oz:
+                    return Double(feed.value) * 28.41
                 }
-            }.reduce(0, +)
-            return ChartFeed(duration: duration, breastSide: .unknown, bottleType: bottleType)
+            }.reduce(Double(0), +)
+            return ChartFeed(duration: value, breastSide: .unknown, bottleType: bottleType)
         }.sorted {
             $0.bottleType.rawValue < $1.bottleType.rawValue
         }

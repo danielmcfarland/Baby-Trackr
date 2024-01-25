@@ -37,11 +37,11 @@ struct FeedDetailView: View {
                     }
                     
                     VStack(alignment: .leading) {
-                        Text("Bottle Size")
+                        Text("Volume")
                             .foregroundStyle(Color.gray)
                             .font(.footnote)
                         
-                        Text(feed.bottleSize.rawValue)
+                        Text("\(feed.value) \(feed.bottleUnit.rawValue)")
                     }
                 }
                 if feed.typeValue == FeedType.breast.rawValue {

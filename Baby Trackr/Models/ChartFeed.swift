@@ -8,11 +8,11 @@
 import Foundation
 
 class ChartFeed: Equatable {
-    var value: Int
+    var value: Double
     var breastSide: BreastSide
     var bottleType: BottleType
     
-    init(duration: Int, breastSide: BreastSide, bottleType: BottleType) {
+    init(duration: Double, breastSide: BreastSide, bottleType: BottleType) {
         self.value = duration
         self.breastSide = breastSide
         self.bottleType = bottleType

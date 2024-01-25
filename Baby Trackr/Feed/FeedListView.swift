@@ -62,7 +62,7 @@ struct FeedListView: View {
                     NavigationLink(value: feed) {
                         HStack {
                             if feed.type == .bottle {
-                                Text("\(feed.bottleSize.rawValue)")
+                                Text("\(feed.value) \(feed.bottleUnit.rawValue)")
                             } else if feed.type == .breast && !feed.trackrRunning {
                                 Text("\(feed.humanReadableDuration)")
                             } else if feed.type == .breast && feed.trackrRunning {

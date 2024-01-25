@@ -20,7 +20,7 @@ class PreviewData {
                 container.mainContext.insert(child)
                 
                 let feed = Feed(type: .bottle)
-                feed.bottleSizeValue = BottleSize.one.rawValue
+//                feed.bottleSizeValue = BottleSize.one.rawValue
                 feed.bottleTypeValue = BottleType.formula.rawValue
                 feed.child = child
                 container.mainContext.insert(feed)
