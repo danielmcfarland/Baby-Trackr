@@ -72,25 +72,25 @@ struct FeedEntryView: View {
                         
                         HStack {
                             ForEach(BottleSize.allCases) { bottleSize in
-                                Group {
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .foregroundStyle(Gradient(colors: [
-                                                Color.indigo.opacity(0.7),
-                                                Color.indigo.opacity(0.9),
-                                            ]))
-//                                            .foregroundStyle(Color.gray)
-                                        
-                                        Text("\(bottleSize.rawValue)")
-                                            .font(.callout)
-                                            .foregroundStyle(Color.white)
-                                    }
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .foregroundStyle(Gradient(colors: [
+                                            Color.indigo.opacity(0.7),
+                                            Color.indigo.opacity(0.9),
+                                        ]))
+                                    
+                                    Text("\(bottleSize.rawValue)")
+                                        .font(.callout)
+                                        .foregroundStyle(Color.white)
                                 }
                                 .onTapGesture {
                                     bottleVolume = bottleSize.value
                                     feed.bottleUnitValue = bottleSize.units.rawValue
                                 }
                             }
+                        }
+                        .alignmentGuide(.listRowSeparatorLeading) { _ in
+                            0
                         }
 
                         LabeledContent {
