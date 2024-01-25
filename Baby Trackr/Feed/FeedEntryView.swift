@@ -61,15 +61,8 @@ struct FeedEntryView: View {
                     .foregroundStyle(Color.gray)
                 }
                 
-                if feed.typeValue == FeedType.bottle.rawValue {
-                    Section {
-                        Picker("Bottle Type", selection: $feed.bottleTypeValue) {
-                            ForEach(BottleType.allCases) { bottleType in
-                                Text(bottleType.rawValue).tag(bottleType.rawValue)
-                            }
-                        }
-                        .foregroundStyle(Color.gray)
-                        
+                if feed.typeValue == FeedType.bottle.rawValue {                  
+                    Section(header: Text("").padding(.top, -10), footer: Text("").padding(.bottom, -10)) {
                         HStack {
                             ForEach(BottleSize.allCases) { bottleSize in
                                 ZStack {
@@ -92,7 +85,11 @@ struct FeedEntryView: View {
                         .alignmentGuide(.listRowSeparatorLeading) { _ in
                             0
                         }
+                        .listRowBackground(Color.clear)
+                    }
+                    .listSectionSpacing(0)
 
+                    Section {
                         LabeledContent {
                             TextField("", value: $bottleVolume, format: .number)
                                 .keyboardType(.decimalPad)
@@ -115,6 +112,13 @@ struct FeedEntryView: View {
                         Picker("Unit", selection: $feed.bottleUnitValue) {
                             ForEach(BottleUnit.allCases) { bottleUnit in
                                 Text(bottleUnit.rawValue).tag(bottleUnit.rawValue)
+                            }
+                        }
+                        .foregroundStyle(Color.gray)
+                        
+                        Picker("Bottle Type", selection: $feed.bottleTypeValue) {
+                            ForEach(BottleType.allCases) { bottleType in
+                                Text(bottleType.rawValue).tag(bottleType.rawValue)
                             }
                         }
                         .foregroundStyle(Color.gray)

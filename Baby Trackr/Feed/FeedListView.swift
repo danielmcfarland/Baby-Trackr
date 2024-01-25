@@ -80,7 +80,6 @@ struct FeedListView: View {
                 }
             }
         }
-        .padding(.top, -35)
         .listStyle(DefaultListStyle())
     }
 }

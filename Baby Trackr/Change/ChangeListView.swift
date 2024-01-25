@@ -78,7 +78,6 @@ struct ChangeListView: View {
         }
         .navigationTitle("Changes")
         .navigationBarTitleDisplayMode(.inline)
-        .padding(.top, -35)
         .listStyle(DefaultListStyle())
     }
 }
