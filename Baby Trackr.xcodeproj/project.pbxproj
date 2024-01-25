@@ -15,6 +15,7 @@
 		6837C63A2B61AA40005CE1A3 /* ChangeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837C6392B61AA40005CE1A3 /* ChangeChartView.swift */; };
 		6837C63C2B61B1BE005CE1A3 /* ChangeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837C63B2B61B1BE005CE1A3 /* ChangeDetailView.swift */; };
 		6837C63E2B61BBD3005CE1A3 /* ChartChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837C63D2B61BBD3005CE1A3 /* ChartChange.swift */; };
+		6837C6402B630F87005CE1A3 /* SleepChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837C63F2B630F87005CE1A3 /* SleepChartView.swift */; };
 		68653E662B5C6E93003704E1 /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68653E652B5C6E93003704E1 /* PreviewData.swift */; };
 		68653E682B5C6FA2003704E1 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68653E672B5C6FA2003704E1 /* MenuView.swift */; };
 		68653E6A2B5C78C9003704E1 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68653E692B5C78C9003704E1 /* AboutView.swift */; };
@@ -60,6 +61,7 @@
 		6837C6392B61AA40005CE1A3 /* ChangeChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeChartView.swift; sourceTree = "<group>"; };
 		6837C63B2B61B1BE005CE1A3 /* ChangeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeDetailView.swift; sourceTree = "<group>"; };
 		6837C63D2B61BBD3005CE1A3 /* ChartChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartChange.swift; sourceTree = "<group>"; };
+		6837C63F2B630F87005CE1A3 /* SleepChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepChartView.swift; sourceTree = "<group>"; };
 		68653E652B5C6E93003704E1 /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
 		68653E672B5C6FA2003704E1 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		68653E692B5C78C9003704E1 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				68BBF10B2B5444C700113F19 /* SleepListView.swift */,
+				6837C63F2B630F87005CE1A3 /* SleepChartView.swift */,
 				6837C6332B619A08005CE1A3 /* SleepEntryView.swift */,
 				6837C6352B619EB7005CE1A3 /* SleepDetailView.swift */,
 			);
@@ -347,6 +350,7 @@
 				6881B2EC2B4FD6B600A59C22 /* Child.swift in Sources */,
 				6881B2D92B4F4E1200A59C22 /* Baby_TrackrApp.swift in Sources */,
 				68BBF0F62B51DD3200113F19 /* IconView.swift in Sources */,
+				6837C6402B630F87005CE1A3 /* SleepChartView.swift in Sources */,
 				6837C63E2B61BBD3005CE1A3 /* ChartChange.swift in Sources */,
 				686E50DE2B58762F008DEA30 /* FeedListView.swift in Sources */,
 				6881B2F02B4FD6C200A59C22 /* Change.swift in Sources */,

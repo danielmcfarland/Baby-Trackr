@@ -19,8 +19,23 @@ class PreviewData {
                 let child = Child(name: "Name \(i)", dob: Date.now, gender: "")
                 container.mainContext.insert(child)
                 
+                for j in 0...5 {
+                    let sleep = Sleep()
+                    sleep.createdAt = Calendar.current.date(byAdding: .day, value: -j, to: Date())!
+                    sleep.duration = j * 3600
+                    sleep.child = child
+                    container.mainContext.insert(sleep)
+                }
+                
+                for j in 0...5 {
+                    let sleep = Sleep()
+                    sleep.createdAt = Calendar.current.date(byAdding: .hour, value: -j, to: Date())!
+                    sleep.duration = j * 3600
+                    sleep.child = child
+                    container.mainContext.insert(sleep)
+                }
+                
                 let feed = Feed(type: .bottle)
-//                feed.bottleSizeValue = BottleSize.one.rawValue
                 feed.bottleTypeValue = BottleType.formula.rawValue
                 feed.child = child
                 container.mainContext.insert(feed)

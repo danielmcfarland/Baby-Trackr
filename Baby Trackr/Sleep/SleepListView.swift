@@ -12,6 +12,8 @@ struct SleepListView: View {
     var child: Child
     @Environment(\.modelContext) private var modelContext
     
+    @State var period: ChartPeriod = ChartPeriod.sevenDays
+    
     @State private var showAddSleepSheet = false
     
     @Query private var sleeps: [Sleep]
@@ -28,6 +30,24 @@ struct SleepListView: View {
     
     var body: some View {
         List {
+            Picker("Chart Period", selection: $period) {
+                ForEach(ChartPeriod.allCases) { period in
+                    Text(period.rawValue).tag(period)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding(0)
+            .listRowInsets(.none)
+            .listRowBackground(Color.clear)
+            .listRowSpacing(0)
+            .listRowSeparator(.hidden)
+
+            SleepChartView(child: child, period: period)
+                .listRowInsets(.none)
+                .listRowBackground(Color.clear)
+                .listRowSpacing(0)
+                .listRowSeparator(.hidden)
+            
             Section {
                 ForEach(sleeps) { sleep in
                     NavigationLink(value: sleep) {
