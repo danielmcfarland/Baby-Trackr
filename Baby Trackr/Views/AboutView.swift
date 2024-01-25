@@ -19,7 +19,7 @@ struct AboutView: View {
                     
                     Text("Baby Trackr")
                         .font(.largeTitle)
-                        .fontWeight(.bold)
+                        .fontWeight(.semibold)
                 }
                 .padding(.bottom, 5)
                 
@@ -29,11 +29,11 @@ struct AboutView: View {
                 if let appVersion = appVersion, let appBuild = appBuild {
                     Text("Version \(appVersion) (\(appBuild))")
                         .foregroundStyle(Color.gray)
-                        .fontWeight(.semibold)
+                        .fontWeight(.medium)
                 } else if let appVersion = appVersion {
                     Text("Version \(appVersion)")
                         .foregroundStyle(Color.gray)
-                        .fontWeight(.semibold)
+                        .fontWeight(.medium)
                 }
             }
             .padding(.bottom)

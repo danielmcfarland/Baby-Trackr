@@ -21,22 +21,21 @@ struct MenuView: View {
                         IconView(size: .larger, icon: "b.circle.fill", shadow: false)
                         Spacer()
                     }
-                    .padding(.top, 10)
                     
                     Text("Baby Trackr")
                         .font(.largeTitle)
-                        .fontWeight(.bold)
+                        .fontWeight(.semibold)
                     
                     if let appVersion = appVersion, let appBuild = appBuild {
                         Text("Version \(appVersion) (\(appBuild))")
                             .foregroundStyle(Color.gray)
                             .font(.title3)
-                            .fontWeight(.semibold)
+                            .fontWeight(.medium)
                     } else if let appVersion = appVersion {
                         Text("Version \(appVersion)")
                             .foregroundStyle(Color.gray)
                             .font(.title3)
-                            .fontWeight(.semibold)
+                            .fontWeight(.medium)
                     }
                 }
                 .listRowSeparator(.hidden)
