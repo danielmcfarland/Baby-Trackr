@@ -213,6 +213,9 @@ struct FeedEntryView: View {
             }
             if self.feed.type == .bottle {
                 focusedField = .value
+                if self.feed.value != 0 {
+                    bottleVolume = self.feed.value
+                }
             }
         }
         .confirmationDialog("Cancel Feed", isPresented: $showCancelPrompt) {
