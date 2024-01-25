@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct AboutView: View {
+    let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String?
+    let appBuild = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String?
+    
     var body: some View {
         List() {
             VStack(alignment: .leading) {
@@ -23,9 +26,15 @@ struct AboutView: View {
                 Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
                     .padding(.bottom, 2)
                 
-                Text("Version 1.0")
-                    .foregroundStyle(Color.gray)
-                    .fontWeight(.semibold)
+                if let appVersion = appVersion, let appBuild = appBuild {
+                    Text("Version \(appVersion) (\(appBuild))")
+                        .foregroundStyle(Color.gray)
+                        .fontWeight(.semibold)
+                } else if let appVersion = appVersion {
+                    Text("Version \(appVersion)")
+                        .foregroundStyle(Color.gray)
+                        .fontWeight(.semibold)
+                }
             }
             .padding(.bottom)
             .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
