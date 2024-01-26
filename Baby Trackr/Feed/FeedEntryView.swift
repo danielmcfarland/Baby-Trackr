@@ -223,7 +223,7 @@ struct FeedEntryView: View {
             }
         }
         .confirmationDialog("Cancel Feed", isPresented: $showCancelPrompt) {
-            Button("Yes", action: {
+            Button("Yes", role: .destructive, action: {
                 dismiss()
             })
             Button("No", role: .cancel) { }

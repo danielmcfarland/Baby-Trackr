@@ -12,9 +12,11 @@ struct FeedDetailView: View {
     @Query var feedQuery: [Feed]
     @State var feed: Feed
     @State var currentDuration: Int = 0
+    @State private var showDeletePrompt = false
     @State private var showEditFeedSheet = false
     @EnvironmentObject var trackr: Trackr
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
         List {
@@ -88,6 +90,9 @@ struct FeedDetailView: View {
                     Text("Edit")
                 })
             }
+            ToolbarItem(placement: .bottomBar) {
+                Button("Delete", role: .destructive, action: promptDelete)
+            }
         }
         .sheet(isPresented: $showEditFeedSheet) {
             NavigationStack {
@@ -112,6 +117,15 @@ struct FeedDetailView: View {
                 self.feed = feedQuery.first!
             }
         }
+        .confirmationDialog("Delete Feed", isPresented: $showDeletePrompt) {
+            Button("Delete", role: .destructive, action: {
+                modelContext.delete(feed)
+                self.presentationMode.wrappedValue.dismiss()
+            })
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Are you sure you want to delete this feed?")
+        }
     }
     
     var humanReadableDuration: String {
@@ -123,6 +137,10 @@ struct FeedDetailView: View {
             return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
         }
         return String(format: "%02d:%02d", minutes, seconds)
+    }
+    
+    func promptDelete() -> Void {
+        self.showDeletePrompt = true
     }
 }
 

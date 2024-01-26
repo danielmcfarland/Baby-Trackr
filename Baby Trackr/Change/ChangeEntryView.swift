@@ -67,13 +67,13 @@ struct ChangeEntryView: View {
                     .disabled(!canSave)
                 }
             }
-            .confirmationDialog("Cancel Feed", isPresented: $showCancelPrompt) {
-                Button("Yes", action: {
+            .confirmationDialog("Cancel Change", isPresented: $showCancelPrompt) {
+                Button("Yes", role: .destructive, action: {
                     dismiss()
                 })
                 Button("No", role: .cancel) { }
             } message: {
-                Text("Are you sure you want to cancel this feed without saving?")
+                Text("Are you sure you want to cancel this change without saving?")
             }
         }
     }

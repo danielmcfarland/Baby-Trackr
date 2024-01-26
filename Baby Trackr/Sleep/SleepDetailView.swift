@@ -12,9 +12,11 @@ struct SleepDetailView: View {
     @Query var sleepQuery: [Sleep]
     @State var sleep: Sleep
     @State var currentDuration: Int = 0
+    @State private var showDeletePrompt = false
     @State private var showEditSleepSheet = false
     @EnvironmentObject var trackr: Trackr
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
         List {
@@ -54,6 +56,9 @@ struct SleepDetailView: View {
                     Text("Edit")
                 })
             }
+            ToolbarItem(placement: .bottomBar) {
+                Button("Delete", role: .destructive, action: promptDelete)
+            }
         }
         .sheet(isPresented: $showEditSleepSheet) {
             NavigationStack {
@@ -78,6 +83,15 @@ struct SleepDetailView: View {
                 self.sleep = sleepQuery.first!
             }
         }
+        .confirmationDialog("Delete Sleep", isPresented: $showDeletePrompt) {
+            Button("Delete", role: .destructive, action: {
+                modelContext.delete(sleep)
+                self.presentationMode.wrappedValue.dismiss()
+            })
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Are you sure you want to delete this sleep?")
+        }
     }
     
     var humanReadableDuration: String {
@@ -89,6 +103,10 @@ struct SleepDetailView: View {
             return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
         }
         return String(format: "%02d:%02d", minutes, seconds)
+    }
+    
+    func promptDelete() -> Void {
+        self.showDeletePrompt = true
     }
 }
 

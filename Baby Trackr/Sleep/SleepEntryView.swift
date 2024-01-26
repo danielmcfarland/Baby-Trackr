@@ -126,7 +126,7 @@ struct SleepEntryView: View {
             }
         }
         .confirmationDialog("Cancel Sleep", isPresented: $showCancelPrompt) {
-            Button("Yes", action: {
+            Button("Yes", role: .destructive, action: {
                 dismiss()
             })
             Button("No", role: .cancel) { }

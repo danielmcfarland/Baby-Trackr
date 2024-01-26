@@ -11,9 +11,11 @@ import SwiftData
 struct ChangeDetailView: View {
     @Query var changeQuery: [Change]
     @State var change: Change
+    @State private var showDeletePrompt = false
     @State private var showEditChangeSheet = false
     @EnvironmentObject var trackr: Trackr
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
         List {
@@ -44,11 +46,13 @@ struct ChangeDetailView: View {
                     Text("Edit")
                 })
             }
+            ToolbarItem(placement: .bottomBar) {
+                Button("Delete", role: .destructive, action: promptDelete)
+            }
         }
         .sheet(isPresented: $showEditChangeSheet) {
             NavigationStack {
                 if let child = change.child {
-//                    ChangeEntryView(change: change, child: child)
                     ChangeEntryView(change: change, child: child, in: modelContext.container)
                         .interactiveDismissDisabled()
                 }
@@ -60,6 +64,19 @@ struct ChangeDetailView: View {
                 self.change = changeQuery.first!
             }
         }
+        .confirmationDialog("Delete Change", isPresented: $showDeletePrompt) {
+            Button("Delete", role: .destructive, action: {
+                modelContext.delete(change)
+                self.presentationMode.wrappedValue.dismiss()
+            })
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Are you sure you want to delete this change?")
+        }
+    }
+    
+    func promptDelete() -> Void {
+        self.showDeletePrompt = true
     }
 }
 
