@@ -22,7 +22,7 @@ class ChartSleep {
 struct SleepChartView: View {
     var child: Child
     var period: ChartPeriod
-    var placeholderFeeds: [Sleep] = []
+    var placeholderSleeps: [Sleep] = []
     
     @Query private var sleeps: [Sleep]
     
@@ -34,14 +34,46 @@ struct SleepChartView: View {
             sleep.child?.persistentModelID == id &&
             sleep.createdAt > periodDate &&
             !sleep.trackrRunning
-        })
+        }, sort: \.createdAt)
         
         self.child = child
         self.period = period
     }
     
     var chartSleeps: [ChartSleep] {
-        return Dictionary(grouping: sleeps, by: { sleep in
+        var data: [Sleep] = []
+        var startDate = Date()
+        if let firstSleep = sleeps.first {
+            startDate = firstSleep.createdAt
+        }
+        let startHour = Calendar.current.startOfDay(for: startDate)
+        if period == .oneDay {
+            for hour in 0..<24 {
+                if let date = Calendar.current.date(byAdding: .hour, value: hour, to: startHour) {
+                    let sleep = Sleep()
+                    sleep.duration = 0
+                    sleep.createdAt = date
+                    data.append(sleep)
+                }
+            }
+        } else {
+            let numberOfDays = Calendar.current.dateComponents([.day], from: startDate, to: Date())
+            print(numberOfDays)
+            for day in 0...(numberOfDays.day ?? 30) {
+                if let date = Calendar.current.date(byAdding: .day, value: day, to: startHour) {
+                    let sleep = Sleep()
+                    sleep.duration = 0
+                    sleep.createdAt = date
+                    data.append(sleep)
+                }
+            }
+        }
+
+        data.append(contentsOf: sleeps)
+        data.forEach {
+            print($0.createdAt)
+        }
+        let chartSleeps = Dictionary(grouping: data, by: { sleep in
             var components = [
                 Calendar.Component.day,
                 Calendar.Component.month,
@@ -71,6 +103,8 @@ struct SleepChartView: View {
             
             return ChartSleep(date: date, duration: duration)
         }
+        
+        return chartSleeps
     }
     
     var chartUnit: Calendar.Component {
@@ -89,5 +123,9 @@ struct SleepChartView: View {
 }
 
 #Preview {
-    SleepChartView(child: Child(name: "", dob: Date.distantPast, gender: ""), period: .sevenDays)
+    SingleItemPreview<Child> { child in
+        SleepChartView(child: child, period: .oneDay)
+    }
+    .modelContainer(PreviewData.container)
+    .environmentObject(Trackr())
 }
