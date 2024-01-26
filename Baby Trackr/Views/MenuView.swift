@@ -10,6 +10,7 @@ import StoreKit
 
 struct MenuView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.openURL) private var openURL
     @Environment(\.requestReview) var requestReview
     
     let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String?
@@ -54,7 +55,7 @@ struct MenuView: View {
                         Label("About", systemImage: "signature")
                     }
                     
-                    Link(destination: URL(string: "mailto:\(emailAddress)?subject=\(emailSubject.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")&body=\(emailBody.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")")!) {
+                    Button(action: feedbackSuggestionEmail) {
                         Label {
                             Text("Feedback and Suggestions")
                                 .foregroundStyle(Color.primary)
@@ -64,9 +65,7 @@ struct MenuView: View {
                         }
                     }
                     
-                    Button(action: {
-                        requestReview()
-                    }) {
+                    Button(action: manualReview) {
                         Label {
                             Text("Leave a Review")
                                 .foregroundStyle(Color.primary)
@@ -86,6 +85,26 @@ struct MenuView: View {
                 }
             }
         }
+    }
+    
+    func feedbackSuggestionEmail() -> Void {
+        let url  = "mailto:\(emailAddress)?subject=\(emailSubject.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")&body=\(emailBody.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")"
+        
+        guard let feedbackSuggestionEmailURL = URL(string: url) else {
+            fatalError("Expected a valid URL")
+        }
+        
+        openURL(feedbackSuggestionEmailURL)
+    }
+    
+    func manualReview() -> Void {
+        let url = "https://apps.apple.com/app/6475793703?action=write-review"
+
+        guard let writeReviewURL = URL(string: url) else {
+            fatalError("Expected a valid URL")
+        }
+
+        openURL(writeReviewURL)
     }
 }
 
