@@ -58,7 +58,6 @@ struct SleepChartView: View {
             }
         } else {
             let numberOfDays = Calendar.current.dateComponents([.day], from: startDate, to: Date())
-            print(numberOfDays)
             for day in 0...(numberOfDays.day ?? 30) {
                 if let date = Calendar.current.date(byAdding: .day, value: day, to: startHour) {
                     let sleep = Sleep()
@@ -70,9 +69,6 @@ struct SleepChartView: View {
         }
 
         data.append(contentsOf: sleeps)
-        data.forEach {
-            print($0.createdAt)
-        }
         let chartSleeps = Dictionary(grouping: data, by: { sleep in
             var components = [
                 Calendar.Component.day,
