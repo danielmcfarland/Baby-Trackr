@@ -6,11 +6,18 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct MenuView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.requestReview) var requestReview
+    
     let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String?
     let appBuild = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String?
+    
+    let emailAddress = "babytrackr@mcfarland.app"
+    let emailBody = ""
+    let emailSubject = "Feedback and Suggestions"
     
     var body: some View {
         NavigationStack {
@@ -43,7 +50,31 @@ struct MenuView: View {
                 .listRowBackground(Color.clear)
                 
                 Section {
-                    NavigationLink("About", destination: AboutView())
+                    NavigationLink(destination: AboutView()) {
+                        Label("About", systemImage: "signature")
+                    }
+                    
+                    Link(destination: URL(string: "mailto:\(emailAddress)?subject=\(emailSubject.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")&body=\(emailBody.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")")!) {
+                        Label {
+                            Text("Feedback and Suggestions")
+                                .foregroundStyle(Color.primary)
+                        } icon: {
+                            Image(systemName: "envelope")
+                                .foregroundStyle(Color.accent)
+                        }
+                    }
+                    
+                    Button(action: {
+                        requestReview()
+                    }) {
+                        Label {
+                            Text("Leave a Review")
+                                .foregroundStyle(Color.primary)
+                        } icon: {
+                            Image(systemName: "star")
+                                .foregroundStyle(Color.accent)
+                        }
+                    }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -55,7 +86,6 @@ struct MenuView: View {
                 }
             }
         }
-        
     }
 }
 
