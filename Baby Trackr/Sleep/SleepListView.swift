@@ -30,18 +30,6 @@ struct SleepListView: View {
     
     var body: some View {
         List {
-            Picker("Chart Period", selection: $period) {
-                ForEach(ChartPeriod.allCases) { period in
-                    Text(period.rawValue).tag(period)
-                }
-            }
-            .pickerStyle(.segmented)
-            .padding(0)
-            .listRowInsets(.none)
-            .listRowBackground(Color.clear)
-            .listRowSpacing(0)
-            .listRowSeparator(.hidden)
-
             SleepChartView(child: child, period: period)
                 .listRowInsets(.none)
                 .listRowBackground(Color.clear)
@@ -91,5 +79,9 @@ struct SleepListView: View {
 }
 
 #Preview {
-    SleepListView(child: Child(name: "Name", dob: Date(), gender: ""))
+    SingleItemPreview<Child> { child in
+        SleepListView(child: child)
+    }
+    .modelContainer(PreviewData.container)
+    .environmentObject(Trackr())
 }

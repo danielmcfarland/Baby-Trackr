@@ -11,20 +11,33 @@ enum ChartPeriod: String, CaseIterable, Codable, Identifiable {
     case oneDay = "1 Day"
     case sevenDays = "7 Days"
     case twentyEightDays = "28 Days"
-    case allTime = "All"
+    case allTime = "1 Year"
     
     var id: Self { self }
     
-    var periodDate: Date {
+    var startDate: Date {
         switch self {
         case .oneDay:
-            return Calendar.current.startOfDay(for: Date())
+            return Calendar.current.startOfDay(for: Date.now)
         case .sevenDays:
-            return Calendar.current.date(byAdding: .day, value: -7, to: ChartPeriod.oneDay.periodDate)!
+            return Calendar.current.date(byAdding: .day, value: 1-self.numberOfDays, to: Date.now)!
         case .twentyEightDays:
-            return Calendar.current.date(byAdding: .day, value: -28, to: ChartPeriod.oneDay.periodDate)!
+            return Calendar.current.date(byAdding: .day, value: 1-self.numberOfDays, to: Date.now)!
         case .allTime:
-            return Date.distantPast
+            return Calendar.current.date(byAdding: .year, value: -1, to: Date.now)!
+        }
+    }
+    
+    var numberOfDays: Int {
+        switch self {
+        case .oneDay:
+            return 1
+        case .sevenDays:
+            return 7
+        case .twentyEightDays:
+            return 28
+        case .allTime:
+            return 365
         }
     }
 }

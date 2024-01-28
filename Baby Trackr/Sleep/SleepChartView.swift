@@ -28,11 +28,9 @@ struct SleepChartView: View {
     
     init(child: Child, period: ChartPeriod) {
         let id = child.persistentModelID
-        let periodDate: Date = period.periodDate
         
         self._sleeps = Query(filter: #Predicate<Sleep> { sleep in
             sleep.child?.persistentModelID == id &&
-            sleep.createdAt > periodDate &&
             !sleep.trackrRunning
         }, sort: \.createdAt)
         
@@ -42,24 +40,21 @@ struct SleepChartView: View {
     
     var chartSleeps: [ChartSleep] {
         var data: [Sleep] = []
-        var startDate = Date()
-        if let firstSleep = sleeps.first {
-            startDate = firstSleep.createdAt
-        }
+        let startDate = period.startDate
+        let startOfPeriodSleep = Sleep()
+        startOfPeriodSleep.duration = 0
+        startOfPeriodSleep.createdAt = startDate
+        data.append(startOfPeriodSleep)
+        
+        let endOfTodaySleep = Sleep()
+        endOfTodaySleep.duration = 0
+        endOfTodaySleep.createdAt = Calendar.current.startOfDay(for: Date.now)
+        data.append(endOfTodaySleep)
+
         let startHour = Calendar.current.startOfDay(for: startDate)
         if period == .oneDay {
             for hour in 0..<24 {
                 if let date = Calendar.current.date(byAdding: .hour, value: hour, to: startHour) {
-                    let sleep = Sleep()
-                    sleep.duration = 0
-                    sleep.createdAt = date
-                    data.append(sleep)
-                }
-            }
-        } else {
-            let numberOfDays = Calendar.current.dateComponents([.day], from: startDate, to: Date())
-            for day in 0...(numberOfDays.day ?? 30) {
-                if let date = Calendar.current.date(byAdding: .day, value: day, to: startHour) {
                     let sleep = Sleep()
                     sleep.duration = 0
                     sleep.createdAt = date
@@ -91,10 +86,19 @@ struct SleepChartView: View {
             }.reduce(0, +) / 3600
             
             let calendar = Calendar(identifier: .gregorian)
-            var components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day)
-            if period == .oneDay {
+            var components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day, hour: dateComponents.hour)
+            switch period {
+            case .oneDay:
                 components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day, hour: dateComponents.hour)
+                break
+            case .sevenDays, .twentyEightDays:
+                components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day)
+                break
+            case .allTime:
+                components = DateComponents(year: dateComponents.year, month: dateComponents.month)
+                break
             }
+
             let date = calendar.date(from: components)!
             
             return ChartSleep(date: date, duration: duration)
@@ -104,7 +108,14 @@ struct SleepChartView: View {
     }
     
     var chartUnit: Calendar.Component {
-        return period == .oneDay ? .hour : .day
+        switch period {
+        case .oneDay:
+            return .hour
+        case .sevenDays, .twentyEightDays:
+            return .day
+        case .allTime:
+            return .month
+        }
     }
     
     var body: some View {
@@ -115,12 +126,21 @@ struct SleepChartView: View {
              )
              .cornerRadius(5)
          }
+         .chartScrollableAxes(.horizontal)
+         .chartXVisibleDomain(length: period.numberOfDays * 24 * 60 * 60)
+         .chartScrollPosition(initialX: Date.now.timeIntervalSince1970)
+         .chartScrollTargetBehavior(
+            .valueAligned(
+                matching: period == .oneDay ? DateComponents(minute: 0) : DateComponents(hour: 0),
+                majorAlignment: .matching(period == .oneDay ? DateComponents(hour: 0) : DateComponents(day: 0))
+            )
+         )
     }
 }
 
 #Preview {
     SingleItemPreview<Child> { child in
-        SleepChartView(child: child, period: .oneDay)
+        SleepChartView(child: child, period: .sevenDays)
     }
     .modelContainer(PreviewData.container)
     .environmentObject(Trackr())

@@ -17,7 +17,7 @@ struct ChangeChartView: View {
     
     init(child: Child, period: ChartPeriod) {
         let id = child.persistentModelID
-        let periodDate: Date = period.periodDate
+        let periodDate: Date = period.startDate
         
         self._changes = Query(filter: #Predicate<Change> { change in
             change.child?.persistentModelID == id &&

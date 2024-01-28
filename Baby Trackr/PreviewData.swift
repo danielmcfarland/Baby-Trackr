@@ -18,7 +18,7 @@ class PreviewData {
             let child = Child(name: "Child Name", dob: Date.now, gender: "")
             container.mainContext.insert(child)
             
-            for j in 0...5 {
+            for j in 1...5 {
                 let sleep = Sleep()
                 sleep.createdAt = Calendar.current.date(byAdding: .day, value: -j, to: Date())!
                 sleep.duration = j * 3600
@@ -26,10 +26,18 @@ class PreviewData {
                 container.mainContext.insert(sleep)
             }
             
-            for j in 0...5 {
+            for j in 1...5 {
                 let sleep = Sleep()
                 sleep.createdAt = Calendar.current.date(byAdding: .hour, value: -j, to: Date())!
                 sleep.duration = j * 3600
+                sleep.child = child
+                container.mainContext.insert(sleep)
+            }
+            
+            for k in 1...5 {
+                let sleep = Sleep()
+                sleep.createdAt = Calendar.current.date(byAdding: .day, value: -30-k, to: Date())!
+                sleep.duration = k * 3600
                 sleep.child = child
                 container.mainContext.insert(sleep)
             }

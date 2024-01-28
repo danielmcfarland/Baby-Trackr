@@ -19,7 +19,7 @@ struct BottleChartView: View {
     
     init(child: Child, feedType: FeedType, period: ChartPeriod) {
         let id = child.persistentModelID
-        let periodDate: Date = period.periodDate
+        let periodDate: Date = period.startDate
         
         self._feeds = Query(filter: #Predicate<Feed> { feed in
             feed.child?.persistentModelID == id &&
