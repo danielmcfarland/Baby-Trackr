@@ -35,9 +35,6 @@ struct SleepChartView: View {
     }
     
     var scrollChartRange: String {
-        let date = scrollPosition
-        let startRange = Calendar.current.startOfDay(for: date)
-        let endRange = Calendar.current.startOfDay(for: Date(timeInterval: Double(chartRange), since: date).addingTimeInterval(-60))
         let dateRange = self.startRangeDate..<self.endRangeDate
         return dateRange.formatted(.interval.day().month(.abbreviated).year())
     }
@@ -146,6 +143,7 @@ struct SleepChartView: View {
                 .fontWeight(.semibold)
             Text("\(scrollChartRange)")
                 .fontWeight(.semibold)
+                .padding(.bottom, 10)
             Chart(chartSleeps, id: \.date) { element in
                 BarMark(
                     x: .value("Day", element.date, unit: chartUnit),
