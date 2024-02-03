@@ -13,7 +13,6 @@ struct BottleChartView: View {
     var child: Child
     var feedType: FeedType
     var period: ChartPeriod
-    var placeholderFeeds: [Feed] = []
     
     @State private var scrollPosition: Date = Date(timeInterval: -Double(7 * 24 * 60 * 60), since: Calendar.current.startOfDay(for: Date(timeIntervalSinceNow: Double(24 * 60 * 60))))
 
@@ -46,17 +45,21 @@ struct BottleChartView: View {
         self.feedType = feedType
         self.period = period
         self.chartRange = period.numberOfDays * 24 * 60 * 60
-        
-//        BottleType.allCases.forEach { bottleType in
-//            let feed = Feed(type: .bottle)
-//            feed.duration = 0
-//            feed.bottleTypeValue = bottleType.rawValue
-//            self.placeholderFeeds.append(feed)
-//        }
     }
     
     var chartFeeds: [ChartFeed] {
-        var data = placeholderFeeds
+        var data: [Feed] = []
+        let startDate = period.startDate
+        let startOfPeriodSleep = Feed(type: .bottle)
+        startOfPeriodSleep.value = 0
+        startOfPeriodSleep.createdAt = startDate
+        data.append(startOfPeriodSleep)
+        
+        let endOfTodaySleep = Feed(type: .bottle)
+        endOfTodaySleep.value = 0
+        endOfTodaySleep.createdAt = Calendar.current.startOfDay(for: Date.now)
+        data.append(endOfTodaySleep)
+
         data.append(contentsOf: feeds)
         
         var chartFeeds: [ChartFeed] = []
@@ -147,7 +150,7 @@ struct BottleChartView: View {
 #Preview {
     SingleItemPreview<Child> { child in
         NavigationStack {
-            BottleChartView(child: child, feedType: .breast, period: .sevenDays)
+            BottleChartView(child: child, feedType: .bottle, period: .sevenDays)
         }
     }
     .modelContainer(PreviewData.container)

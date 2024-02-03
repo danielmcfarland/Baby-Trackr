@@ -13,7 +13,6 @@ struct BreastChartView: View {
     var child: Child
     var feedType: FeedType
     var period: ChartPeriod
-    var placeholderFeeds: [Feed] = []
     
     @State private var scrollPosition: Date = Date(timeInterval: -Double(7 * 24 * 60 * 60), since: Calendar.current.startOfDay(for: Date(timeIntervalSinceNow: Double(24 * 60 * 60))))
 
