@@ -26,11 +26,19 @@ struct SleepChartView: View {
     
     @State private var scrollPosition: Date = Date(timeInterval: -Double(7 * 24 * 60 * 60), since: Calendar.current.startOfDay(for: Date(timeIntervalSinceNow: Double(24 * 60 * 60))))
 
+    var startRangeDate: Date {
+        return scrollPosition.addingTimeInterval(60 * 60 * 12)
+    }
+    
+    var endRangeDate: Date {
+        return Date(timeInterval: Double(6 * 24 * 60 * 60), since: startRangeDate)
+    }
+    
     var scrollChartRange: String {
         let date = scrollPosition
         let startRange = Calendar.current.startOfDay(for: date)
         let endRange = Calendar.current.startOfDay(for: Date(timeInterval: Double(chartRange), since: date).addingTimeInterval(-60))
-        let dateRange = startRange..<endRange
+        let dateRange = self.startRangeDate..<self.endRangeDate
         return dateRange.formatted(.interval.day().month(.abbreviated).year())
     }
     
@@ -157,8 +165,8 @@ struct SleepChartView: View {
             .chartScrollPosition(x: $scrollPosition)
             .chartScrollTargetBehavior(
                 .valueAligned(
-                    matching: DateComponents(hour: 0),
-                    majorAlignment: .matching(DateComponents(day: 0))
+                    unit: 24 * 60 * 60,
+                    majorAlignment: .unit(1)
                 )
             )
         }
