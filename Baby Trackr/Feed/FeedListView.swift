@@ -36,7 +36,7 @@ struct FeedListView: View {
                     .listRowSpacing(0)
                     .listRowSeparator(.hidden)
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    .frame(height: 275)
+                    .frame(height: 300)
             }
             
             if feedType == .bottle {
@@ -45,7 +45,7 @@ struct FeedListView: View {
                     .listRowSpacing(0)
                     .listRowSeparator(.hidden)
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    .frame(height: 275)
+                    .frame(height: 300)
             }
             
             Section {
