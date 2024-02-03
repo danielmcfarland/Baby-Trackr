@@ -15,14 +15,14 @@ struct BottleChartView: View {
     var period: ChartPeriod
     var placeholderFeeds: [Feed] = []
     
-    @Query private var feeds: [Feed]
-    
+    @State private var scrollPosition: Date = Date(timeInterval: -Double(7 * 24 * 60 * 60), since: Calendar.current.startOfDay(for: Date(timeIntervalSinceNow: Double(24 * 60 * 60))))
+
     var startRangeDate: Date {
-        return Date.now.addingTimeInterval(-Double(7 * 24 * 60 * 60))
+        return scrollPosition.addingTimeInterval(60 * 60 * 12)
     }
     
     var endRangeDate: Date {
-        return Date.now
+        return Date(timeInterval: Double(6 * 24 * 60 * 60), since: startRangeDate)
     }
     
     var scrollChartRange: String {
@@ -30,36 +30,102 @@ struct BottleChartView: View {
         return dateRange.formatted(.interval.day().month(.abbreviated).year())
     }
     
+    @Query private var feeds: [Feed]
+    var chartRange: Int
+    
     init(child: Child, feedType: FeedType, period: ChartPeriod) {
         let id = child.persistentModelID
-        let periodDate: Date = period.startDate
         
         self._feeds = Query(filter: #Predicate<Feed> { feed in
             feed.child?.persistentModelID == id &&
             feed.typeValue == feedType.rawValue &&
-            feed.createdAt > periodDate &&
             !feed.trackrRunning
         })
         
         self.child = child
         self.feedType = feedType
         self.period = period
+        self.chartRange = period.numberOfDays * 24 * 60 * 60
         
-        BottleType.allCases.forEach { bottleType in
-            let feed = Feed(type: .bottle)
-            feed.duration = 0
-            feed.bottleTypeValue = bottleType.rawValue
-            self.placeholderFeeds.append(feed)
-        }
+//        BottleType.allCases.forEach { bottleType in
+//            let feed = Feed(type: .bottle)
+//            feed.duration = 0
+//            feed.bottleTypeValue = bottleType.rawValue
+//            self.placeholderFeeds.append(feed)
+//        }
     }
     
     var chartFeeds: [ChartFeed] {
         var data = placeholderFeeds
         data.append(contentsOf: feeds)
         
-        return Dictionary(grouping: data, by: { feed in
-            feed.bottleType
-        }).map { bottleType, feeds in
+        var chartFeeds: [ChartFeed] = []
+        
+        BottleType.allCases.forEach { bottleType in
+            let items = getBottleType(data: data, bottleType: bottleType)
+            chartFeeds.append(contentsOf: items)
+        }
+        
+        return chartFeeds
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(alignment: .center) {
+                IconView(size: .small, icon: "waterbottle.fill")
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Feed")
+                        .foregroundStyle(Color.gray)
+                        .font(.footnote)
+                        .fontWeight(.semibold)
+                    Text("\(scrollChartRange)")
+                        .fontWeight(.semibold)
+                }
+            }
+            .padding(.bottom, 10)
+
+            Chart(chartFeeds, id: \.date) { element in
+                BarMark(
+                    x: .value("Day", element.date, unit: .day),
+                    y: .value("Total", element.value)
+                )
+                .foregroundStyle(by: .value("Bottle Type", element.bottleType.rawValue))
+                .position(by: .value("Bottle Type", element.bottleType.rawValue))
+                .cornerRadius(5)
+            }
+            .chartXAxis {
+                AxisMarks(values: .stride(by: .day, count: 1)) { value in
+                    AxisValueLabel(format: .dateTime.weekday())
+                    AxisGridLine()
+                    AxisTick()
+                }
+            }
+            .chartScrollableAxes(.horizontal)
+            .chartXVisibleDomain(length: chartRange)
+            .chartScrollPosition(x: $scrollPosition)
+            .chartScrollTargetBehavior(
+                .valueAligned(
+                    unit: 24 * 60 * 60,
+                    majorAlignment: .unit(1)
+                )
+            )
+        }
+    }
+    
+    func getBottleType(data: [Feed], bottleType: BottleType) -> [ChartFeed] {
+        
+        let feeds = data.filter { feed in
+            return feed.bottleType == bottleType
+        }
+        
+        return Dictionary(grouping: feeds, by: { sleep in
+            let components = [
+                Calendar.Component.day,
+                Calendar.Component.month,
+                Calendar.Component.year,
+            ]
+            return Calendar.current.dateComponents(Set(components), from: sleep.createdAt)
+        }).map { dateComponents, feeds in
             let value = feeds.map { feed in
                 switch feed.bottleUnit {
                 case .ml:
@@ -68,39 +134,22 @@ struct BottleChartView: View {
                     return Double(feed.value) * 28.41
                 }
             }.reduce(Double(0), +)
-            return ChartFeed(duration: value, breastSide: .unknown, bottleType: bottleType)
-        }.sorted {
-            $0.bottleType.rawValue < $1.bottleType.rawValue
-        }
-    }
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("Feeds")
-                .foregroundStyle(Color.gray)
-                .font(.footnote)
-                .fontWeight(.semibold)
-            Text("\(scrollChartRange)")
-                .fontWeight(.semibold)
-                .padding(.bottom, 10)
-            Chart(chartFeeds, id: \.bottleType) { feed in
-                SectorMark(
-                    angle: .value("Volume", feed.value),
-                    innerRadius: .ratio(0.618),
-                    angularInset: 1.5
-                )
-                .cornerRadius(5)
-                .foregroundStyle(by: .value("Side", feed.bottleType.rawValue))
-            }
-            .chartXAxis(.hidden)
-            .padding()
-            .padding(.bottom, 0)
-            .frame(height: 250)
-            .animation(.default, value: chartFeeds)
+            
+            let components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day)
+            
+            let date = Calendar.current.date(from: components)!
+            
+            return ChartFeed(date: date, duration: value, breastSide: .unknown, bottleType: bottleType)
         }
     }
 }
 
 #Preview {
-    BottleChartView(child: Child(name: "", dob: Date.distantPast, gender: ""), feedType: .breast, period: .sevenDays)
+    SingleItemPreview<Child> { child in
+        NavigationStack {
+            BottleChartView(child: child, feedType: .breast, period: .sevenDays)
+        }
+    }
+    .modelContainer(PreviewData.container)
+    .environmentObject(Trackr())
 }

@@ -36,7 +36,7 @@ struct FeedListView: View {
                     .listRowSpacing(0)
                     .listRowSeparator(.hidden)
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    .frame(height: 300)
+                    .frame(height: 250)
             }
             
             if feedType == .bottle {
@@ -45,7 +45,7 @@ struct FeedListView: View {
                     .listRowSpacing(0)
                     .listRowSeparator(.hidden)
                     .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    .frame(height: 300)
+                    .frame(height: 250)
             }
             
             Section {
@@ -76,7 +76,11 @@ struct FeedListView: View {
 }
 
 #Preview {
-    NavigationStack {
-        FeedListView(child: Child(name: "Name", dob: Date(), gender: ""), feedType: .breast)
+    SingleItemPreview<Child> { child in
+        NavigationStack {
+            FeedListView(child: child, feedType: .bottle)
+        }
     }
+    .modelContainer(PreviewData.container)
+    .environmentObject(Trackr())
 }

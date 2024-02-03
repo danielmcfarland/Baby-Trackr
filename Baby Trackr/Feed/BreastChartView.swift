@@ -15,14 +15,14 @@ struct BreastChartView: View {
     var period: ChartPeriod
     var placeholderFeeds: [Feed] = []
     
-    @Query private var feeds: [Feed]
-    
+    @State private var scrollPosition: Date = Date(timeInterval: -Double(7 * 24 * 60 * 60), since: Calendar.current.startOfDay(for: Date(timeIntervalSinceNow: Double(24 * 60 * 60))))
+
     var startRangeDate: Date {
-        return Date.now.addingTimeInterval(-Double(7 * 24 * 60 * 60))
+        return scrollPosition.addingTimeInterval(60 * 60 * 12)
     }
     
     var endRangeDate: Date {
-        return Date.now
+        return Date(timeInterval: Double(6 * 24 * 60 * 60), since: startRangeDate)
     }
     
     var scrollChartRange: String {
@@ -30,72 +30,124 @@ struct BreastChartView: View {
         return dateRange.formatted(.interval.day().month(.abbreviated).year())
     }
     
+    @Query private var feeds: [Feed]
+    var chartRange: Int
+    
     init(child: Child, feedType: FeedType, period: ChartPeriod) {
         let id = child.persistentModelID
-        let periodDate: Date = period.startDate
         
         self._feeds = Query(filter: #Predicate<Feed> { feed in
             feed.child?.persistentModelID == id &&
             feed.typeValue == feedType.rawValue &&
-            feed.createdAt > periodDate &&
             !feed.trackrRunning
         })
         
         self.child = child
         self.feedType = feedType
         self.period = period
-        
-        BreastSide.allCases.forEach { side in
-            let feed = Feed(type: .bottle)
-            feed.duration = 0
-            feed.breastSideValue = side.rawValue
-            self.placeholderFeeds.append(feed)
-        }
+        self.chartRange = period.numberOfDays * 24 * 60 * 60
     }
     
     var chartFeeds: [ChartFeed] {
-        var data = placeholderFeeds
+        var data: [Feed] = []
+        let startDate = period.startDate
+        let startOfPeriodSleep = Feed(type: .breast)
+        startOfPeriodSleep.duration = 0
+        startOfPeriodSleep.createdAt = startDate
+        data.append(startOfPeriodSleep)
+        
+        let endOfTodaySleep = Feed(type: .breast)
+        endOfTodaySleep.duration = 0
+        endOfTodaySleep.createdAt = Calendar.current.startOfDay(for: Date.now)
+        data.append(endOfTodaySleep)
+
         data.append(contentsOf: feeds)
         
-        return Dictionary(grouping: data, by: { feed in
-            feed.breastSide
-        }).map { breastSide, feeds in
-            let duration = feeds.map { feed in
-                return Double(feed.duration)
-            }.reduce(0, +)
-            return ChartFeed(duration: duration, breastSide: breastSide, bottleType: .unknown)
-        }.sorted {
-            $0.breastSide.rawValue < $1.breastSide.rawValue
+        var chartFeeds: [ChartFeed] = []
+        
+        BreastSide.allCases.forEach { breastSide in
+            let items = getBreastSide(data: data, breastSide: breastSide)
+            chartFeeds.append(contentsOf: items)
         }
+        
+        return chartFeeds
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Feeds")
-                .foregroundStyle(Color.gray)
-                .font(.footnote)
-                .fontWeight(.semibold)
-            Text("\(scrollChartRange)")
-                .fontWeight(.semibold)
-                .padding(.bottom, 10)
-            Chart(chartFeeds, id: \.breastSide) { feed in
-                SectorMark(
-                    angle: .value("Duration", feed.value),
-                    innerRadius: .ratio(0.618),
-                    angularInset: 1.5
-                )
-                .cornerRadius(5)
-                .foregroundStyle(by: .value("Side", feed.breastSide.rawValue))
+            HStack(alignment: .center) {
+                IconView(size: .small, icon: "waterbottle.fill")
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Feed")
+                        .foregroundStyle(Color.gray)
+                        .font(.footnote)
+                        .fontWeight(.semibold)
+                    Text("\(scrollChartRange)")
+                        .fontWeight(.semibold)
+                }
             }
-            .chartXAxis(.hidden)
-            .padding()
-            .padding(.bottom, 0)
-            .frame(height: 250)
-            .animation(.default, value: chartFeeds)
+            .padding(.bottom, 10)
+            Chart(chartFeeds, id: \.date) { element in
+                BarMark(
+                    x: .value("Day", element.date, unit: .day),
+                    y: .value("Total", element.value)
+                )
+                .foregroundStyle(by: .value("Breast Side", element.breastSide.rawValue))
+                .position(by: .value("Breast Side", element.breastSide.rawValue))
+                .cornerRadius(5)
+            }
+            .chartXAxis {
+                AxisMarks(values: .stride(by: .day, count: 1)) { value in
+                    AxisValueLabel(format: .dateTime.weekday())
+                    AxisGridLine()
+                    AxisTick()
+                }
+            }
+            .chartScrollableAxes(.horizontal)
+            .chartXVisibleDomain(length: chartRange)
+            .chartScrollPosition(x: $scrollPosition)
+            .chartScrollTargetBehavior(
+                .valueAligned(
+                    unit: 24 * 60 * 60,
+                    majorAlignment: .unit(1)
+                )
+            )
+        }
+    }
+    
+    func getBreastSide(data: [Feed], breastSide: BreastSide) -> [ChartFeed] {
+        
+        let feeds = data.filter { feed in
+            return feed.breastSide == breastSide
+        }
+        
+        return Dictionary(grouping: feeds, by: { sleep in
+            let components = [
+                Calendar.Component.day,
+                Calendar.Component.month,
+                Calendar.Component.year,
+            ]
+            return Calendar.current.dateComponents(Set(components), from: sleep.createdAt)
+        }).map { dateComponents, feeds in
+            let duration = feeds.map { sleep in
+                return Double(sleep.duration)
+            }.reduce(0, +) / 3600
+            
+            let components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day)
+            
+            let date = Calendar.current.date(from: components)!
+            
+            return ChartFeed(date: date, duration: duration, breastSide: breastSide, bottleType: .unknown)
         }
     }
 }
 
 #Preview {
-    BreastChartView(child: Child(name: "", dob: Date.distantPast, gender: ""), feedType: .breast, period: .sevenDays)
+    SingleItemPreview<Child> { child in
+        NavigationStack {
+            BreastChartView(child: child, feedType: .breast, period: .sevenDays)
+        }
+    }
+    .modelContainer(PreviewData.container)
+    .environmentObject(Trackr())
 }

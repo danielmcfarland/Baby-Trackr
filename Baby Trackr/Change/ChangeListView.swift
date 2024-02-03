@@ -24,7 +24,7 @@ struct ChangeListView: View {
         
         self._changes = Query(filter: #Predicate<Change> { change in
             change.child?.persistentModelID == id
-        }, sort: \.createdAt)
+        }, sort: \.createdAt, order: .reverse)
         
         self.child = child
     }
@@ -36,7 +36,7 @@ struct ChangeListView: View {
                 .listRowSpacing(0)
                 .listRowSeparator(.hidden)
                 .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                .frame(height: 275)
+                .frame(height: 250)
             
             Section {
                 ForEach(changes) { change in

@@ -9,16 +9,6 @@ import SwiftUI
 import SwiftData
 import Charts
 
-class ChartSleep {
-    var date: Date
-    var duration: Double
-    
-    init(date: Date, duration: Double) {
-        self.date = date
-        self.duration = duration
-    }
-}
-
 struct SleepChartView: View {
     var child: Child
     var period: ChartPeriod
@@ -48,7 +38,7 @@ struct SleepChartView: View {
         self._sleeps = Query(filter: #Predicate<Sleep> { sleep in
             sleep.child?.persistentModelID == id &&
             !sleep.trackrRunning
-        }, sort: \.createdAt)
+        }, sort: \.createdAt, order: .reverse)
         
         self.child = child
         self.period = period
@@ -68,55 +58,22 @@ struct SleepChartView: View {
         endOfTodaySleep.createdAt = Calendar.current.startOfDay(for: Date.now)
         data.append(endOfTodaySleep)
 
-        let startHour = Calendar.current.startOfDay(for: startDate)
-        if period == .oneDay {
-            for hour in 0..<24 {
-                if let date = Calendar.current.date(byAdding: .hour, value: hour, to: startHour) {
-                    let sleep = Sleep()
-                    sleep.duration = 0
-                    sleep.createdAt = date
-                    data.append(sleep)
-                }
-            }
-        }
-
         data.append(contentsOf: sleeps)
         let chartSleeps = Dictionary(grouping: data, by: { sleep in
-            var components = [
+            let components = [
                 Calendar.Component.day,
                 Calendar.Component.month,
                 Calendar.Component.year,
             ]
-            if period == .oneDay {
-                components = [
-                    Calendar.Component.hour,
-                    Calendar.Component.day,
-                    Calendar.Component.month,
-                    Calendar.Component.year,
-                ]
-            }
-            
             return Calendar.current.dateComponents(Set(components), from: sleep.createdAt)
         }).map { dateComponents, sleeps in
             let duration = sleeps.map { sleep in
                 return Double(sleep.duration)
             }.reduce(0, +) / 3600
             
-            let calendar = Calendar(identifier: .gregorian)
-            var components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day, hour: dateComponents.hour)
-            switch period {
-            case .oneDay:
-                components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day, hour: dateComponents.hour)
-                break
-            case .sevenDays, .twentyEightDays:
-                components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day)
-                break
-            case .allTime:
-                components = DateComponents(year: dateComponents.year, month: dateComponents.month)
-                break
-            }
-
-            let date = calendar.date(from: components)!
+            let components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: dateComponents.day)
+            
+            let date = Calendar.current.date(from: components)!
             
             return ChartSleep(date: date, duration: duration)
         }
@@ -124,29 +81,23 @@ struct SleepChartView: View {
         return chartSleeps
     }
     
-    var chartUnit: Calendar.Component {
-        switch period {
-        case .oneDay:
-            return .hour
-        case .sevenDays, .twentyEightDays:
-            return .day
-        case .allTime:
-            return .month
-        }
-    }
-    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Sleep")
-                .foregroundStyle(Color.gray)
-                .font(.footnote)
-                .fontWeight(.semibold)
-            Text("\(scrollChartRange)")
-                .fontWeight(.semibold)
-                .padding(.bottom, 10)
+            HStack(alignment: .center) {
+                IconView(size: .small, icon: "moon.stars.fill")
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Sleep")
+                        .foregroundStyle(Color.gray)
+                        .font(.footnote)
+                        .fontWeight(.semibold)
+                    Text("\(scrollChartRange)")
+                        .fontWeight(.semibold)
+                }
+            }
+            .padding(.bottom, 10)
             Chart(chartSleeps, id: \.date) { element in
                 BarMark(
-                    x: .value("Day", element.date, unit: chartUnit),
+                    x: .value("Day", element.date, unit: .day),
                     y: .value("Total Sleep", element.duration)
                 )
                 .cornerRadius(5)
