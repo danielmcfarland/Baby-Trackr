@@ -31,10 +31,11 @@ struct SleepListView: View {
     var body: some View {
         List {
             SleepChartView(child: child, period: period)
-                .listRowInsets(.none)
                 .listRowBackground(Color.clear)
                 .listRowSpacing(0)
                 .listRowSeparator(.hidden)
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .frame(height: 250)
             
             Section {
                 ForEach(sleeps) { sleep in

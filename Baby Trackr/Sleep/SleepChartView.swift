@@ -24,7 +24,18 @@ struct SleepChartView: View {
     var period: ChartPeriod
     var placeholderSleeps: [Sleep] = []
     
+    @State private var scrollPosition: Date = Date(timeInterval: -Double(7 * 24 * 60 * 60), since: Calendar.current.startOfDay(for: Date(timeIntervalSinceNow: Double(24 * 60 * 60))))
+
+    var scrollChartRange: String {
+        let date = scrollPosition
+        let startRange = Calendar.current.startOfDay(for: date)
+        let endRange = Calendar.current.startOfDay(for: Date(timeInterval: Double(chartRange), since: date).addingTimeInterval(-60))
+        let dateRange = startRange..<endRange
+        return dateRange.formatted(.interval.day().month(.abbreviated).year())
+    }
+    
     @Query private var sleeps: [Sleep]
+    var chartRange: Int
     
     init(child: Child, period: ChartPeriod) {
         let id = child.persistentModelID
@@ -36,6 +47,7 @@ struct SleepChartView: View {
         
         self.child = child
         self.period = period
+        self.chartRange = period.numberOfDays * 24 * 60 * 60
     }
     
     var chartSleeps: [ChartSleep] {
@@ -119,22 +131,37 @@ struct SleepChartView: View {
     }
     
     var body: some View {
-        Chart(chartSleeps, id: \.date) { element in
-             BarMark(
-                x: .value("Day", element.date, unit: chartUnit),
-                y: .value("Total Sleep", element.duration)
-             )
-             .cornerRadius(5)
-         }
-         .chartScrollableAxes(.horizontal)
-         .chartXVisibleDomain(length: period.numberOfDays * 24 * 60 * 60)
-         .chartScrollPosition(initialX: Date.now.timeIntervalSince1970)
-         .chartScrollTargetBehavior(
-            .valueAligned(
-                matching: period == .oneDay ? DateComponents(minute: 0) : DateComponents(hour: 0),
-                majorAlignment: .matching(period == .oneDay ? DateComponents(hour: 0) : DateComponents(day: 0))
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Sleep")
+                .foregroundStyle(Color.gray)
+                .font(.footnote)
+                .fontWeight(.semibold)
+            Text("\(scrollChartRange)")
+                .fontWeight(.semibold)
+            Chart(chartSleeps, id: \.date) { element in
+                BarMark(
+                    x: .value("Day", element.date, unit: chartUnit),
+                    y: .value("Total Sleep", element.duration)
+                )
+                .cornerRadius(5)
+            }
+            .chartXAxis {
+                AxisMarks(values: .stride(by: .day, count: 1)) { value in
+                    AxisValueLabel(format: .dateTime.weekday())
+                    AxisGridLine()
+                    AxisTick()
+                }
+            }
+            .chartScrollableAxes(.horizontal)
+            .chartXVisibleDomain(length: chartRange)
+            .chartScrollPosition(x: $scrollPosition)
+            .chartScrollTargetBehavior(
+                .valueAligned(
+                    matching: DateComponents(hour: 0),
+                    majorAlignment: .matching(DateComponents(day: 0))
+                )
             )
-         )
+        }
     }
 }
 
