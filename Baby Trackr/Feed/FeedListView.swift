@@ -30,32 +30,23 @@ struct FeedListView: View {
     
     var body: some View {
         List {
-            Picker("Chart Period", selection: $period) {
-                ForEach(ChartPeriod.allCases) { period in
-                    Text(period.rawValue).tag(period)
-                }
+            if feedType == .breast {
+                BreastChartView(child: child, feedType: feedType, period: period)
+                    .listRowBackground(Color.clear)
+                    .listRowSpacing(0)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    .frame(height: 275)
             }
-            .pickerStyle(.segmented)
-            .padding(0)
-            .listRowInsets(.none)
-            .listRowBackground(Color.clear)
-            .listRowSpacing(0)
-            .listRowSeparator(.hidden)
             
-            Group {
-                if feedType == .breast {
-                    BreastChartView(child: child, feedType: feedType, period: period)
-                }
-                
-                if feedType == .bottle {
-                    BottleChartView(child: child, feedType: feedType, period: period)
-                }
+            if feedType == .bottle {
+                BottleChartView(child: child, feedType: feedType, period: period)
+                    .listRowBackground(Color.clear)
+                    .listRowSpacing(0)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    .frame(height: 275)
             }
-            .listRowInsets(.none)
-            .listRowBackground(Color.clear)
-            .listRowSpacing(0)
-            .listRowSeparator(.hidden)
-            .padding(.bottom, -20)
             
             Section {
                 ForEach(feeds) { feed in

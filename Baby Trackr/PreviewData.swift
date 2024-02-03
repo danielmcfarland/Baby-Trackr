@@ -24,6 +24,21 @@ class PreviewData {
                 sleep.duration = j * 3600
                 sleep.child = child
                 container.mainContext.insert(sleep)
+                
+                let dirtyChange = Change(type: .dirty)
+                dirtyChange.createdAt = Calendar.current.date(byAdding: .day, value: -j, to: Date())!
+                dirtyChange.child = child
+                container.mainContext.insert(dirtyChange)
+                
+                let wetChange = Change(type: .wet)
+                wetChange.createdAt = Calendar.current.date(byAdding: .day, value: -j, to: Date())!
+                wetChange.child = child
+                container.mainContext.insert(wetChange)
+                
+                let dryChange = Change(type: .dry)
+                dryChange.createdAt = Calendar.current.date(byAdding: .day, value: -j, to: Date())!
+                dryChange.child = child
+                container.mainContext.insert(dryChange)
             }
             
             for j in 1...5 {

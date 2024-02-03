@@ -30,25 +30,13 @@ struct ChangeListView: View {
     }
     
     var body: some View {
-        List {
-            Picker("Chart Period", selection: $period) {
-                ForEach(ChartPeriod.allCases) { period in
-                    Text(period.rawValue).tag(period)
-                }
-            }
-            .pickerStyle(.segmented)
-            .padding(0)
-            .listRowInsets(.none)
-            .listRowBackground(Color.clear)
-            .listRowSpacing(0)
-            .listRowSeparator(.hidden)
-            
+        List {            
             ChangeChartView(child: child, period: period)
-                .listRowInsets(.none)
                 .listRowBackground(Color.clear)
                 .listRowSpacing(0)
                 .listRowSeparator(.hidden)
-                .padding(.bottom, -20)
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .frame(height: 275)
             
             Section {
                 ForEach(changes) { change in
@@ -83,7 +71,10 @@ struct ChangeListView: View {
 }
 
 #Preview {
-    NavigationStack {
-        ChangeListView(child: Child(name: "Name", dob: Date(), gender: ""))
+    SingleItemPreview<Child> { child in
+        NavigationStack {
+            ChangeListView(child: child)
+        }
     }
+    .modelContainer(PreviewData.container)
 }

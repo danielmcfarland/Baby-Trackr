@@ -17,6 +17,19 @@ struct BottleChartView: View {
     
     @Query private var feeds: [Feed]
     
+    var startRangeDate: Date {
+        return Date.now.addingTimeInterval(-Double(7 * 24 * 60 * 60))
+    }
+    
+    var endRangeDate: Date {
+        return Date.now
+    }
+    
+    var scrollChartRange: String {
+        let dateRange = self.startRangeDate..<self.endRangeDate
+        return dateRange.formatted(.interval.day().month(.abbreviated).year())
+    }
+    
     init(child: Child, feedType: FeedType, period: ChartPeriod) {
         let id = child.persistentModelID
         let periodDate: Date = period.startDate
@@ -62,20 +75,29 @@ struct BottleChartView: View {
     }
     
     var body: some View {
-        Chart(chartFeeds, id: \.bottleType) { feed in
-            SectorMark(
-                angle: .value("Volume", feed.value),
-                innerRadius: .ratio(0.618),
-                angularInset: 1.5
-            )
-            .cornerRadius(5)
-            .foregroundStyle(by: .value("Side", feed.bottleType.rawValue))
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Feeds")
+                .foregroundStyle(Color.gray)
+                .font(.footnote)
+                .fontWeight(.semibold)
+            Text("\(scrollChartRange)")
+                .fontWeight(.semibold)
+                .padding(.bottom, 10)
+            Chart(chartFeeds, id: \.bottleType) { feed in
+                SectorMark(
+                    angle: .value("Volume", feed.value),
+                    innerRadius: .ratio(0.618),
+                    angularInset: 1.5
+                )
+                .cornerRadius(5)
+                .foregroundStyle(by: .value("Side", feed.bottleType.rawValue))
+            }
+            .chartXAxis(.hidden)
+            .padding()
+            .padding(.bottom, 0)
+            .frame(height: 250)
+            .animation(.default, value: chartFeeds)
         }
-        .chartXAxis(.hidden)
-        .padding()
-        .padding(.bottom, 0)
-        .frame(height: 250)
-        .animation(.default, value: chartFeeds)
     }
 }
 
